@@ -1,0 +1,12 @@
+{% if cat %}
+    {% for item in user %}
+    <h2> {{ item.user_id }}님의 고양이 </h2>
+    {% endfor %}
+{% endif %} 
+
+{% if cat %}
+    {% for item in cat %}
+    <h3>{{ item.cat_name }} / {{ item.location }}</h3>
+    {% endfor %}
+
+{% endif %} 

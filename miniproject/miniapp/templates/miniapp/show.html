@@ -1,0 +1,7 @@
+{% load static %}
+
+{% if object %}
+    {% for item in object %}
+        <img src="{{ item.cat_photo.url }}" alt="">
+    {% endfor %}
+{% endif %}

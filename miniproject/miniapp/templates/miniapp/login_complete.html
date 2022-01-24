@@ -1,0 +1,38 @@
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<html>
+<head>
+    <style type="text/css">
+        .layer {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            height: 500px;
+            top: 0;
+            left: 0;
+            font-size: 40px;
+           
+        }
+
+    </style>
+</head>
+ 
+<body>
+ 
+    <div class="layer">
+        <form method="post" class="post-form">
+            {% csrf_token %}
+            <br><br><br>
+            <span class="content">로그인이 완료되었습니다.</span><br>
+            {% if object  %}
+                <p>{{ object.user_name }} 님 반갑습니다.</p>
+
+            {% endif %}
+            <br>
+            <button type="submit" class="btn btn-primary">나의 고양이 목록으로 이동하기</button>
+        </form>
+
+    </div>
+ 
+</body>
+</html>

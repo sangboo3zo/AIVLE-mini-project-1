@@ -1,0 +1,116 @@
+{% load static %}
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+<div class="container my-3">
+    <div class="row my-3">
+        <div class="col-4">
+            <h4>고양이 등록하기</h4>
+        </div>
+
+    </div>
+    <form method="post" class="post-form">
+        {% csrf_token %} 
+        <div class="form-group">
+            <label for="username">이름</label>
+            <input type="text" class="form-control" name="cat_name">
+        </div>
+   
+        <div class="dropdown">
+            <label for="gender">성별</label><br>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                선택
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">암컷</a></li>
+              <li><a class="dropdown-item" href="#">수컷</a></li>
+              <li><a class="dropdown-item" href="#">모르겠어요</a></li>
+            </ul>
+        </div>
+        <br>
+
+        <div class="dropdown">
+            <label for="password1">중성화 여부</label><br>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                선택
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">완료</a></li>
+              <li><a class="dropdown-item" href="#">미완료</a></li>
+              <li><a class="dropdown-item" href="#">모르겠어요</a></li>
+            </ul>
+        </div>
+        <br>
+        <label for="password1">주소</label><br>
+        <div class="btn-group">
+            
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden"></span>시
+            </button>
+            <ul class="dropdown-menu"> 
+              <li><a class="dropdown-item" href="#">성남시</a></li>
+            </ul>
+            
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden"></span>동
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">정자동</a></li>
+              <li><a class="dropdown-item" href="#">수내동</a></li>
+              <li><a class="dropdown-item" href="#">구미동</a></li>
+  
+            </ul>
+            
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden"></span>공원
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">정자공원</a></li>
+              <li><a class="dropdown-item" href="#">능골공원</a></li>
+              <li><a class="dropdown-item" href="#">오리공원</a></li>
+              <li><a class="dropdown-item" href="#">분당중앙공원</a></li>
+            </ul>
+        </div>
+        <br><br>
+        <div class="radio">
+          
+          <label for="password1">특징</label><br>
+          
+          <label><input type="radio" id="흰색" name="appearance" value="흰색"> 흰색</label>
+          <img src="{%static 'images/cat1.png' %}" width="100" height="80">
+          <label><input type="radio" id="검정색" name="appearance" value="검정색"> 검정색</label>
+          <img src="{%static 'images/cat2.png' %}" width="100" height="80">
+          <label><input type="radio" id="노란색" name="appearance" value="노란색"> 노란색</label>
+          <img src="{%static 'images/cat4.png' %}" width="100" height="80">
+          <label><input type="radio" id="회색" name="appearance" value="회색"> 회색</label>
+          <img src="{%static 'images/cat5.png' %}" width="100" height="80">
+          <label><input type="radio" id="삼색" name="appearance" value="삼색"> 삼색</label>
+          <img src="{%static 'images/cat6.png' %}" width="100" height="80">
+          <label><input type="radio" id="얼룩" name="appearance" value="얼룩"> 얼룩</label>
+          <img src="{%static 'images/cat7.png' %}" width="100" height="80">
+          <label><input type="radio" id="그외" name="appearance" value="그외"> 그외</label>
+          
+        </div>
+        <br>
+
+        <div class="dropdown">
+            <label for="password1">상태</label><br>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                선택
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">건강</a></li>
+              <li><a class="dropdown-item" href="#">실종</a></li>
+              <li><a class="dropdown-item" href="#">입원</a></li>
+              <li><a class="dropdown-item" href="#">임시보호</a></li>
+              <li><a class="dropdown-item" href="#">사망</a></li>
+            </ul>
+        </div>
+        <br>
+        
+        <button type="submit" class="btn btn-primary">생성하기</button>
+    </form>
+</div>
