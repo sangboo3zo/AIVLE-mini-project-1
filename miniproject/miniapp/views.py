@@ -27,6 +27,10 @@ def login(request):
     else:
         return render(request, 'miniapp/login.html' )
 
+def login_complete(request):
+    # if request.method == 'POST':
+    #     return render(request, 'miniapp/show.html' )
+    return render(request, 'miniapp/login_complete.html' )
 
 def signup(request):
     if request.method == 'POST':
@@ -95,7 +99,3 @@ def my_cat(request):
     cat = Cat.objects.all()
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':cat})
 
-def login_complete(request):
-    # if request.method == 'POST':
-    #     return render(request, 'miniapp/show.html' )
-    return render(request, 'miniapp/login_complete.html' )
