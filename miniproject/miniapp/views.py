@@ -1,13 +1,31 @@
+from re import template
 from turtle import st
 from aiohttp import request
-from django.shortcuts import redirect,render
+from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from .models import User,CatPhoto,Cat
+from .models import User,CatPhoto,Cat, Feed
 from django.utils import timezone
 from rest_framework import viewsets
+from django.views.generic import DetailView
 
+###class cat_profile(DetailView):
+   # context_object_name ='profile_cat'
+    #model= Cat
+    #template_name = 'miniapp/cat_profile.html'
+###
+def cat_profile(request, pk):
+    cat_profile = get_object_or_404(Cat, pk=pk)
+    img = CatPhoto.objects.filter(cat_id=pk)
+    feed = Feed.objects.filter(cat=pk).order_by('-date_time')
 
+    return render(request, 'miniapp/cat_profile.html', context={
+        'cat_photo' : img[0],
+        'cat_name': cat_profile.cat_name,
+        'cat_location' : cat_profile.location,
+        'cat_status': cat_profile.status,
+        'feed_timeline': feed})
 
+    
 def login(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
