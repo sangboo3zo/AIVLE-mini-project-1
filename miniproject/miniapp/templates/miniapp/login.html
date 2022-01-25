@@ -1,22 +1,30 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<div class="container my-3">
-    <form method="post" class="post-form">
+<body>
+    <div class="container my-3">
+        <form method="post" class="post-form">
 
-        <div class="form-group" action="." >
-            {% csrf_token %}
+            <div class="form-group" action="." >
+                {% csrf_token %}
 
-            {% if message %}
-                <h3>{{ message }} </h3>   
-            {% endif %} 
-            <label for="username">사용자ID</label>
-            <input type="text" class="form-control" name="user_id">
-        </div>
-        <div class="form-group">
-            <label for="password">비밀번호</label>
-            <input type="password" class="form-control" name="user_pw">
-        </div>
-        <button type="submit" class="btn btn-primary">로그인</button>
-        <button type="submit" class="btn btn-primary">회원가입</button>
-    </form>
+                {% if message %}
+                    <h3>{{ message }} </h3>   
+                {% endif %} 
+                <label for="username">사용자ID</label>
+                <input type="text" class="form-control" name="user_id">
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" class="form-control" name="user_pw">
+            </div>
+            <button type="submit" class="btn-login">로그인</button>
+            <button type="submit" class="btn-register">회원가입</button>
+        </form>
 
-</div>
+    </div>
+    <script>
+        document.querySelector("btn-login").addEventListener("click",function(){
+            location.href="my_cat.html"
+        })
+    </script>
+
+</body>
