@@ -129,8 +129,7 @@ def my_cat(request):
 
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
 
-<<<<<<< HEAD
-=======
+
 def login_complete(request):
     # if request.method == 'POST':
     #     return render(request, 'miniapp/show.html' )
@@ -139,4 +138,3 @@ def login_complete(request):
 
 def home(request):
     return render(request, 'miniapp/home.html')
->>>>>>> 6da7e98258efb4eab3f9d19d0c97d8726f9ab11a
