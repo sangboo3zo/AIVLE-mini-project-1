@@ -19,8 +19,6 @@ urlpatterns = [
     path('', miniapp_views.home),
     path('home/', miniapp_views.home),
     path('my_cat/', miniapp_views.my_cat),
+    path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
     path('my_cat/<int:id>', miniapp_views.my_cat2),
-    # path('login/',
-    #     auth_views.LoginView.as_view(template_name='miniapp/login.html'),
-    #     name='login'),
 ]

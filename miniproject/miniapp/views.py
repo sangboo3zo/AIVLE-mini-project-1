@@ -1,11 +1,12 @@
+from re import template
 from turtle import st
 from aiohttp import request
-from django.shortcuts import redirect,render
+from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from .models import Location, User,CatPhoto,Cat, UserHasCat
+from .models import Location, User,CatPhoto,Cat, UserHasCat,Feed
 from django.utils import timezone
 from rest_framework import viewsets
-
+from django.views.generic import DetailView
 
 
 def login(request):
@@ -109,6 +110,7 @@ def create_cat(request):
         time = timezone.now()
 
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=c.cat_id)
+        UserHasCat.objects.create(cat_id=c.cat_id,user_no=user)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html')
 
@@ -127,8 +129,6 @@ def my_cat(request):
                 cat_img.append(" https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
             else:
                 cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
-
-
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
 
 def my_cat2(request,id):
