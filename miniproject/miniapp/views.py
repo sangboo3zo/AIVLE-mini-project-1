@@ -1,5 +1,5 @@
 from turtle import st
-from aiohttp import request
+#from aiohttp import request
 from django.shortcuts import redirect,render
 from django.http import HttpResponse,JsonResponse
 from .models import User,CatPhoto,Cat
@@ -121,3 +121,19 @@ def login_complete(request):
 
 def home(request):
     return render(request, 'miniapp/home.html')
+
+def cat_gallery(request):
+    
+    name = request.session['id']
+
+    u=User.objects.get(user_id=name)
+    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
+    img = CatPhoto.objects.all()
+    cat = Cat.objects.all()
+    context = {
+        'object': img,
+        'user': int(u.user_no),
+        # 'cat': cat.cat_name
+    }
+    
+    return render(request, 'miniapp/gallery.html', context)
