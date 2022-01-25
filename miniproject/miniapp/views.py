@@ -89,7 +89,7 @@ def create_cat(request):
         cat = Cat.objects.last()  
         img = request.FILES.get('img-file')
         time = timezone.now()
-        CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=c.cat_id)
+        CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
         UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html')
@@ -110,6 +110,8 @@ def my_cat(request):
                 cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
             else:
                 cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
+        ccc=zip(cat_list, cat_img)
+        print(ccc)
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
 
 def my_cat2(request,id):
@@ -124,7 +126,9 @@ def my_cat2(request,id):
             cat_img.append(" https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
         else:
             cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
-    return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
+    ccc=zip(cat_list, cat_img)
+    print(cat_list)
+    return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
 def cat_gallery(request):
     name = request.session['id']
