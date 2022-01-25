@@ -1,4 +1,0 @@
-# 윤중이꺼 처음에 깃 클론으로 불러오면 pip install 해야할 것이 있다.
-1. pip install django-storages
-2. pip install aiohttp
-3. pip install boto3s
