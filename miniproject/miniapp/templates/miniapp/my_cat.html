@@ -1,16 +1,92 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
 
-{% if cat %}
-    {% for item in user %}
-    <h2> {{ item.user_id }}님의 고양이 </h2>
-    {% endfor %}
+{% if user %}
+<br>
+   <h4 id ="user_name"> {{ user.user_id }}님의 고양이 </h4>
+<br>
 {% endif %} 
 
 {% if cat %}
-    {% for item in cat %}
-    <h3>{{ item.cat_name }} / {{ item.location }}</h3>
-    {% endfor %}
 
-{% endif %} 
+    {% for item, url in cat %}
+    <div class="container">
+        <div class="col-sm-12 col-lg-6">
+            <div class="card">
+                <div class="row no-gutters"> 
+                    <div class="col-4">
+                        <img class="card-img-top" src="{{ url }}"  alt="Card image cap">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <p class="card-text" id = "cat_name" > {{item.cat_name}} </p>
+                            {% if item.gender == 'F'%}
+                            <h1 class="card-text"> 성별: 암컷</h1> 
+                            {% elif item.hender == 'M' %}
+                            <h1 class="card-text"> 성별: 수컷 </h1> 
+                            {% else %}
+                            <h1 class="card-text"> 성별: 모르겠어요 </h1> 
+                            {% endif %}
+                            <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
+                            <h1 class="card-text"> 상태: {{ item.status }} </h1>
+                            <h1 style = "font-family:OTWelcomeRA;font-size:90%"> {{item.cat_name}} 을 확인하려면 클릭하세요!</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+<style>
+    @font-face {
+        font-family: 'OTWelcomeBA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'OTWelcomeRA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+    #user_name{
+        font-family: 'OTWelcomeBA';
+        font-size: 200%;
+        text-align: center;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+
+
+    .card-img-top {
+        width: 300px;
+        height: 250px;
+        object-fit: contain;
+
+    }
+    .card {
+        left: 50%;
+        text-align: center;
+    }
+   
+    #cat_name{
+        font-family: 'OTWelcomeBA';
+        font-size: 200%;
+
+    }
+    .card-text {
+        font-family: 'OTWelcomeRA';
+        font-size: 150%;
+    }
+
+</style>
 {% endblock %}
