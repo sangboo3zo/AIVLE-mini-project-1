@@ -3,12 +3,27 @@ from turtle import st
 from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from .models import Location, User,CatPhoto,Cat, UserHasCat,Feed
+from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed
 from django.utils import timezone
 from rest_framework import viewsets
 from django.views.generic import DetailView
 
 
+def home(request):
+    return render(request, 'miniapp/home.html')
+
+def cat_profile(request, pk):
+    cat_profile = get_object_or_404(Cat, pk=pk)
+    img = CatPhoto.objects.filter(cat_id=pk)
+    feed = Feed.objects.filter(cat=pk).order_by('-date_time')
+
+    return render(request, 'miniapp/cat_profile.html', context={
+        'cat_photo' : img[0],
+        'cat_name': cat_profile.cat_name,
+        'cat_location' : cat_profile.location,
+        'cat_status': cat_profile.status,
+        'feed_timeline': feed})
+  
 def login(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -19,6 +34,7 @@ def login(request):
                 'object': m
             }
             request.session['id']=user_id
+            request.session['no']=m.user_no
             return render(request, 'miniapp/login_complete.html', context )
         except:
             message = {
@@ -27,7 +43,6 @@ def login(request):
             return render(request, 'miniapp/login.html', message)
     else:
         return render(request, 'miniapp/login.html' )
-
 
 def signup(request):
     if request.method == 'POST':
@@ -43,9 +58,9 @@ def signup(request):
     else:
         return render(request, 'miniapp/signup.html' )
 
-def signup_complete(request):
-    print(request.user)
-    return render(request, 'miniapp/signup_complete.html' )
+def logout(request):
+    request.session.flush()
+    return redirect('http://127.0.0.1:8000/') 
 
 def upload_cat_img(request):
     if request.method == 'POST':
@@ -69,25 +84,22 @@ def create_cat(request):
         m = Cat(
              cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
         m.save()
-
         name = request.session['id']
-    
         user = User.objects.get(user_id = name)
-        c = Cat.objects.last()
-        
+        cat = Cat.objects.last()  
         img = request.FILES.get('img-file')
         time = timezone.now()
-
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=c.cat_id)
-        UserHasCat.objects.create(cat_id=c.cat_id,user_no=user)
+        UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html')
 
 def my_cat(request):
     if request.method == 'POST':
         name = request.session['id']
+        num= name = request.session['no']
         user=User.objects.get(user_id=name)
-        user_has_cat = UserHasCat.objects.filter(user_no=int(user.user_no))
+        user_has_cat = UserHasCat.objects.filter(user_no=num)
         cat_id_list=[i.cat_id for i in user_has_cat]
         cat_list = [Cat.objects.get(cat_id=i) for i in cat_id_list]
         cat_img = []
@@ -95,7 +107,7 @@ def my_cat(request):
         for i in cat_id_list:
             if CatPhoto.objects.filter(cat_id=i):
                 img_url = CatPhoto.objects.filter(cat_id=i).first().cat_photo
-                cat_img.append(" https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
+                cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
             else:
                 cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
@@ -114,12 +126,17 @@ def my_cat2(request,id):
             cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
 
-def login_complete(request):
-    # if request.method == 'POST':
-    #     return render(request, 'miniapp/show.html' )
-    #print(request.session['id'])
-    return render(request, 'miniapp/login_complete.html' )
+def cat_gallery(request):
+    name = request.session['id']
 
-def home(request):
-    return render(request, 'miniapp/home.html')
-
+    u=User.objects.get(user_id=name)
+    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
+    img = CatPhoto.objects.all()
+    cat = Cat.objects.all()
+    context = {
+        'object': img,
+        'user': int(u.user_no),
+        #'cat': cat.cat_name
+    }
+    
+    return render(request, 'miniapp/cat_gallery.html', context)

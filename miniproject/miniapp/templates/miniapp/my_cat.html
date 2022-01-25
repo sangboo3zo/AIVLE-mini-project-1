@@ -34,7 +34,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                             {% endif %}
                             <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
                             <h1 class="card-text"> 상태: {{ item.status }} </h1>
-                            <h1 style = "font-family:OTWelcomeRA;font-size:90%"> {{item.cat_name}} 을 확인하려면 클릭하세요!</h1>
+                            <a style = "font-family:OTWelcomeRA;font-size:90%" href="http://127.0.0.1:8000/cat_profile/{{ item.cat_id }}"> {{item.cat_name}} 확인하려면 클릭하세요!</a>
                         </div>
                     </div>
                 </div>

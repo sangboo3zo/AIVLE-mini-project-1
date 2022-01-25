@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="col-xs-6 col-md-3">
+        {% if cat_profile.id %}
+        <h2>{{cat_profile.id}}</h2>
+        {% endif %}
+
+        {% comment %} <a href="#"> 
+            <button type="button" class="btn btn-default">프로필 편집</button></a></h2>
+        {% endcomment %}
+
+    
+        <img src="{{ cat_photo.cat_photo.url }}" alt="">
+
+        <h3> 고양이 : {{cat_name}} <br>
+            위치 : {{cat_location}} <br>
+            현재상태 : {{cat_status}} <br>
+            <br>
+            밥먹은 시간 
+            {% if feed_timeline %}
+                {% for item in feed_timeline %}
+                <h3>{{ item.user_no.user_name }} /{{ item.date_time }}</h3>
+                {% endfor %}
+            {% endif %} 
+            </h3>
+    </div>
+<style>
+    @font-face {
+        font-family: 'OTWelcomeBA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'OTWelcomeRA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+</style>
+{% endblock %}

@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 <div class="container my-3">
+    <div class="row my-3">
+        <div class="col-4">
+            <h4>로그인</h4>
+        </div>
+    </div>
+
     <form method="post" class="post-form">
-
+        {% csrf_token %}
+        
         <div class="form-group" action="." >
-            {% csrf_token %}
 
-            {% if message %}
-                <h3>{{ message }} </h3>   
-            {% endif %} 
             <label for="username">사용자ID</label>
             <input type="text" class="form-control" name="user_id">
         </div>
@@ -18,8 +22,9 @@
             <input type="password" class="form-control" name="user_pw">
         </div>
         <button type="submit" class="btn btn-primary">로그인</button>
-        <button type="submit" class="btn btn-primary">회원가입</button>
     </form>
-
+    {% if message %}
+                <h6>{{ message }} </h6>   
+    {% endif %} 
 </div>
 {% endblock %}
