@@ -14,36 +14,31 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         </div>
 
     </div>
-    <form method="post" class="post-form">
+    <form method="post" class="post-form" enctype="multipart/form-data">
         {% csrf_token %} 
         <div class="form-group">
             <label for="username">이름</label>
             <input type="text" class="form-control" name="cat_name">
         </div>
    
-        <div class="dropdown">
-            <label for="gender">성별</label><br>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                선택
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">암컷</a></li>
-              <li><a class="dropdown-item" href="#">수컷</a></li>
-              <li><a class="dropdown-item" href="#">모르겠어요</a></li>
-            </ul>
+        <div class="radio">
+          
+          <label for="password1">성별</label><br>
+  
+          <label><input type="radio" id="암컷" name="gender" value="F"> 암컷  </label>
+          <label><input type="radio" id="수컷" name="gender" value="M"> 수컷  </label>
+          <label><input type="radio" id="모르겠어요" name="gender" value="U"> 모르겠어요  </label>
         </div>
         <br>
 
-        <div class="dropdown">
-            <label for="password1">중성화 여부</label><br>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                선택
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">완료</a></li>
-              <li><a class="dropdown-item" href="#">미완료</a></li>
-              <li><a class="dropdown-item" href="#">모르겠어요</a></li>
-            </ul>
+        
+        <div class="radio">
+          
+          <label for="password1">중성화 여부</label><br>
+  
+          <label><input type="radio" id="완료" name="neutral" value="Y"> 완료  </label>
+          <label><input type="radio" id="미완료" name="neutral" value="N"> 미완료  </label>
+          <label><input type="radio" id="모르겠어요" name="neutral" value="U"> 모르겠어요  </label>
         </div>
         <br>
         <label for="password1">주소</label><br>
@@ -77,10 +72,12 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             </ul>
         </div>
         <br><br>
+
+
         <div class="radio">
           
           <label for="password1">특징</label><br>
-          
+  
           <label><input type="radio" id="흰색" name="appearance" value="흰색"> 흰색</label>
           <img src="{%static 'images/cat1.png' %}" width="100" height="80">
           <label><input type="radio" id="검정색" name="appearance" value="검정색"> 검정색</label>
@@ -98,21 +95,21 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         </div>
         <br>
 
-        <div class="dropdown">
-            <label for="password1">상태</label><br>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                선택
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">건강</a></li>
-              <li><a class="dropdown-item" href="#">실종</a></li>
-              <li><a class="dropdown-item" href="#">입원</a></li>
-              <li><a class="dropdown-item" href="#">임시보호</a></li>
-              <li><a class="dropdown-item" href="#">사망</a></li>
-            </ul>
+
+        <div class="radio">
+          
+          <label for="password1">상태</label><br>
+  
+          <label><input type="radio" id="건강" name="status" value="건강"> 건강  </label>
+          <label><input type="radio" id="실종" name="status" value="실종"> 실종  </label>
+          <label><input type="radio" id="입원" name="status" value="입원"> 입원  </label>
+          <label><input type="radio" id="임시보호" name="status" value="임시보호"> 임시보호  </label>
+          <label><input type="radio" id="사망" name="status" value="사망"> 사망  </label>
         </div>
         <br>
-        
+
+        <input type="file" name="img-file">
+        <br><br><br>
         <button type="submit" class="btn btn-primary">생성하기</button>
     </form>
 </div>
