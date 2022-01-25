@@ -1,7 +1,11 @@
-from turtle import st
-from aiohttp import request
+# from nis import cat
+# from turtle import st
+# from aiohttp import request
+from xml.dom.minidom import Document
 from django.shortcuts import redirect,render
 from django.http import HttpResponse,JsonResponse
+from numpy import integer
+from sympy import Id
 from .models import User,CatPhoto,Cat
 from django.utils import timezone
 from rest_framework import viewsets
@@ -99,3 +103,38 @@ def login_complete(request):
     # if request.method == 'POST':
     #     return render(request, 'miniapp/show.html' )
     return render(request, 'miniapp/login_complete.html' )
+
+
+from .models import CatBoard
+def comment(request, cat_id):
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    cat_info = Cat.objects.get(cat_id = int(cat_id))
+    comments = CatBoard.objects.filter(cat = int(cat_id))
+    if request.method == 'POST':
+        comment = CatBoard()
+        comment.cat = cat_info
+        comment.user_no = current_user
+        comment.board_text = request.POST.get('board_text')
+        comment.date_time = timezone.now()
+        comment.save()
+    return render(request, 'miniapp/comment.html', {
+        'user_name': current_user.user_name,
+        'cat_info': cat_info.cat_name,
+        'user' : current_user,
+        'comments': comments,
+        }
+        )
+
+from django.contrib import messages
+def commentdelete(request, board_id):
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    comment = CatBoard.objects.get(board_id = board_id)
+    a = current_user.user_no
+    b = comment.user_no
+    c = comment.cat_id
+    if a != b:
+        messages.warning(request, '권한 없음')
+    comment.delete()
+    return redirect(f'/comment/{c}/')

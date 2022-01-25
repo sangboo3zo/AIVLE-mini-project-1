@@ -19,4 +19,6 @@ urlpatterns = [
     # path('login/',
     #     auth_views.LoginView.as_view(template_name='miniapp/login.html'),
     #     name='login'),
+    path('comment/<int:cat_id>/',miniapp_views.comment, name = 'comment'),
+    path('comment/<int:board_id>/delete',miniapp_views.commentdelete, name = 'delete'),
 ]
