@@ -9,8 +9,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 {% if user %}
 <br>
 <div class = "user_name">
-    <img class="cat_face" src="{% static 'images/cat_face.png' %}"   alt="Cat face">  {{ user.user_id }}님의 고양이
-    {% comment %} <h4 id ="user_name"> {{ user.user_id }}님의 고양이 </h4> {% endcomment %}
+    <p id ="user_name"> {{ user.user_id }}님의 고양이 </p> 
 </div>
     <hr clss="one">
 <br>
@@ -56,10 +55,9 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     .user_name{
         font-family: 'Cafe24Ssurround';
+        font-size: 32px;
         position: relative;
-        font-size: 200%;
         left: 40px;
-        
         top: 0;
  
     }

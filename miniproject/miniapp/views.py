@@ -3,26 +3,58 @@ from turtle import st
 from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
+from matplotlib.style import use
 from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed
 from django.utils import timezone
 from rest_framework import viewsets
 from django.views.generic import DetailView
-
+from datetime import datetime
 
 def home(request):
     return render(request, 'miniapp/home.html')
 
 def cat_profile(request, pk):
+    update =False
     cat_profile = get_object_or_404(Cat, pk=pk)
     img = CatPhoto.objects.filter(cat_id=pk)
-    feed = Feed.objects.filter(cat=pk).order_by('-date_time')
+    feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
+    user_has_cat = UserHasCat.objects.filter(user_no=request.session['no'])
+    u_h_c = False
+    for u in user_has_cat:
+        if u.cat_id == pk:
+            u_h_c = True
+
+    if request.method == 'POST':
+    #     update =False
+    #     if request.POST.get('update') == "True":
+    #         update=True
+        if request.POST.get('datetimep'):
+            dt = request.POST.get('datetimep')
+            b= dt.split(" ")
+            c=b[0].split("/")
+            d=b[1].split(":")
+            dtstr = c[2]+"-"+c[0]+"-"+c[1]
+            if b[2] == "PM": d[0] = str(int(d[0])+12)
+            if len(d[0]) ==1: dtstr = dtstr +" 0"+d[0]+":"+d[1]+":00.000000"
+            else: dtstr = dtstr +" "+d[0]+":"+d[1]+":00.000000"
+        
+            feed = Feed(date_time = dtstr,
+                        cat_id = cat_profile.cat_id,
+                        user_no =User.objects.get(user_no=request.session['no']  ))
+            feed.save()
+            feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
 
     return render(request, 'miniapp/cat_profile.html', context={
         'cat_photo' : img[0],
+        'cat_id' : cat_profile.cat_id,
         'cat_name': cat_profile.cat_name,
         'cat_location' : cat_profile.location,
         'cat_status': cat_profile.status,
-        'feed_timeline': feed})
+        'feed_timeline': feed,
+        'user_has_cat':u_h_c,
+        'update':update})
+    
+        
   
 def login(request):
     if request.method == 'POST':
