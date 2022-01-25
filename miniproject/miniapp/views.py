@@ -3,7 +3,6 @@ from turtle import st
 from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from matplotlib.style import use
 from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed
 from django.utils import timezone
 from rest_framework import viewsets
