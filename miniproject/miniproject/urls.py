@@ -3,7 +3,7 @@ from django.urls import path, include
 from miniapp import views as miniapp_views
 from rest_framework import routers
 from django.contrib.auth import views as auth_views
-
+from django.contrib.auth.decorators import login_required
 app_name = 'miniapp'
 
 urlpatterns = [
@@ -21,4 +21,8 @@ urlpatterns = [
     path('my_cat/', miniapp_views.my_cat),
     path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
     path('my_cat/<int:id>', miniapp_views.my_cat2),
+    path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile')
+    # path('login/',
+    #     auth_views.LoginView.as_view(template_name='miniapp/login.html'),
+    #     name='login'),
 ]
