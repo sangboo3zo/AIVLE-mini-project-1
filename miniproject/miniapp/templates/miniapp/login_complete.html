@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <link rel="stylesheet"
 href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <html>
@@ -28,6 +30,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <p>{{ object.user_name }} 님 반갑습니다.</p>
 
             {% endif %}
+     
             <br>
             <button type="submit" class="btn btn-primary">나의 고양이 목록으로 이동하기</button>
         </form>
@@ -36,3 +39,4 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
  
 </body>
 </html>
+{% endblock %}

@@ -23,7 +23,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
    
         <div class="radio">
           
-          <label for="gender">성별</label><br>
+          <label for="password1">성별</label><br>
   
           <label><input type="radio" id="암컷" name="gender" value="F"> 암컷  </label>
           <label><input type="radio" id="수컷" name="gender" value="M"> 수컷  </label>
@@ -41,41 +41,42 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
           <label><input type="radio" id="모르겠어요" name="neutral" value="U"> 모르겠어요  </label>
         </div>
         <br>
-
-        <label for="location">주소</label><br>
+        <label for="password1">주소</label><br>
         <div class="btn-group">
             
-          <select class="form-select" aria-label="Default select example">
-            <option value="">시/도</option>
-            <option value="경기도">서울시</option>
-            <option value="서울시">경기도</option>
-            <option value="경기도">강원도</option>
-            <option value="서울시">충청도</option>
-            <option value="충청도">경상도</option>
-            <option value="경기도">전라도</option>
-            <option value="서울시">인천시</option>
-            <option value="충청도">대전시</option>
-            <option value="충청도">대구시</option>
-            <option value="경기도">울산시</option>
-            <option value="서울시">부산시</option>
-            <option value="충청도">광주시</option>
-            <option value="충청도">제주도</option>
-          </select>
-           
-          <select class="form-select" aria-label="Default select example">
-            <option value=" ">공원</option>
-            <option value="오리공원">오리공원</option>
-            <option value="분당중앙공원">분당중앙공원</option>
-            <option value="능골공원">능골공원</option>
-            <option value="맹산공원">맹산공원</option>
-          </select>
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden"></span>시
+            </button>
+            <ul class="dropdown-menu"> 
+              <li><a class="dropdown-item" href="#">성남시</a></li>
+            </ul>
+            
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden"></span>동
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">정자동</a></li>
+              <li><a class="dropdown-item" href="#">수내동</a></li>
+              <li><a class="dropdown-item" href="#">구미동</a></li>
+  
+            </ul>
+            
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden"></span>공원
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">정자공원</a></li>
+              <li><a class="dropdown-item" href="#">능골공원</a></li>
+              <li><a class="dropdown-item" href="#">오리공원</a></li>
+              <li><a class="dropdown-item" href="#">분당중앙공원</a></li>
+            </ul>
         </div>
-        <br><br> 
-        
-    
+        <br><br>
+
+
         <div class="radio">
           
-          <label for="appearance">특징</label><br>
+          <label for="password1">특징</label><br>
   
           <label><input type="radio" id="흰색" name="appearance" value="흰색"> 흰색</label>
           <img src="{%static 'images/cat1.png' %}" width="100" height="80">
@@ -97,7 +98,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
         <div class="radio">
           
-          <label for="status">상태</label><br>
+          <label for="password1">상태</label><br>
   
           <label><input type="radio" id="건강" name="status" value="건강"> 건강  </label>
           <label><input type="radio" id="실종" name="status" value="실종"> 실종  </label>

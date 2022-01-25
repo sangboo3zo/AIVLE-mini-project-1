@@ -1,7 +1,13 @@
-{% load static %}
+{% extends 'base.html' %}
+{% block content %}
+
+{% if cat %}
+    <h1 style = "font-family: OTWelcomeBA;"> <br>{{ cat.cat_name }} <br> </h1>
+{% endif %}
 
 {% if object %}
     {% for item in object %}
         <img src="{{ item.cat_photo.url }}" alt="">
     {% endfor %}
 {% endif %}
+{% endblock %}
