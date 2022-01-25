@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+
 {% if cat %}
     {% for item in user %}
     <h2> {{ item.user_id }}님의 고양이 </h2>
@@ -10,3 +13,4 @@
     {% endfor %}
 
 {% endif %} 
+{% endblock %}

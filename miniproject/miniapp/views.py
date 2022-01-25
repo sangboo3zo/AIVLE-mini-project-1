@@ -43,6 +43,7 @@ def signup(request):
         return render(request, 'miniapp/signup.html' )
 
 def signup_complete(request):
+    print(request.user)
     return render(request, 'miniapp/signup_complete.html' )
 
 def upload_cat_img(request):
@@ -61,11 +62,28 @@ def show(request):
     name = request.session['id']
 
     u=User.objects.get(user_id=name)
-    img = CatPhoto.objects.filter(user_no=int(u.user_no))
-    #img = CatPhoto.objects.all()
+    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
+    img = CatPhoto.objects.all()
     context = {
         'object': img,
         'user': int(u.user_no),
+        'name': name
+    }
+    
+    return render(request, 'miniapp/show.html', context)
+
+
+def show2(request,cat_id):
+
+    name = request.session['id']
+    print(name)
+    c= Cat.objects.get(cat_id=int(cat_id))
+    img= CatPhoto.objects.filter(cat_id=int(cat_id))
+    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
+    #img = CatPhoto.objects.all()
+    context = {
+        'object': img,
+        'cat':c,
         'name': name
     }
     
@@ -98,4 +116,8 @@ def my_cat(request):
 def login_complete(request):
     # if request.method == 'POST':
     #     return render(request, 'miniapp/show.html' )
+    #print(request.session['id'])
     return render(request, 'miniapp/login_complete.html' )
+
+def home(request):
+    return render(request, 'miniapp/home.html')
