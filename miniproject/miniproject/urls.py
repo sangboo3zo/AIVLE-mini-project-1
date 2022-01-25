@@ -14,11 +14,10 @@ urlpatterns = [
     path('signup_complete/', miniapp_views.signup_complete),
     path('login_complete/', miniapp_views.login_complete),
     path('upload_cat_img/',miniapp_views.upload_cat_img),
-    path('show/', miniapp_views.show),
-    path('show/<int:cat_id>', miniapp_views.show2),
     path('', miniapp_views.home),
     path('home/', miniapp_views.home),
     path('my_cat/', miniapp_views.my_cat),
-    path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
+    #path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
     path('my_cat/<int:id>', miniapp_views.my_cat2),
+    
 ]
