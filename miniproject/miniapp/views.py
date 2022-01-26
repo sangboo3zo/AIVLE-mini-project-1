@@ -3,7 +3,8 @@ from turtle import st
 # from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed
+from matplotlib.style import use
+from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City
 from django.utils import timezone
 from rest_framework import viewsets
 from django.views.generic import DetailView
@@ -63,12 +64,15 @@ def login(request):
         user_pw = request.POST.get('user_pw')
         try: 
             m=User.objects.get(user_id=user_id, user_pw=user_pw)
-            context = {
-                'object': m
-            }
+            # c= City.objects.all()
+            # context = {
+            #     'object': m,
+            #     'city':c
+            # }
             request.session['id']=user_id
             request.session['no']=m.user_no
-            return render(request, 'miniapp/login_complete.html', context )
+            
+            return redirect('http://127.0.0.1:8000/login_complete/')
         except:
             message = {
                 'message': "로그인 실패!"
@@ -77,13 +81,20 @@ def login(request):
     else:
         return render(request, 'miniapp/login.html' )
 
-
 def login_complete(request):
-    # if request.method == 'POST':
-    #     return render(request, 'miniapp/show.html' )
-    return render(request, 'miniapp/login_complete.html' )
+    if request.method == 'POST':
 
-
+        request.session['city']= request.POST.get('location')
+        print(request.session['city'])
+        return redirect('http://127.0.0.1:8000/')
+    else:
+        m=User.objects.get(user_id=request.session['id'])
+        c= City.objects.all()
+        context = {
+            'object': m,
+            'city':c
+        }
+        return render(request, 'miniapp/login_complete.html', context)
 def signup(request):
     if request.method == 'POST':
         user_id = request.POST.get('id')
@@ -94,6 +105,7 @@ def signup(request):
             user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
         m.date_joined = timezone.now()
         m.save()
+        
         return render(request, 'miniapp/signup_complete.html' )
     else:
         return render(request, 'miniapp/signup.html' )
