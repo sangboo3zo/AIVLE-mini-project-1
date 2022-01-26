@@ -1,6 +1,6 @@
 from re import template
 from turtle import st
-from aiohttp import request
+# from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from matplotlib.style import use
@@ -182,6 +182,7 @@ def my_cat2(request,id):
     print(cat_list)
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
+
 def cat_gallery(request):
     name = request.session['id']
 
@@ -194,7 +195,7 @@ def cat_gallery(request):
         'user': int(u.user_no),
         #'cat': cat.cat_name
     }
-    
+
     return render(request, 'miniapp/cat_gallery.html', context)
 
 from .models import CatBoard
@@ -215,8 +216,8 @@ def comment(request, cat_id):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
-        }
-    )
+        })
+
 
 from django.contrib import messages
 def commentdelete(request, board_id):
@@ -226,6 +227,7 @@ def commentdelete(request, board_id):
     a = current_user.user_no
     b = comment.user_no
     c = comment.cat_id
+
     if a != b.user_no:
         messages.warning(request, '권한 없음')
     else:

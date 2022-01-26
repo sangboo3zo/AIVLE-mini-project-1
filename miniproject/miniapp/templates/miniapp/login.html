@@ -2,8 +2,9 @@
 {% block content %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+
 <div class="container my-3">
-    <div class="row my-3">
+    <div class="row my-3"> 
         <div class="col-4">
             <br>
             <h4 style="font-family: 'Cafe24Ssurround'; font-size:30px;">로그인</h4>
@@ -22,6 +23,7 @@
                 <label for="password">비밀번호</label>
                 <input type="password" class="form-control" name="user_pw">
             </div>
+
             <button type="submit" class="btn btn-primary">로그인</button>
         </form>
         {% if message %}
@@ -29,12 +31,10 @@
         {% endif %} 
         </div>
     </div>
-<style>
-    .login_menu{
-      font-family: 'GangwonEdu_OTFBoldA';
-      font-size:21px;
-    }
-
-  
-  </style>
+    <style>
+        .login_menu{
+        font-family: 'GangwonEdu_OTFBoldA';
+        font-size:21px;
+        }
+    </style>
 {% endblock %}

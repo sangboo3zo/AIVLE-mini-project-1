@@ -10,6 +10,7 @@
   </head>
   <body>
   
+
   
     {% comment %} <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>             {% endcomment %}
 <table class="table">
@@ -29,7 +30,6 @@
     {% endfor %}
     </tbody>
 </table>
-
   
   </body>
   </html>
@@ -48,6 +48,7 @@
     <form method="post">
         {% csrf_token %}
       <div class="mb-3 mt-3">
+
         {% comment %} <label for="board_text">{{request.session.id}}:</label> {% endcomment %}
         <textarea class="form-control" rows="10" id="comment" name="board_text"></textarea>
       </div>
