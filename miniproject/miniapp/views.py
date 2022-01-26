@@ -60,8 +60,11 @@ def cat_profile(request, pk):
             comment.date_time = timezone.now()
             comment.save()
         ##status change##
-        if request.POST.get('status'):
+        if request.POST.get('status') or request.POST.get('gender') or request.POST.get('neutral'):
             cat_info.status = request.POST.get('status')
+            cat_info.gender = request.POST.get('gender')
+            cat_info.neutral = request.POST.get('neutral')
+            cat_info.appearance = request.POST.get('appearance')
             cat_info.save()
             return redirect(f'/cat_profile/{pk}/')
         ##
@@ -80,8 +83,10 @@ def cat_profile(request, pk):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
-        'a':"건강",
-        ##
+        ##status change##
+        'cat_gender':cat_profile.gender,
+        'cat_neutral':cat_profile.neutral,
+        'cat_appearance':cat_profile.appearance,
         })
     
         

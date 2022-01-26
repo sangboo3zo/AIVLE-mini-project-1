@@ -44,11 +44,55 @@
                             <p>
                                 <div class="btn-group">
                                     <form method = "POST">
-                                        상태 수정하기:
                                         {% csrf_token %}
+                                        <p>성별 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "gender">
+                                        <option value = "none" selected disabled hidden>
+                                            {% if cat_gender == "M" %}
+                                            수컷
+                                            {% elif cat_gender == "F" %}
+                                            암컷
+                                            {% elif cat_gender == "U" %}
+                                            모르겠어요
+                                            {% endif %}
+                                        </option>
+                                            <option value="M">수컷</option>
+                                            <option value="F">암컷</option>
+                                            <option value="U">모르겠어요</option>
+                                        </select>
+                                        <p>중성화여부 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "neutral">
+                                        <option value = "none" selected disabled hidden>
+                                            {% if cat_neutral == "Y" %}
+                                            했어요
+                                            {% elif cat_gender == "N" %}
+                                            안했어요
+                                            {% elif cat_gender == "U" %}
+                                            모르겠어요
+                                            {% endif %}
+                                        </option>
+                                            <option value="Y">했어요</option>
+                                            <option value="N">안했어요</option>
+                                            <option value="U">모르겠어요</option>
+                                        </select>
+                                        <p>성별 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "appearance">
+                                        <option value = "none" selected disabled hidden>{{cat_appearance}}</option>
+                                            <option value="흰색">흰색</option>
+                                            <option value="검정색">검정색</option>
+                                            <option value="노란색">노란색</option>
+                                            <option value="회색">회색</option>
+                                            <option value="삼색">삼색</option>
+                                            <option value="얼룩">얼룩</option>
+                                            <option value="그외">그외</option>
+                                        </select>
+                                        <p>상태 수정하기:</p>
                                         <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                                         name = "status">
-                                        <option selected = "selected" disabled></option>
+                                        <option value = "none" selected disabled hidden>{{cat_status}}</option>
                                             <option value="건강">건강</option>
                                             <option value="입원">입원</option>
                                             <option value="임시보호">임시보호</option>
@@ -56,13 +100,15 @@
                                             <option value="실종">실종</option>
                                             <option value="사망">사망</option>
                                         </select>
-                                        <button type = "submit" class="btn btn-primary" onclick="this.form.submit()">저장하기</button>
+                                        <p></p>
+                                        <button type = "submit" class="btn btn-primary" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                         onclick="this.form.submit()">저장하기</a></button>
                                     </form>
                                 </div>
                             </p>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> {% endcomment %}
                           </div>
                         </div>
                       </div>
@@ -80,17 +126,10 @@
         <br><br>
         <p>이름 : {{cat_name}} </p>
         <p>위치 : {{cat_location.location4}} </p>
-        <p>상태 : {{cat_status}} 
-            {% comment %} <div class="btn-group">
-                <select style="width:300px;height:60px;text-align:center;font-size: 25px;" class="form-select" aria-label="Default select example" name = "status">
-                <option value="건강">건강</option>
-                <option value="입원">입원</option>
-                <option value="임시보호">임시보호</option>
-                <option value="입양">입양</option>
-                <option value="실종">실종</option>
-                <option value="사망">사망</option>
-                </select>
-                <button type="submit" class="btn btn-primary" >상태 변경</button> {% endcomment %}
+        <p>상태 : {{cat_status}}
+        <p>성별 : {{cat_gender}}
+        <p>중성화 : {{cat_neutral}}
+        <p>특징 : {{cat_appearance}}
         </p>
     </div>
 </div>  
