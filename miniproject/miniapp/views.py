@@ -68,7 +68,12 @@ def cat_profile(request, pk):
         'comments': comments,
     })
     
-        
+def detail_gallery(request, pk):
+    img = CatPhoto.objects.filter(cat_id=pk)
+    return render(request, 'miniapp/cat_detail_gallery.html', context={
+        'detail_gallery' : img
+    })
+
   
 def login(request):
     if request.method == 'POST':

@@ -44,6 +44,10 @@
     <div class="row" id="cat_photo">
         <br><hr option="one"><br>
         <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진 </p>
+        <form method="post" class="post-form">
+            {% csrf_token %}
+            <a class="btn btn-light" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" href="http://127.0.0.1:8000/cat_profile/{{cat_id}}/detail_gallery/" > 사진 더보기</a>
+        </form>
         <div class="col-md-6">
             <div class = "row"> 
                 {% if cat_photo %}
@@ -150,8 +154,8 @@ td{
 #cat_photo{
     position: relative;
     left: 40;
-    max-width : 70%;
-    max-height : 70%;
+    max-width : 80%;
+    max-height : 80%;
 
 }
 </style>
