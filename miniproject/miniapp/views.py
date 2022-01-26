@@ -1,9 +1,13 @@
 from re import template
 from turtle import st
-from aiohttp import request
+# from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
+<<<<<<< HEAD
 from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed
+=======
+from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City
+>>>>>>> 90fb891a4cd00fc46aa5b05901f075398cc7882f
 from django.utils import timezone
 from rest_framework import viewsets
 from django.views.generic import DetailView
@@ -17,6 +21,7 @@ def cat_profile(request, pk):
     cat_profile = get_object_or_404(Cat, pk=pk)
     img = CatPhoto.objects.filter(cat_id=pk)
     feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
+    comments = CatBoard.objects.filter(cat = pk)
     user_has_cat = UserHasCat.objects.filter(user_no=request.session['no'])
     u_h_c = False
     for u in user_has_cat:
@@ -51,7 +56,8 @@ def cat_profile(request, pk):
         'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
-        'update':update})
+        'update':update,
+        'comments': comments})
     
         
   
@@ -61,12 +67,15 @@ def login(request):
         user_pw = request.POST.get('user_pw')
         try: 
             m=User.objects.get(user_id=user_id, user_pw=user_pw)
-            context = {
-                'object': m
-            }
+            # c= City.objects.all()
+            # context = {
+            #     'object': m,
+            #     'city':c
+            # }
             request.session['id']=user_id
             request.session['no']=m.user_no
-            return render(request, 'miniapp/login_complete.html', context )
+            
+            return redirect('http://127.0.0.1:8000/login_complete/')
         except:
             message = {
                 'message': "로그인 실패!"
@@ -75,13 +84,20 @@ def login(request):
     else:
         return render(request, 'miniapp/login.html' )
 
-
 def login_complete(request):
-    # if request.method == 'POST':
-    #     return render(request, 'miniapp/show.html' )
-    return render(request, 'miniapp/login_complete.html' )
+    if request.method == 'POST':
 
-
+        request.session['city']= request.POST.get('location')
+        print(request.session['city'])
+        return redirect('http://127.0.0.1:8000/')
+    else:
+        m=User.objects.get(user_id=request.session['id'])
+        c= City.objects.all()
+        context = {
+            'object': m,
+            'city':c
+        }
+        return render(request, 'miniapp/login_complete.html', context)
 def signup(request):
     if request.method == 'POST':
         user_id = request.POST.get('id')
@@ -92,6 +108,7 @@ def signup(request):
             user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
         m.date_joined = timezone.now()
         m.save()
+        
         return render(request, 'miniapp/signup_complete.html' )
     else:
         return render(request, 'miniapp/signup.html' )
@@ -181,4 +198,41 @@ def cat_gallery(request):
         'user': int(u.user_no),
         #'cat': cat.cat_name
     }
+
     return render(request, 'miniapp/cat_gallery.html', context)
+
+from .models import CatBoard
+def comment(request, cat_id):
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    cat_info = Cat.objects.get(cat_id = int(cat_id))
+    comments = CatBoard.objects.filter(cat = int(cat_id))
+    if request.method == 'POST':
+        comment = CatBoard()
+        comment.cat = cat_info
+        comment.user_no = current_user
+        comment.board_text = request.POST.get('board_text')
+        comment.date_time = timezone.now()
+        comment.save()
+    return render(request, 'miniapp/comment.html', {
+        'user_name': current_user.user_name,
+        'cat_info': cat_info.cat_name,
+        'user' : current_user,
+        'comments': comments,
+        })
+
+
+from django.contrib import messages
+def commentdelete(request, board_id):
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    comment = CatBoard.objects.get(board_id = board_id)
+    a = current_user.user_no
+    b = comment.user_no
+    c = comment.cat_id
+
+    if a != b.user_no:
+        messages.warning(request, '권한 없음')
+    else:
+        comment.delete()
+    return redirect(f'/comment/{c}/')    

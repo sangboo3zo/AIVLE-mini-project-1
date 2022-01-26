@@ -63,6 +63,19 @@ class Location(models.Model):
         db_table = 'Location'
 
 
+class City(models.Model):
+    city_name = models.CharField(max_length=50,primary_key=True)
+    class Meta:
+        # managed = False
+        db_table = 'City'
+
+class Park(models.Model):
+    city = models.ForeignKey(City, models.DO_NOTHING)
+    park = models.CharField(primary_key=True,max_length=50)
+    class Meta:
+        # managed = False
+        db_table = 'Park'
+
 class User(models.Model):
     user_no = models.AutoField(primary_key=True)
     user_id = models.CharField(max_length=20, unique=True)
