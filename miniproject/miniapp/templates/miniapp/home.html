@@ -20,6 +20,18 @@
             var curtBtn = '<img src=".common/img/curt-loca-icon.png" alt="현재위치로이동">';
             var curtLoca = "";
             var KTLoca = new naver.maps.LatLng(37.35888842504322, 127.11492429768245);
+            
+            var FeedLoca1 = new naver.maps.LatLng(37.35732811060706, 127.1094833156213);
+            var FeedLoca2 = new naver.maps.LatLng(37.37053296901487, 127.11666672651876);
+            var FeedLoca3 = new naver.maps.LatLng(37.37053296901487, 127.11666672651876);
+            var FeedLoca4 = new naver.maps.LatLng(37.36935112096527, 127.13948637814985);
+            var FeedLoca5 = new naver.maps.LatLng(37.36814969845444, 127.13949380584123);
+            var FeedLoca6 = new naver.maps.LatLng(37.357310327912586, 127.11448989768256);
+            var FeedLoca7 = new naver.maps.LatLng(37.37721489171491, 127.12382228419067);
+            var FeedLoca8 = new naver.maps.LatLng(37.340179878893736, 127.11210618418956);
+            var FeedLoca10 = new naver.maps.LatLng(37.37766774510155, 127.15143155350361);
+            var FeedLoca11 = new naver.maps.LatLng(37.358102093389526, 127.12058556808302);
+
             var map = new naver.maps.Map('map',{
                 center: KTLoca,
                 scaleControl:false,
@@ -28,8 +40,58 @@
             });
             /////////////////////////////////////////////////////////////
             //위치표시하는 마커 이걸로 나중에 급식소 표시하면 될 것 같아요
-            var marker = new naver.maps.Marker({
-                position : KTLoca,
+            var marker1 = new naver.maps.Marker({
+                position : FeedLoca1,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker2 = new naver.maps.Marker({
+                position : FeedLoca2,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker3 = new naver.maps.Marker({
+                position : FeedLoca3,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker4 = new naver.maps.Marker({
+                position : FeedLoca4,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker5 = new naver.maps.Marker({
+                position : FeedLoca5,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker6 = new naver.maps.Marker({
+                position : FeedLoca6,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker7 = new naver.maps.Marker({
+                position : FeedLoca7,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker8 = new naver.maps.Marker({
+                position : FeedLoca8,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker9 = new naver.maps.Marker({
+                position : FeedLoca9,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker10 = new naver.maps.Marker({
+                position : FeedLoca10,
+                map : map,
+                icon:{url:"/common/img/marker-target.png"}
+            });
+            var marker11 = new naver.maps.Marker({
+                position : FeedLoca11,
                 map : map,
                 icon:{url:"/common/img/marker-target.png"}
             });
