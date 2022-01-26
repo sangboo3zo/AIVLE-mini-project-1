@@ -16,7 +16,15 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet">
 
 <html>
-
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s811vqb6nk"></script>
+    </head>
+    <header>  
+        <div id="map" style="width:20%;height:250px;"></div>
+        </header>
 <body>
  
     <div class="layer">
@@ -47,7 +55,136 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         {% comment %} <button type="submit" class="btn btn-primary" onclick="location.href =  '/';" >홈으로 이동하기</button>
         <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >나의 고양이 목록으로 이동하기</button> {% endcomment %}
     </div>
- 
+    <script>
+        var curtBtn = '<img src=".common/img/curt-loca-icon.png" alt="현재위치로이동">';
+        var curtLoca = "";
+        var KTLoca = new naver.maps.LatLng(37.35888842504322, 127.11492429768245);
+        
+        var FeedLoca1 = new naver.maps.LatLng(37.35732811060706, 127.1094833156213);
+        var FeedLoca2 = new naver.maps.LatLng(37.37053296901487, 127.11666672651876);
+        var FeedLoca3 = new naver.maps.LatLng(37.37053296901487, 127.11666672651876);
+        var FeedLoca4 = new naver.maps.LatLng(37.36935112096527, 127.13948637814985);
+        var FeedLoca5 = new naver.maps.LatLng(37.36814969845444, 127.13949380584123);
+        var FeedLoca6 = new naver.maps.LatLng(37.357310327912586, 127.11448989768256);
+        var FeedLoca7 = new naver.maps.LatLng(37.37721489171491, 127.12382228419067);
+        var FeedLoca8 = new naver.maps.LatLng(37.340179878893736, 127.11210618418956);
+        var FeedLoca10 = new naver.maps.LatLng(37.37766774510155, 127.15143155350361);
+        var FeedLoca11 = new naver.maps.LatLng(37.358102093389526, 127.12058556808302);
+    
+        var map = new naver.maps.Map('map',{
+            center: KTLoca,
+            scaleControl:false,
+            mapDataControl:false,
+            zoom:13
+        });
+        /////////////////////////////////////////////////////////////
+        //위치표시하는 마커 이걸로 나중에 급식소 표시하면 될 것 같아요
+        var marker1 = new naver.maps.Marker({
+            position : FeedLoca1,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker2 = new naver.maps.Marker({
+            position : FeedLoca2,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker3 = new naver.maps.Marker({
+            position : FeedLoca3,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker4 = new naver.maps.Marker({
+            position : FeedLoca4,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker5 = new naver.maps.Marker({
+            position : FeedLoca5,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker6 = new naver.maps.Marker({
+            position : FeedLoca6,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker7 = new naver.maps.Marker({
+            position : FeedLoca7,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker8 = new naver.maps.Marker({
+            position : FeedLoca8,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker9 = new naver.maps.Marker({
+            position : FeedLoca9,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker10 = new naver.maps.Marker({
+            position : FeedLoca10,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+        var marker11 = new naver.maps.Marker({
+            position : FeedLoca11,
+            map : map,
+            icon:{url:"/common/img/marker-target.png"}
+        });
+    
+        var markerClickHandler = function(){
+            return function(e){ alert("Marker KT building!");}
+        }
+    
+        naver.maps.Event.addListener(marker, 'click', markerClickHandler());
+    
+        naver.maps.Event.once(map, 'init_stylemap', function(){
+            var cstmCtrl = new naver.maps.CustomControl(curtBtn,{
+                position: naver.maps.Position.RIGHT_TOP
+            });
+    
+            cstmCtrl.setMap(map);
+            naver.maps.Event.addDOMListener(cstmCtrl.getElement(), 'click', function(){
+                if (curtLoca){
+                    map.setCenter(curtLoca);
+                    map.setZoom(13);
+                }
+                else{
+                    alert("위치 엑세스 거부됨. 사용하려면 위치 액세스 허용 필요.");
+                }
+            });
+        });
+        
+        var onSuccessGeolocation = function(position){
+            curtLoca = new naver.maps.LatLng(positon.coords.latitude, position.coords.longtitude);
+            map.setCenter(curtLoca);
+            map.setZoom(13);
+    
+            new naver.maps.Marker({
+                positon: curtLoca,
+                map:map,
+                icon:{url:"/common/img/marker-current.png"}
+            });
+        }
+        var onErrorGeolocation = function(){
+            var agent = navigator.userAgent.toLowerCase(), name = navigator.appName;
+            if(name==='Microsoft Internet Explorer'||agent.indexOf('trident')>-1||agent.indexOf('edge/')>-1){
+                alert("지원하지 않는 브라우저.");
+            }
+            else{
+                console.log("현재위치를 가져오는데에 에러가 발생하였습니다.");
+            }
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
+            }
+            else{
+                console.log("Geolocation Not supported Required");
+            }
+        }
+        </script>
 </body>
 </html>
 
