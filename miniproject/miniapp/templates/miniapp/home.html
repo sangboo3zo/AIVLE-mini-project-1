@@ -4,14 +4,32 @@
 {% block content %}
     <html>
         <link rel="stylesheet" href="././static/css/style.css">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+            <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s811vqb6nk"></script>
+        </head>
         <header>
             <h1 id= "servicename" style="text-shadow:1.5px 2px 2px #000;">네맘 내맘</h1>
             <h4 id= "servicedsc" style="text-shadow:1px 1px 1px #000;"> 길고양이 모시기모시기 </h4>
-            <div id="map" style="width:50%;height:500px;"></div>
+            <div id="map" style="width:30%;height:400px;"></div>
         </header>
-    </html>
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=클라이언트ID&submodules=geocoder"></script>
+        <body>
+            <script>
+            var mapOptions = {
+                center: new naver.maps.LatLng(37.35888842504322, 127.11492429768245),
+                zoom: 12
+            };
+            var map = new naver.maps.Map('map', mapOptions);
 
+            </script>
+            </body>
+    </html>
+    
+       
+        
+        
 <style>
   
     header {
