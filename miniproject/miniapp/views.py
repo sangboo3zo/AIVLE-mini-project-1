@@ -120,7 +120,7 @@ def create_cat(request):
         appearance = request.POST.get("appearance")
         status =request.POST.get('status')
         m = Cat(
-             cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
+            cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
         m.save()
         name = request.session['id']
         user = User.objects.get(user_id = name)
@@ -182,6 +182,10 @@ def cat_gallery(request):
         #'cat': cat.cat_name
     }
     return render(request, 'miniapp/cat_gallery.html', context)
+
+def gallery_show_all_cats(request):
+    return render(request, 'miniapp/gallery_show_all_cats.html')
+
 
 from .models import CatBoard
 def comment(request, cat_id):
