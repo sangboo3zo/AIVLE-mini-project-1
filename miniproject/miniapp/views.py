@@ -1,7 +1,7 @@
-# from aiohttp import request
+#from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City, Park
+from .models import Location, User,CatPhoto, Cat, UserHasCat, Feed, City, Park
 from django.utils import timezone
 
 def home(request):
@@ -170,7 +170,7 @@ def create_cat(request,city):
         appearance = request.POST.get("appearance")
         status =request.POST.get('status')
         m = Cat(
-             cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
+            cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
         m.save()
         name = request.session['id']
         user = User.objects.get(user_id = name)
@@ -299,10 +299,12 @@ def cat_gallery(request):
     return render(request, 'miniapp/cat_gallery.html', context)
 
 def gallery_show_all_cats(request):
+    
     name = request.session['id']
-
-    cat = Cat.objects.all()
-    img = CatPhoto.objects.all()
+    cat = Cat.objects.filter(status="실종").values("cat_id")
+    cat2 = Cat.objects.filter(status="사망").values("cat_id")
+    img = CatPhoto.objects.exclude(cat_id__in = cat)&CatPhoto.objects.exclude(cat_id__in = cat2)
+    print(img)
 
     context = {
         'object': img,
