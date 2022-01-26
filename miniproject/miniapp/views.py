@@ -10,7 +10,8 @@ def home(request):
 
 def cat_profile(request, pk):
     update =False
-    cat_profile = get_object_or_404(Cat, pk=pk)
+    #cat_profile = get_object_or_404(Cat, pk=pk)
+    cat_profile= Cat.objects.get(cat_id=pk)
     profile =  CatPhoto.objects.filter(cat_id=pk).first()
     img = CatPhoto.objects.filter(cat_id=pk).order_by('-date_time')[:6]
     feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
@@ -56,10 +57,11 @@ def cat_profile(request, pk):
         'cat_view' : img[0],
         'profile':profile,
         'cat_photo' : img,
-        'cat_id' : cat_profile.cat_id,
-        'cat_name': cat_profile.cat_name,
-        'cat_location' : cat_profile.park,
-        'cat_status': cat_profile.status,
+        'cat' : cat_profile,
+        # 'cat_id' : cat_profile.cat_id,
+        # 'cat_name': cat_profile.cat_name,
+        # 'cat_location' : cat_profile.park,
+        # 'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
         'update':update,
@@ -223,6 +225,7 @@ def cat_gallery_city(request,city):
     }
     return render(request, 'miniapp/cat_gallery_city.html', context)
 from .models import CatBoard
+
 def comment(request, cat_id):
     current_user_id = request.session['id']
     current_user = User.objects.get(user_id=current_user_id)
