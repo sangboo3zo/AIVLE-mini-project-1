@@ -163,8 +163,15 @@ def create_cat(request,city):
     return render(request, 'miniapp/create_cat.html',{'park':park})
 
 def my_cat2(request,id):
+    if request.method == 'POST' :
+        cat_delete_id =request.POST.get('cat_id')
+        uhc = UserHasCat.objects.get(user_no = request.session['no'] , cat_id =cat_delete_id)
+        uhc.delete()
     user=User.objects.get(user_no=id)
     user_has_cat = UserHasCat.objects.filter(user_no=id)
+    print(user_has_cat)
+
+
     cat_id_list=[i.cat_id for i in user_has_cat]
     cat_list = [Cat.objects.get(cat_id=i) for i in cat_id_list]
     cat_img = []
@@ -175,9 +182,6 @@ def my_cat2(request,id):
         else:
             cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
     ccc=zip(cat_list, cat_img)
-    print(cat_list)
-    if request.method == 'POST' :
-        print("PIDST")
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
 

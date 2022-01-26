@@ -34,7 +34,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                             <form method="post" class="post-form">
                                 {% csrf_token %} 
                                 <p class="card-text" id = "cat_name" > &emsp;&emsp;&emsp; &ensp;&emsp;{{item.cat_name}} &emsp; &emsp; 
-                                        <button class= "btn btn-primary" style="font-size:15px;" onclick="location.href =  '/my_cat/{{request.session.no}}';"> 삭제 </button> </p>
+                                        <button class= "btn btn-primary" style="font-size:15px;" onclick="location.href =  '/my_cat/{{request.session.no}}';" name = cat_id value={{item.cat_id}}> 삭제 </button> </p>
                                 {% if item.gender == 'F'%}
                                 <h1 class="card-text"> 성별: 암컷</h1> 
                                 {% elif item.gender == 'M' %}
