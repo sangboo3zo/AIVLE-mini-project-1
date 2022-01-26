@@ -12,6 +12,7 @@ urlpatterns = [
     path('signup/', miniapp_views.signup),
     path('logout/', miniapp_views.logout, name='logout'),
     path('create_cat/', miniapp_views.create_cat),
+    path('create_cat/<str:city>', miniapp_views.create_cat),
     path('upload_cat_img/',miniapp_views.upload_cat_img),
     path('', miniapp_views.home, name='home'),
     path('home/', miniapp_views.home),

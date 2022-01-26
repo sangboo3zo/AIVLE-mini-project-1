@@ -4,7 +4,7 @@ from turtle import st
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from matplotlib.style import use
-from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City
+from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City, Park
 from django.utils import timezone
 from rest_framework import viewsets
 from django.views.generic import DetailView
@@ -125,12 +125,37 @@ def upload_cat_img(request):
     return render(request, 'miniapp/upload_cat_img.html')
 
 
-def create_cat(request):
+# def create_cat(request):
+#     if request.method == 'POST':
+#         cat_name = request.POST.get('cat_name')
+#         gender = request.POST.get('gender')
+#         neutral = request.POST.get('neutral')
+#         location = Location.objects.get(location4 ="분당중앙공원")
+#         appearance = request.POST.get("appearance")
+#         status =request.POST.get('status')
+#         m = Cat(
+#              cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
+#         m.save()
+#         name = request.session['id']
+#         user = User.objects.get(user_id = name)
+#         cat = Cat.objects.last()  
+#         img = request.FILES.get('img-file')
+#         time = timezone.now()
+#         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
+#         UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
+#         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
+#     return render(request, 'miniapp/create_cat.html')
+
+def create_cat(request,city):
+    park = Park.objects.filter(city=request.session['city'])
+    print(park)
     if request.method == 'POST':
         cat_name = request.POST.get('cat_name')
         gender = request.POST.get('gender')
         neutral = request.POST.get('neutral')
-        location = Location.objects.get(location4 ="분당중앙공원")
+        park = request.POST.get('location')
+        location = Location.objects.get(location4='오리공원')
+        #location = Park.objects.filter(park=park)
         appearance = request.POST.get("appearance")
         status =request.POST.get('status')
         m = Cat(
@@ -144,7 +169,7 @@ def create_cat(request):
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
         UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
-    return render(request, 'miniapp/create_cat.html')
+    return render(request, 'miniapp/create_cat.html',{'park':park})
 
 def my_cat(request):
     if request.method == 'POST':
