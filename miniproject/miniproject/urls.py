@@ -8,6 +8,7 @@ app_name = 'miniapp'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', miniapp_views.login),
+    path('login_complete/', miniapp_views.login_complete),
     path('signup/', miniapp_views.signup),
     path('logout/', miniapp_views.logout, name='logout'),
     path('create_cat/', miniapp_views.create_cat),
@@ -19,6 +20,5 @@ urlpatterns = [
     path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
     path('my_cat/<int:id>', miniapp_views.my_cat2),
     path('comment/<int:cat_id>/',miniapp_views.comment, name = 'comment'),
-    path('comment/<int:board_id>/delete',miniapp_views.commentdelete, name = 'delete'),
-
+    path('comment/<int:board_id>/delete',miniapp_views.commentdelete, name = 'delete')
 ]
