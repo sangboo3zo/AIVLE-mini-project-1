@@ -24,7 +24,11 @@ def cat_profile(request, pk):
     for u in user_has_cat:
         if u.cat_id == pk:
             u_h_c = True
-
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    cat_info = Cat.objects.get(cat_id = int(pk))
+    comments = CatBoard.objects.filter(cat = int(pk))
+    print(current_user.user_name)
     if request.method == 'POST':
     #     update =False
     #     if request.POST.get('update') == "True":
@@ -44,6 +48,13 @@ def cat_profile(request, pk):
                         user_no =User.objects.get(user_no=request.session['no']  ))
             feed.save()
             feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
+        if request.POST.get('board_text'):
+            comment = CatBoard()
+            comment.cat = cat_info
+            comment.user_no = current_user
+            comment.board_text = request.POST.get('board_text')
+            comment.date_time = timezone.now()
+            comment.save()
 
     return render(request, 'miniapp/cat_profile.html', context={
         'cat_photo' : img[0],
@@ -54,7 +65,12 @@ def cat_profile(request, pk):
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
         'update':update,
-        'comments': comments})
+        'comments': comments,
+        'user_name': current_user.user_name,
+        'cat_info': cat_info.cat_name,
+        'user' : current_user,
+        'comments': comments,
+    })
     
         
   
@@ -223,6 +239,21 @@ def cat_gallery(request):
 
     return render(request, 'miniapp/cat_gallery.html', context)
 
+def cat_gallery_city(request,city):
+    name = request.session['id']
+    c = City.objects.get(city_name=city)
+    park = Park.objects.filter(city_id=city)
+    u=User.objects.get(user_id=name)
+    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
+    img = CatPhoto.objects.all()
+    cat = Cat.objects.all()
+    context = {
+        'object': img,
+        'user': int(u.user_no),
+        'park': park
+    }
+
+    return render(request, 'miniapp/cat_gallery_city.html', context)
 from .models import CatBoard
 def comment(request, cat_id):
     current_user_id = request.session['id']
@@ -257,4 +288,4 @@ def commentdelete(request, board_id):
         messages.warning(request, '권한 없음')
     else:
         comment.delete()
-    return redirect(f'/comment/{c}/')    
+    return redirect(f'/cat_profile/{c}/')    

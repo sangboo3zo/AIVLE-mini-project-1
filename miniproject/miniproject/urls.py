@@ -17,9 +17,9 @@ urlpatterns = [
     path('', miniapp_views.home, name='home'),
     path('home/', miniapp_views.home),
     path('cat_gallery/', miniapp_views.cat_gallery),
+    path('cat_gallery/<str:city>', miniapp_views.cat_gallery_city),
     path('my_cat/', miniapp_views.my_cat),
     path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
     path('my_cat/<int:id>', miniapp_views.my_cat2),
-    path('comment/<int:cat_id>/',miniapp_views.comment, name = 'comment'),
-    path('comment/<int:board_id>/delete',miniapp_views.commentdelete, name = 'delete')
+    path('comment/<int:board_id>',miniapp_views.commentdelete, name = 'delete')
 ]
