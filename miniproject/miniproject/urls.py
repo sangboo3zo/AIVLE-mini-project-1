@@ -8,6 +8,7 @@ app_name = 'miniapp'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', miniapp_views.login),
+    path('login_complete/', miniapp_views.login_complete),
     path('signup/', miniapp_views.signup),
     path('logout/', miniapp_views.logout, name='logout'),
     path('create_cat/', miniapp_views.create_cat),
