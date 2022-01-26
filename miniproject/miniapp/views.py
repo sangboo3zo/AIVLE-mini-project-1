@@ -204,7 +204,7 @@ def comment(request, cat_id):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
-        }
+        })
 
 
 from django.contrib import messages
