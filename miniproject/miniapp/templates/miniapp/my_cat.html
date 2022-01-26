@@ -6,18 +6,23 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
 
-{% if user %}
+
 <br>
-<div class = "user_name">
-    <p id ="user_name"> {{ user.user_id }}님의 고양이 </p> 
-</div>
+
+<div class="container">
+
+    <div class = "user_name">
+        <p id ="user_name"> {{ request.session.id }}님의 고양이 </p> 
+    </div>
+    
     <hr clss="one">
-<br>
-{% endif %} 
+    <br>
+
+
 
 {% if cat_list %}
     {% for item, url in cat %}
-    <div class="container">
+    
         <div class="col-sm-12 col-lg-6">
             <div class="card">
                 <div class="row no-gutters"> 
@@ -26,23 +31,31 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                     </div>
                     <div class="col-8">
                         <div class="card-body">
-                            <p class="card-text" id = "cat_name" > {{item.cat_name}} </p>
-                            {% if item.gender == 'F'%}
-                            <h1 class="card-text"> 성별: 암컷</h1> 
-                            {% elif item.gender == 'M' %}
-                            <h1 class="card-text"> 성별: 수컷 </h1> 
-                            {% else %}
-                            <h1 class="card-text"> 성별: 모르겠어요 </h1> 
-                            {% endif %}
-                            <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
-                            <h1 class="card-text"> 상태: {{ item.status }} </h1>
-                            <a style = "font-family:GangwonEdu_OTFBoldA;font-size:90%" href="http://127.0.0.1:8000/cat_profile/{{ item.cat_id }}"> 프로필을 확인하려면 클릭하세요!</a>
+                            <form method="post" class="post-form">
+                                {% csrf_token %} 
+                                <p class="card-text" id = "cat_name" > &emsp;&emsp;&emsp; &ensp;&emsp;{{item.cat_name}} &emsp; &emsp; 
+                                        <button class= "btn btn-primary" style="font-size:15px;" onclick="location.href =  '/my_cat/{{request.session.no}}';" name = cat_id value={{item.cat_id}}> 삭제 </button> </p>
+                                {% if item.gender == 'F'%}
+                                <h1 class="card-text"> 성별: 암컷</h1> 
+                                {% elif item.gender == 'M' %}
+                                <h1 class="card-text"> 성별: 수컷 </h1> 
+                                {% else %}
+                                <h1 class="card-text"> 성별: 모르겠어요 </h1> 
+                                {% endif %}
+                                <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
+                                <h1 class="card-text"> 상태: {{ item.status }} </h1>
+                            </form>
                         </div>
                     </div>
+                       
+                    {% comment %} <button class = "btn btn-danger" style="height:40px;" > 나의 고양이 목록에서 삭제</button> {% endcomment %}
+                    <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/cat_profile/{{ item.cat_id }}"> {{item.cat_name}} 프로필로 이동하기</a>
                 </div>
             </div>
         </div>
-    </div>
+        
+    
+<div>
     {% endfor %}
 {% else %}
     <div class = "empty_cat">
