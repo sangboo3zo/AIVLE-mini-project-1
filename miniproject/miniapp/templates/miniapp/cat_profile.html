@@ -24,11 +24,50 @@
         <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;left: 70;" > 프로필 </p>
     </div>
     {% if user_has_cat %}
-        <div class="col-xs-2 col-md-3" id = "update">
-            <form method="post" class="post-form">
-                {% csrf_token %}
-                <button class="btn btn-primary" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button>
-            </form>
+        {% comment %} <div class="col-xs-2 col-md-3" id = "update">
+            <form method="post" class="post-form"> {% endcomment %}
+                {% comment %} <button class="btn btn-primary" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button> {% endcomment %}
+                <div class="container">
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">수정하기</button>
+                  
+                    <!-- Modal -->
+                    <div class="modal" id="myModal" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"></h4>
+                          </div>
+                          <div class="modal-body">
+                            <p></p>
+                            <p>
+                                <div class="btn-group">
+                                    <form method = "POST">
+                                        상태 수정하기:
+                                        {% csrf_token %}
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "status">
+                                        <option selected = "selected" disabled></option>
+                                            <option value="건강">건강</option>
+                                            <option value="입원">입원</option>
+                                            <option value="임시보호">임시보호</option>
+                                            <option value="입양">입양</option>
+                                            <option value="실종">실종</option>
+                                            <option value="사망">사망</option>
+                                        </select>
+                                        <button type = "submit" class="btn btn-primary" onclick="this.form.submit()">저장하기</button>
+                                    </form>
+                                </div>
+                            </p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
         </div>
     {% endif %}
 <div>
@@ -41,7 +80,18 @@
         <br><br>
         <p>이름 : {{cat_name}} </p>
         <p>위치 : {{cat_location.location4}} </p>
-        <p>상태 : {{cat_status}} </p>
+        <p>상태 : {{cat_status}} 
+            {% comment %} <div class="btn-group">
+                <select style="width:300px;height:60px;text-align:center;font-size: 25px;" class="form-select" aria-label="Default select example" name = "status">
+                <option value="건강">건강</option>
+                <option value="입원">입원</option>
+                <option value="임시보호">임시보호</option>
+                <option value="입양">입양</option>
+                <option value="실종">실종</option>
+                <option value="사망">사망</option>
+                </select>
+                <button type="submit" class="btn btn-primary" >상태 변경</button> {% endcomment %}
+        </p>
     </div>
 </div>  
 

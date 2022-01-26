@@ -1,3 +1,4 @@
+from pickle import NONE
 from re import template
 from turtle import st
 # from aiohttp import request
@@ -58,6 +59,11 @@ def cat_profile(request, pk):
             comment.board_text = request.POST.get('board_text')
             comment.date_time = timezone.now()
             comment.save()
+        ##status change##
+        if request.POST.get('status'):
+            cat_info.status = request.POST.get('status')
+            cat_info.save()
+            return redirect(f'/cat_profile/{pk}/')
         ##
     return render(request, 'miniapp/cat_profile.html', context={
         'cat_photo' : img[0],
@@ -74,6 +80,7 @@ def cat_profile(request, pk):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
+        'a':"건강",
         ##
         })
     
