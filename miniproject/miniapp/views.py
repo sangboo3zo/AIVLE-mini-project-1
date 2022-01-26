@@ -45,7 +45,8 @@ def cat_profile(request, pk):
             feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
 
     return render(request, 'miniapp/cat_profile.html', context={
-        'cat_photo' : img[0],
+        'cat_view' : img[0],
+        'cat_photo' : img,
         'cat_id' : cat_profile.cat_id,
         'cat_name': cat_profile.cat_name,
         'cat_location' : cat_profile.location,
