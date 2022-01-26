@@ -1,6 +1,7 @@
 # from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
+from sympy import I
 from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City, Park
 from django.utils import timezone
 
@@ -136,27 +137,6 @@ def upload_cat_img(request):
     return render(request, 'miniapp/upload_cat_img.html')
 
 
-# def create_cat(request):
-#     if request.method == 'POST':
-#         cat_name = request.POST.get('cat_name')
-#         gender = request.POST.get('gender')
-#         neutral = request.POST.get('neutral')
-#         location = Location.objects.get(location4 ="분당중앙공원")
-#         appearance = request.POST.get("appearance")
-#         status =request.POST.get('status')
-#         m = Cat(
-#              cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
-#         m.save()
-#         name = request.session['id']
-#         user = User.objects.get(user_id = name)
-#         cat = Cat.objects.last()  
-#         img = request.FILES.get('img-file')
-#         time = timezone.now()
-#         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
-#         UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
-#         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
-#     return render(request, 'miniapp/create_cat.html')
-
 def create_cat(request,city):
     park = Park.objects.filter(city=request.session['city'])
     print(park)
@@ -182,26 +162,6 @@ def create_cat(request,city):
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html',{'park':park})
 
-def my_cat(request):
-    if request.method == 'POST':
-        name = request.session['id']
-        num= name = request.session['no']
-        user=User.objects.get(user_id=name)
-        user_has_cat = UserHasCat.objects.filter(user_no=num)
-        cat_id_list=[i.cat_id for i in user_has_cat]
-        cat_list = [Cat.objects.get(cat_id=i) for i in cat_id_list]
-        cat_img = []
-        print(cat_list)
-        for i in cat_id_list:
-            if CatPhoto.objects.filter(cat_id=i):
-                img_url = CatPhoto.objects.filter(cat_id=i).first().cat_photo
-                cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
-            else:
-                cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
-        ccc=zip(cat_list, cat_img)
-        print(ccc)
-    return render(request, 'miniapp/my_cat.html',  {'user':user,'cat':zip(cat_list, cat_img)})
-
 def my_cat2(request,id):
     user=User.objects.get(user_no=id)
     user_has_cat = UserHasCat.objects.filter(user_no=id)
@@ -216,6 +176,8 @@ def my_cat2(request,id):
             cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
     ccc=zip(cat_list, cat_img)
     print(cat_list)
+    if request.method == 'POST' :
+        print("PIDST")
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
 
@@ -232,7 +194,10 @@ def cat_gallery(request):
         #'cat': cat.cat_name
     }
 
+
     return render(request, 'miniapp/cat_gallery.html', context)
+
+
 
 def cat_gallery_city(request,city):
     name = request.session['id']
@@ -283,7 +248,7 @@ def commentdelete(request, board_id):
         messages.warning(request, '권한 없음')
     else:
         comment.delete()
-    return redirect(f'/comment/{c}/')    
+    return redirect(f'/cat_profile/{c}/')    
 
 def cat_gallery(request):
     name = request.session['id']
@@ -301,9 +266,10 @@ def cat_gallery(request):
 def gallery_show_all_cats(request):
     name = request.session['id']
 
-    cat = Cat.objects.all()
-    img = CatPhoto.objects.all()
-
+    cat = Cat.objects.filter(status="실종").values("cat_id")
+    cat2 = Cat.objects.filter(status="건강").values("cat_id")
+    img = CatPhoto.objects.exclude(cat_id__in = cat)&CatPhoto.objects.exclude(cat_id__in = cat2)
+    print(img)
     context = {
         'object': img,
         'cat': cat,
