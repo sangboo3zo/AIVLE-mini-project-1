@@ -18,6 +18,7 @@ def cat_profile(request, pk):
     cat_profile = get_object_or_404(Cat, pk=pk)
     img = CatPhoto.objects.filter(cat_id=pk)
     feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
+    comments = CatBoard.objects.filter(cat = pk)
     user_has_cat = UserHasCat.objects.filter(user_no=request.session['no'])
     u_h_c = False
     for u in user_has_cat:
@@ -52,7 +53,8 @@ def cat_profile(request, pk):
         'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
-        'update':update})
+        'update':update,
+        'comments': comments})
     
         
   
@@ -176,3 +178,38 @@ def cat_gallery(request):
     }
     
     return render(request, 'miniapp/cat_gallery.html', context)
+
+from .models import CatBoard
+def comment(request, cat_id):
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    cat_info = Cat.objects.get(cat_id = int(cat_id))
+    comments = CatBoard.objects.filter(cat = int(cat_id))
+    if request.method == 'POST':
+        comment = CatBoard()
+        comment.cat = cat_info
+        comment.user_no = current_user
+        comment.board_text = request.POST.get('board_text')
+        comment.date_time = timezone.now()
+        comment.save()
+    return render(request, 'miniapp/comment.html', {
+        'user_name': current_user.user_name,
+        'cat_info': cat_info.cat_name,
+        'user' : current_user,
+        'comments': comments,
+        }
+    )
+
+from django.contrib import messages
+def commentdelete(request, board_id):
+    current_user_id = request.session['id']
+    current_user = User.objects.get(user_id=current_user_id)
+    comment = CatBoard.objects.get(board_id = board_id)
+    a = current_user.user_no
+    b = comment.user_no
+    c = comment.cat_id
+    if a != b.user_no:
+        messages.warning(request, '권한 없음')
+    else:
+        comment.delete()
+    return redirect(f'/comment/{c}/')    
