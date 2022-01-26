@@ -1,14 +1,8 @@
-from re import template
-from turtle import st
 # from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from matplotlib.style import use
 from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City, Park
 from django.utils import timezone
-from rest_framework import viewsets
-from django.views.generic import DetailView
-from datetime import datetime
 
 def home(request):
     return render(request, 'miniapp/home.html')
@@ -57,7 +51,8 @@ def cat_profile(request, pk):
             comment.save()
 
     return render(request, 'miniapp/cat_profile.html', context={
-        'cat_photo' : img[0],
+        'cat_view' : img[0],
+        'cat_photo' : img,
         'cat_id' : cat_profile.cat_id,
         'cat_name': cat_profile.cat_name,
         'cat_location' : cat_profile.location,
@@ -288,4 +283,30 @@ def commentdelete(request, board_id):
         messages.warning(request, '권한 없음')
     else:
         comment.delete()
-    return redirect(f'/cat_profile/{c}/')    
+    return redirect(f'/comment/{c}/')    
+
+def cat_gallery(request):
+    name = request.session['id']
+    no = request.session['no']
+    
+    img = CatPhoto.objects.filter(user_no = no)
+    cat = Cat.objects.all()
+    context = {
+        'object': img,
+        'cat': cat,
+        'name': name
+    }
+    return render(request, 'miniapp/cat_gallery.html', context)
+
+def gallery_show_all_cats(request):
+    name = request.session['id']
+
+    cat = Cat.objects.all()
+    img = CatPhoto.objects.all()
+
+    context = {
+        'object': img,
+        'cat': cat,
+        'name': name
+    }
+    return render(request, 'miniapp/gallery_show_all_cats.html', context)
