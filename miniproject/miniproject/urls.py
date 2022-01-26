@@ -16,6 +16,7 @@ urlpatterns = [
     path('', miniapp_views.home, name='home'),
     path('home/', miniapp_views.home),
     path('cat_gallery/', miniapp_views.cat_gallery),
+    path('gallery_show_all_cats/', miniapp_views.gallery_show_all_cats),
     path('my_cat/', miniapp_views.my_cat),
     path('cat_profile/<int:pk>/',miniapp_views.cat_profile, name='profile'),
     path('my_cat/<int:id>', miniapp_views.my_cat2),

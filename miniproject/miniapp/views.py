@@ -232,3 +232,29 @@ def commentdelete(request, board_id):
     else:
         comment.delete()
     return redirect(f'/comment/{c}/')    
+
+def cat_gallery(request):
+    name = request.session['id']
+    no = request.session['no']
+    
+    img = CatPhoto.objects.filter(user_no = no)
+    cat = Cat.objects.all()
+    context = {
+        'object': img,
+        'cat': cat,
+        'name': name
+    }
+    return render(request, 'miniapp/cat_gallery.html', context)
+
+def gallery_show_all_cats(request):
+    name = request.session['id']
+
+    cat = Cat.objects.all()
+    img = CatPhoto.objects.all()
+
+    context = {
+        'object': img,
+        'cat': cat,
+        'name': name
+    }
+    return render(request, 'miniapp/gallery_show_all_cats.html', context)
