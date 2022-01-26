@@ -8,12 +8,14 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 {% if user %}
 <br>
-   <h4 id ="user_name"> {{ user.user_id }}님의 고양이 </h4>
+<div class = "user_name">
+    <p id ="user_name"> {{ user.user_id }}님의 고양이 </p> 
+</div>
+    <hr clss="one">
 <br>
 {% endif %} 
 
-{% if cat %}
-
+{% if cat_list %}
     {% for item, url in cat %}
     <div class="container">
         <div class="col-sm-12 col-lg-6">
@@ -34,7 +36,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                             {% endif %}
                             <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
                             <h1 class="card-text"> 상태: {{ item.status }} </h1>
-                            <h1 style = "font-family:OTWelcomeRA;font-size:90%"> {{item.cat_name}} 을 확인하려면 클릭하세요!</h1>
+                            <a style = "font-family:GangwonEdu_OTFBoldA;font-size:90%" href="http://127.0.0.1:8000/cat_profile/{{ item.cat_id }}"> 프로필을 확인하려면 클릭하세요!</a>
                         </div>
                     </div>
                 </div>
@@ -42,29 +44,29 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         </div>
     </div>
     {% endfor %}
+{% else %}
+    <div class = "empty_cat">
+    <h1> 등록된 고양이가 없어요! </h1>
+    <br>
+    <button type="submit" class="btn btn-primary" onclick="location.href =  '/create_cat';" >고양이 등록하기</button>
+    </div>
 {% endif %}
 <style>
-    @font-face {
-        font-family: 'OTWelcomeBA';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'OTWelcomeRA';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-    }
-    #user_name{
-        font-family: 'OTWelcomeBA';
-        font-size: 200%;
-        text-align: center;
-        width: 100%;
+
+    .user_name{
+        font-family: 'Cafe24Ssurround';
+        font-size: 32px;
+        position: relative;
+        left: 40px;
         top: 0;
-        left: 0;
+ 
     }
 
+    .cat_face{
+        position: relative;
+        width: 60px;
+        height: 60px;
+    }
 
 
     .card-img-top {
@@ -79,14 +81,26 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     }
    
     #cat_name{
-        font-family: 'OTWelcomeBA';
+        font-family: 'GangwonEdu_OTFBoldA';
         font-size: 200%;
+        font-weight: 900;
+        text-shadow:0.3px 0.3px 0.3px #000;
 
     }
     .card-text {
-        font-family: 'OTWelcomeRA';
+        font-family: 'GangwonEdu_OTFBoldA';
         font-size: 150%;
     }
-
+    .empty_cat {
+        font-family: 'GangwonEdu_OTFBoldA';
+        position: relative;
+        text-align: center;
+        top: 140px;
+  
+        font-size: 40px;
+        
+    }
+    
+    
 </style>
 {% endblock %}

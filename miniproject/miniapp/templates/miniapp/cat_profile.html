@@ -1,28 +1,151 @@
+{% extends 'base.html' %}
 {% block content %}
+{% load staticfiles %}
+<br>
+<head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link  href="C:\Users\User\Desktop\aivle 과제\mini_project\miniproject\miniapp\static\css\datepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" /> 
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="C:\Users\User\Desktop\aivle 과제\mini_project\miniproject\miniapp\static\js\datepicker.min.js"></script> 
+   
+</head>
 
-    <div class="col-xs-6 col-md-3">
-        {% if cat_profile.id %}
-        <h2>{{cat_profile.id}}</h2>
-        {% endif %}
+<div class="row" id="cat_profile">
+    <div class="col-xs-2 col-md-3">
+        <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;left: 70;" > 프로필 </p>
+    </div>
+    {% if user_has_cat %}
+        <div class="col-xs-2 col-md-3" id = "update">
+            <form method="post" class="post-form">
+                {% csrf_token %}
+                <button class="btn btn-primary" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'Cafe24SsurroundAir';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button>
+            </form>
+        </div>
+    {% endif %}
+<div>
 
-        {% comment %} <a href="#"> 
-            <button type="button" class="btn btn-default">프로필 편집</button></a></h2>
-        {% endcomment %}
-
-    
+<div class="row" id="cat_profile">
+    <div class="col-xs-2 col-md-3">
         <img src="{{ cat_photo.cat_photo.url }}" alt="">
+    </div>
+    <div class="col-xs-2 col-md-3">
+        <br><br>
+        <p>이름 : {{cat_name}} </p>
+        <p>위치 : {{cat_location.location4}} </p>
+        <p>상태 : {{cat_status}} </p>
+    </div>
+</div>  
 
-        <h3> 고양이 : {{cat_name}} <br>
-            위치 : {{cat_location}} <br>
-            현재상태 : {{cat_status}} <br>
-            <br>
-            밥먹은 시간 
-            {% if feed_timeline %}
-                {% for item in feed_timeline %}
-                <h3>{{ item.user_no.user_name }} /{{ item.date_time }}</h3>
-                {% endfor %}
-            {% endif %} 
-            </h3>
+<div class="row" id="cat_profile">
+    <br><hr option="one"><br>
+    <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진 </p>
+    {% comment %} 여기다가 사진!!!! 
+    https://didqk.tistory.com/entry/%EB%94%94%EC%95%8C%EC%BD%94-%EB%B6%80%ED%8A%B8%EC%8A%A4%ED%8A%B8%EB%9E%A9-%EC%BA%90%EB%9F%AC%EC%85%80-carousel-%EB%82%B4%EA%B0%80-%EC%9B%90%ED%95%98%EB%8A%94-%EB%AA%A8%EC%96%91-%EB%A7%8C%EB%93%A4%EA%B8%B0-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%A1%A4%EB%A7%81-%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C
+    https://webty.tistory.com/43
+
+    1) 몇개만 보여주고 더보기 버튼 만들어서 갤러리로 넘어가도록 (성현님이 만든 cat_gallery 수정해서 쓰면 될거같아요)
+    2) 위 링크처럼 슬라이드?? 기능 넣기 -> 근데 이걸로 하면 이쁠거 같긴한데 이거는 사진이 많다고 가정하면  사용자가보기 불편해요
+
+    {% endcomment %}
+</div>  
+
+<div class="feed_log">
+    <br><hr option="one"><br>
+    <div class="row" id="cat_profile">
+        <div class="col-xs-2 col-md-3"> 
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 밥 먹은 시간 </p>
+        </div> 
+    </div>
+    <table border="0">
+        {% if feed_timeline %}
+            {% for item in feed_timeline %}
+            <tr align = "center" >
+                <td>{{ item.user_no.user_name }} </td>
+                <td>{{ item.date_time|date:'Y.m.d D' }}</td> 
+                <td>{{ item.date_time|date:'a h시 i분' }}</td>
+            <tr>
+            {% endfor %}
+        {% endif %}      
+    </table>
+    <br>
+<div>
+{% if user_has_cat %}
+    <div class="container">
+        <form method="post" class="post-form">
+            {% csrf_token %}
+            <div class="row">
+                <div class='col-sm-6'>
+                    <div class="form-group">
+                        <div class="input-group date"  data-target-input="nearest"> 
+                            <input type='text' id="datetimepicker1" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="datetimep" />
+                                <div class="input-group-text" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">추가하기</button>
+        </form>
     </div>
 
+{% endif %}
+
+<div class="chat">
+    <br><hr option="one"><br>
+    <div class="row" id="cat_profile">
+        <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 채팅 </p>
+    </div>
+</div>
+
+<style>
+#cat_profile{
+    font-family: 'GangwonEdu_OTFBoldA';
+    font-weight: 900;
+    font-size: 27px;
+    position: relative;
+    left: 40;
+}
+.feed_log{
+    font-family: 'GangwonEdu_OTFBoldA';
+    position: relative;
+  
+    font-size: 27px;
+}
+table{
+    width: 800px;
+    font-size: 27px;
+}
+th{
+    font-family:'GangwonEdu_OTFBoldA';
+    padding: 14px;
+}
+td{
+    font-family:'GangwonEdu_OTFBoldA';
+    padding: 4px;
+}
+#add{
+    left:190;
+    
+}
+#update{
+    left:240;
+}
+#feed_form{
+    position: relative;
+    left: 110;
+}
+#add_feed{
+    position: relative;
+    left: 280px;
+}
+
+</style>
 {% endblock %}

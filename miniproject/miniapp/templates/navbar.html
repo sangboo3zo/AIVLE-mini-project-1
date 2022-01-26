@@ -6,49 +6,84 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" id = 'service_name'>네맘내맘</a>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/" id = 'service_name'>네맘내맘</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      {% if request.session.no %}
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" aria-current="page" href="http://127.0.0.1:8000/" id = 'service_list'>홈</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="http://127.0.0.1:8000/my_cat/{{ request.session.no }}" id = 'service_list'>내 고양이 보기</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="http://127.0.0.1:8000/cat_gallery" id = 'service_list'>고양이 찾기</a>
+          </li>
+          <li class="nanav-item active">
+            <a class="nav-link" href="http://127.0.0.1:8000/create_cat" id = 'service_list'>고양이 등록하기</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="http://127.0.0.1:8000/logout" id = 'service_list'>로그아웃</a>
+          </li>
+        </ul>
+      
+      {% else %}
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#" id = 'service_list'>Home</a>
+            <a class="nav-link" href="/login" id = 'service_list'>로그인하기</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" id = 'service_list'>내 고양이 보기</a>
+            <a class="nav-link" href="/signup" id = 'service_list'>회원가입하기</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id = 'service_list'>고양이 찾기</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id = 'service_list'>고양이 등록하기</a>
-          </li>
-
         </ul>
+      {% endif%}
+        
+      
       </div>
     </div>
   </nav>
+
 <style>
 
 @font-face {
-    font-family: 'OTWelcomeBA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2') format('woff2');
+    font-family: 'GangwonEdu_OTFLightA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFLightA.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
-    font-family: 'OTWelcomeRA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cafe24Ssurround';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
   #service_name {
-    font-family: 'OTWelcomeBA';
+    font-family: 'Cafe24Ssurround';
+    font-size : 140% ;
 }
 
 #service_list{
-    font-family: 'OTWelcomeRA';
+  font-family: 'GangwonEdu_OTFBoldA';
+  font-size : 130% ;
+
 }
 
 </style>
