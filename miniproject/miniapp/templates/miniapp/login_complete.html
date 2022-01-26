@@ -40,7 +40,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 {% endfor %}
                 </select>
                 
-                <button type="submit" class="btn btn-primary" >생성하기</button>
+                <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >선택하기</button>
             </div>
           <br><br> 
         </form>
