@@ -41,12 +41,13 @@
     <h2>댓글 작성하기</h2>
     <form method="post">
         {% csrf_token %}
-      <div class="mb-3 mt-3">
-
-        {% comment %} <label for="board_text">{{request.session.id}}:</label> {% endcomment %}
-        <textarea class="form-control" rows="3" id="comment" name="board_text" style="font-size:25px;"></textarea>
+      
+      <div class="input-group text"  data-target-input="nearest"> 
+        <input type='text' class="form-control" rows="3" id="comment" name="board_text" style="font-size:25px;height:100px;">
+        <div class="input-group-addon">
+          <button type="submit" style="background-color:transparent;" class="btn btn-light">작성하기</button>   
+        </div>
       </div>
-      <button  style= "font-family: 'GangwonEdu_OTFLightA';font-size:17px;" type="submit" class="btn btn-light">댓글등록</button>
     </form>
 
   

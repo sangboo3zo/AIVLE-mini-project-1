@@ -2,7 +2,7 @@
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from sympy import I
-from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City, Park
+from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park
 from django.utils import timezone
 
 def home(request):
@@ -11,7 +11,8 @@ def home(request):
 def cat_profile(request, pk):
     update =False
     cat_profile = get_object_or_404(Cat, pk=pk)
-    img = CatPhoto.objects.filter(cat_id=pk)
+    profile =  CatPhoto.objects.filter(cat_id=pk).first()
+    img = CatPhoto.objects.filter(cat_id=pk).order_by('-date_time')[:6]
     feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
     comments = CatBoard.objects.filter(cat = pk)
     user_has_cat = UserHasCat.objects.filter(user_no=request.session['no'])
@@ -53,10 +54,11 @@ def cat_profile(request, pk):
 
     return render(request, 'miniapp/cat_profile.html', context={
         'cat_view' : img[0],
+        'profile':profile,
         'cat_photo' : img,
         'cat_id' : cat_profile.cat_id,
         'cat_name': cat_profile.cat_name,
-        'cat_location' : cat_profile.location,
+        'cat_location' : cat_profile.park,
         'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
@@ -66,6 +68,7 @@ def cat_profile(request, pk):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
+        'park' : cat_profile.park.park
     })
     
         
@@ -126,31 +129,34 @@ def logout(request):
     request.session.flush()
     return redirect('http://127.0.0.1:8000/') 
 
-def upload_cat_img(request):
+def upload_cat_img(request,cat_id):
+    user = User.objects.filter(user_no=request.session["no"])
+    cat = Cat.objects.filter(cat_id=cat_id)
     if request.method == 'POST':
+        user = User.objects.filter(user_no=request.session["no"])
+        cat = Cat.objects.filter(cat_id=cat_id)
         img = request.FILES.get('img-file')
         time = timezone.now()
-        user = User.objects.get(user_no=2)
-        cat = Cat.objects.get(cat_id=42)
-        CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=1,cat_id=42)
-        return redirect(upload_cat_img)
-    return render(request, 'miniapp/upload_cat_img.html')
-
+    
+        CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=request.session["no"],cat_id=cat_id)
+        
+        #return render(request, 'miniapp/upload_cat_img.html' ,{'user':user,'cat':cat })
+        return redirect('http://127.0.0.1:8000/cat_profile/'+str(cat_id))
+    return render(request, 'miniapp/upload_cat_img.html' ,{'user':user,'cat':cat })
 
 def create_cat(request,city):
     park = Park.objects.filter(city=request.session['city'])
-    print(park)
     if request.method == 'POST':
         cat_name = request.POST.get('cat_name')
         gender = request.POST.get('gender')
         neutral = request.POST.get('neutral')
-        park = request.POST.get('location')
-        location = Location.objects.get(location4='오리공원')
-        #location = Park.objects.filter(park=park)
+        parkname = request.POST.get('park')
+        location = Park.objects.get(park=parkname)
+        print(location)
         appearance = request.POST.get("appearance")
         status =request.POST.get('status')
         m = Cat(
-             cat_name=cat_name, gender=gender, neutral=neutral, location=location, appearance=appearance, status=status)
+             cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
         m.save()
         name = request.session['id']
         user = User.objects.get(user_id = name)
@@ -168,20 +174,11 @@ def my_cat2(request,id):
         uhc = UserHasCat.objects.get(user_no = request.session['no'] , cat_id =cat_delete_id)
         uhc.delete()
     user=User.objects.get(user_no=id)
-    user_has_cat = UserHasCat.objects.filter(user_no=id)
-    print(user_has_cat)
-
-
-    cat_id_list=[i.cat_id for i in user_has_cat]
-    cat_list = [Cat.objects.get(cat_id=i) for i in cat_id_list]
-    cat_img = []
-    for i in cat_id_list:
-        if CatPhoto.objects.filter(cat_id=i):
-            img_url = CatPhoto.objects.filter(cat_id=i).first().cat_photo
-            cat_img.append(" https://aivle-s43.s3.ap-northeast-2.amazonaws.com/"+ str(img_url))
-        else:
-            cat_img.append("https://aivle-s43.s3.ap-northeast-2.amazonaws.com/no_cat_img.png")
-    ccc=zip(cat_list, cat_img)
+    user_has_cat = UserHasCat.objects.filter(user_no=id).values("cat_id")
+    cat_list = Cat.objects.filter(cat_id__in = user_has_cat)
+    cat_img=[]
+    for i in user_has_cat:
+        cat_img.append(CatPhoto.objects.filter(cat_id=i['cat_id']).first())
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
 
@@ -204,19 +201,26 @@ def cat_gallery(request):
 
 
 def cat_gallery_city(request,city):
-    name = request.session['id']
     c = City.objects.get(city_name=city)
     park = Park.objects.filter(city_id=city)
-    u=User.objects.get(user_id=name)
-    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
-    img = CatPhoto.objects.all()
-    cat = Cat.objects.all()
+    uhc = UserHasCat.objects.filter(user_no = request.session['no']).values("cat_id")
+    cat = Cat.objects.exclude(cat_id__in = uhc).values("cat_id")
+    cat2 = Cat.objects.exclude(status="실종").values("cat_id")
+    cat3 = Cat.objects.exclude(status="사망").values("cat_id")
+
+    img = CatPhoto.objects.filter(cat_id__in = cat)&CatPhoto.objects.filter(cat_id__in = cat2)&CatPhoto.objects.filter(cat_id__in = cat3)
+
+    # 내가 이미 등록되어있으면 x
+    if request.method == 'POST':
+        parkname = request.POST.get('park')
+        park_o = Park.objects.get(park=parkname)
+        cat4 = Cat.objects.filter(park=park_o).values("cat_id")
+        img = CatPhoto.objects.filter(cat_id__in = cat)&CatPhoto.objects.filter(cat_id__in = cat2)&CatPhoto.objects.filter(cat_id__in = cat3)&CatPhoto.objects.filter(cat_id__in = cat4)
+
     context = {
         'object': img,
-        'user': int(u.user_no),
         'park': park
     }
-
     return render(request, 'miniapp/cat_gallery_city.html', context)
 from .models import CatBoard
 def comment(request, cat_id):
@@ -271,7 +275,7 @@ def gallery_show_all_cats(request):
     name = request.session['id']
 
     cat = Cat.objects.filter(status="실종").values("cat_id")
-    cat2 = Cat.objects.filter(status="건강").values("cat_id")
+    cat2 = Cat.objects.filter(status="사망").values("cat_id")
     img = CatPhoto.objects.exclude(cat_id__in = cat)&CatPhoto.objects.exclude(cat_id__in = cat2)
     print(img)
     context = {

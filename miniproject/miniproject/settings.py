@@ -75,23 +75,23 @@ WSGI_APPLICATION = 'miniproject.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'YMMM',
+    #     'USER': 'YMMM',
+    #     'PASSWORD': '0403',
+    #     'HOST': '13.125.52.234',
+    #     'PORT': 3306
+    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'YMMM',
-        'USER': 'YMMM',
-        'PASSWORD': '0403',
-        'HOST': '13.125.52.234',
-        'PORT': 3306
+        'NAME': 'tmp',
+        'USER': 'root',
+        'PASSWORD': 'aivle',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
     }
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.mysql',
-        #     'NAME': 'tmp',
-        #     'USER': 'root',
-        #     'PASSWORD': 'aivle',
-        #     'HOST': '127.0.0.1',
-        #     'PORT': 3306,
-        # }
-    }
+}
 
 
 # Password validation

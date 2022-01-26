@@ -44,9 +44,9 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
           </div>
           <br>
 
-          <label class="menu" for="location">공원</label><br>
+          <label class="menu" for="park">공원</label><br>
           <div class="btn-group">
-            <select style="text-align:center;" class="form-select" aria-label="Default select example" name = location>
+            <select style="text-align:center;" class="form-select" aria-label="Default select example" name = park>
               {% for p in park %}
               <option value="{{p.park}}">{{p.park}}</option>
               {% endfor %}
