@@ -18,10 +18,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-
+<div class='container' >
 <div class="row" id="cat_profile">
     <div class="col-xs-2 col-md-3">
-        <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;left: 70;" > 프로필 </p>
+        <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > 프로필 </p>
     </div>
     {% if user_has_cat %}
         <div class="col-xs-2 col-md-3" id = "update">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" id ="afb" class="btn btn-primary">추가하기</button>
+            <button style= "font-family: 'GangwonEdu_OTFLightA';font-size:17px;" type="submit" id ="afb" class="btn btn-primary">추가하기</button>
         </div>
         
     </div>
@@ -122,14 +122,14 @@
     </div>
     {% include "./comment.html" %}
 </div>
-
+</div>
 <style>
 #cat_profile{
     font-family: 'GangwonEdu_OTFBoldA';
     font-weight: 900;
     font-size: 27px;
     position: relative;
-    left: 40;
+    
 }
 .feed_log{
     font-family: 'GangwonEdu_OTFBoldA';
@@ -150,22 +150,22 @@ td{
     padding: 4px;
 }
 #add{
-    left:190;
+  
     
 }
 #update{
-    left:240;
+ 
 }
 #feed_form{
     position: relative;
-    left: 110;
+ 
 }
 #add_feed{
     position: relative;
-    left: 40;
+ 
 }
 #dtp{
-    left:40;
+  
 }
 
 </style>

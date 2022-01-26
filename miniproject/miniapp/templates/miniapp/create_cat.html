@@ -44,33 +44,13 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
           </div>
           <br>
 
-          <label class="menu" for="location">주소</label><br>
+          <label class="menu" for="location">공원</label><br>
           <div class="btn-group">
-              
-            <select class="form-select" aria-label="Default select example">
-              <option value="">시/도</option>
-              <option value="경기도">서울시</option>
-              <option value="서울시">경기도</option>
-              <option value="경기도">강원도</option>
-              <option value="서울시">충청도</option>
-              <option value="충청도">경상도</option>
-              <option value="경기도">전라도</option>
-              <option value="서울시">인천시</option>
-              <option value="충청도">대전시</option>
-              <option value="충청도">대구시</option>
-              <option value="경기도">울산시</option>
-              <option value="서울시">부산시</option>
-              <option value="충청도">광주시</option>
-              <option value="충청도">제주도</option>
-            </select>
-            
-            <select class="form-select" aria-label="Default select example">
-              <option value=" ">공원</option>
-              <option value="오리공원">오리공원</option>
-              <option value="분당중앙공원">분당중앙공원</option>
-              <option value="능골공원">능골공원</option>
-              <option value="맹산공원">맹산공원</option>
-            </select>
+            <select style="text-align:center;" class="form-select" aria-label="Default select example" name = location>
+              {% for p in park %}
+              <option value="{{p.park}}">{{p.park}}</option>
+              {% endfor %}
+              </select>
           </div>
           <br><br> 
           
