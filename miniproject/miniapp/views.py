@@ -1,17 +1,7 @@
-from re import template
-from turtle import st
 # from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
-from django.http import HttpResponse,JsonResponse
-<<<<<<< HEAD
-from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed
-=======
 from .models import Location, User,CatPhoto,Cat, UserHasCat, Feed, City
->>>>>>> 90fb891a4cd00fc46aa5b05901f075398cc7882f
 from django.utils import timezone
-from rest_framework import viewsets
-from django.views.generic import DetailView
-from datetime import datetime
 
 def home(request):
     return render(request, 'miniapp/home.html')

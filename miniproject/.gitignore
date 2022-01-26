@@ -20,7 +20,8 @@ media
 # Byte-compiled / optimized / DLL files
 *.py[cod]
 *$py.class
-
+__pycache__/
+*.py[cod]
 # C extensions
 *.so
 
