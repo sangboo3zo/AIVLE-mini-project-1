@@ -60,7 +60,7 @@ def cat_profile(request, pk):
             comment.date_time = timezone.now()
             comment.save()
         ##status change##
-        if request.POST.get('status') or request.POST.get('gender') or request.POST.get('neutral'):
+        if request.POST.get('status') or request.POST.get('gender') or request.POST.get('neutral') or request.POST.get('appearance'):
             cat_info.status = request.POST.get('status')
             cat_info.gender = request.POST.get('gender')
             cat_info.neutral = request.POST.get('neutral')
