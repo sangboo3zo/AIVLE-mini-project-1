@@ -34,23 +34,14 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                             <form method="post" class="post-form">
                                 {% csrf_token %} 
                                 <p class="card-text" id = "cat_name" > &emsp;&emsp;&emsp; &ensp;&emsp;{{item.cat_name}} &emsp; &emsp; 
-                                        <button class= "btn btn-primary" style="font-size:15px;" onclick="location.href =  '/my_cat/{{request.session.no}}';" name = cat_id value={{item.cat_id}}> 삭제 </button> </p>
-                                {% if item.gender == 'F'%}
-                                <h1 class="card-text"> 성별: 암컷</h1> 
-                                {% elif item.gender == 'M' %}
-                                <h1 class="card-text"> 성별: 수컷 </h1> 
-                                {% else %}
-                                <h1 class="card-text"> 성별: 모르겠어요 </h1> 
-                                {% endif %}
+                                        <button class= "btn btn-primary" style="font-size:15px;" onclick="location.href =  '/my_cat/{{request.session.no}}';" name = cat_id value={{item.cat_id}}> 삭제 </button> </p>       
+                                <h1 class="card-text"> 성별: {{ item.gender }}</h1> 
                                 <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
                                 <h1 class="card-text"> 상태: {{ item.status }} </h1>
                                 <h1 class="card-text"> <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/cat_profile/{{ item.cat_id }}"> {{item.cat_name}} 프로필로 이동하기</a>  </h1>
                             </form>
                         </div>
-                    </div>
-                       
-                    {% comment %} <button class = "btn btn-danger" style="height:40px;" > 나의 고양이 목록에서 삭제</button> {% endcomment %}
-                    
+                    </div> 
                 </div>
             </div>
         </div>
@@ -62,14 +53,9 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <div class = "empty_cat">
     <h1> 등록된 고양이가 없어요! </h1>
     <br>
-<<<<<<< HEAD
-    <button type="submit" class="btn btn-primary" onclick="location.href =  '/cat_gallery/{{request.session.city}}';" >고양이 등록하기</button>
-    </div>
-=======
     <button type="submit" class="btn btn-primary"onclick="location.href =  '/create_cat/{{request.session.city}}';" >고양이 등록하기</button>
     
 </div>
->>>>>>> 4fdf9be329ce02fb113ef2511828219207002a6d
 {% endif %}
 <style>
 
