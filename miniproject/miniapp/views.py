@@ -1,6 +1,6 @@
 #from aiohttp import request
-from django.shortcuts import redirect,render, get_object_or_404
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect,render
 from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
 from django.contrib import messages
@@ -165,9 +165,7 @@ def signup(request):
             messages.info(request,'**중복되는 아이디입니다.')
             return render(request, 'miniapp/signup.html')
         
-        if (not user_id or not user_pw or not user_name or not user_email) and User.objects.filter(user_id=user_id).exists()==True:
-            messages.info(request,'**중복되는 아이디입니다.\n **빈칸으로 제출할 수 없습니다.')
-            return render(request, 'miniapp/signup.html')
+
         m.save()
 
         return render(request, 'miniapp/signup_complete.html' )
@@ -198,6 +196,7 @@ def upload_cat_img(request,cat_id):
 def create_cat(request,city):
     park = Park.objects.filter(city=request.session['city'])
     if request.method == 'POST':
+
         try:
             cat_name = request.POST.get('cat_name')
             gender = request.POST.get('gender')
@@ -230,6 +229,7 @@ def create_cat(request,city):
             print("e")
             messages.info(request,'입력되지 않은 항목이 있습니다.')
             return redirect('http://127.0.0.1:8000/create_cat/'+str(request.session["city"]))
+
     return render(request, 'miniapp/create_cat.html',{'park':park})
 
 def my_cat2(request,id):
