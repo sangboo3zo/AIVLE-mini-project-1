@@ -212,8 +212,7 @@ def create_cat(request,city):
         appearance = request.POST.get("appearance")
         status =request.POST.get('status')
         m = Cat(
-             cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
-        
+            cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
         
         name = request.session['id']
         user = User.objects.get(user_id = name)
