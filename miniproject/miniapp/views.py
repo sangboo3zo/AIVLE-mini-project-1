@@ -66,10 +66,6 @@ def cat_profile(request, pk):
         'profile':profile,
         'cat_photo' : img,
         'cat' : cat_profile,
-        'cat_id' : cat_profile.cat_id,
-        'cat_name': cat_profile.cat_name,
-        'cat_location' : cat_profile.park,
-        'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
         'update':update,
@@ -183,7 +179,7 @@ def create_cat(request,city):
         img = request.FILES.get('img-file')
         time = timezone.now()
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
-        UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
+        UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user,cat_nickname = cat_name)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html',{'park':park})
 
