@@ -3,7 +3,7 @@ from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
-
+from django.contrib import messages
 def home(request):
     return render(request, 'miniapp/home.html')
 
@@ -132,10 +132,16 @@ def signup(request):
         user_name = request.POST.get('username')
         user_email = request.POST.get('email')
         m = User(
-            user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
+            user_id=user_id, user_pw=user_pw, user_name=user_name, user_email=user_email)
         m.date_joined = timezone.now()
-        m.save()
+        if User.objects.filter(user_id=user_id).exists():
+            return render(request, 'miniapp/signup.html')
         
+        if not user_id or not user_pw or not user_email:
+            return render(request, 'miniapp/signup.html')
+    
+        m.save()
+
         return render(request, 'miniapp/signup_complete.html' )
     else:
         return render(request, 'miniapp/signup.html' )
