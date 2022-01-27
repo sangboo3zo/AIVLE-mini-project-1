@@ -23,7 +23,7 @@
                 <div class="col-xs-2 col-md-3" id = "update">
                     <form method="post" class="post-form">
                         {% csrf_token %}
-                        <button id = "img_button" class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat_id}}';" name="update" value="True" > &emsp; 수정하기 &emsp;</button>
+                        <button id = "img_button" class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat.cat_id}}';" name="update" value="True" > &emsp; 수정하기 &emsp;</button>
                     </form>
                 </div>
             {% endif %}
