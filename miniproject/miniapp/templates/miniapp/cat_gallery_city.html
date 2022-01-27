@@ -41,7 +41,7 @@
                                     <div class="card-body">
                                         <small>{{item.name}}</small>
                                     </div>
-                                    <a href="{}" class = "btn btn-outline-dark btn-sm m-1"> View</a>
+                                    <a href="http://127.0.0.1:8000/upload_cat_img/{{item.cat_id}}" class = "btn btn-outline-dark btn-sm m-1">이 고양이에요!</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -66,9 +66,7 @@
 }
 
 .image-thumbail {
-    width: 300px;
-    height: 250px;
-    object-fit: contain;
+    height: 200px;
 
 }
 #wrapper{

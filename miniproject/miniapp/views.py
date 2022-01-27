@@ -125,7 +125,9 @@ def logout(request):
     request.session.flush()
     return redirect('http://127.0.0.1:8000/') 
 
-def upload_cat_img(request):
+def upload_cat_img(request, pk):
+    img = CatPhoto.objects.filter(cat_id = pk)
+
     if request.method == 'POST':
         img = request.FILES.get('img-file')
         time = timezone.now()
@@ -133,7 +135,10 @@ def upload_cat_img(request):
         cat = Cat.objects.get(cat_id=42)
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=1,cat_id=42)
         return redirect(upload_cat_img)
-    return render(request, 'miniapp/upload_cat_img.html')
+    context = {
+        'object': img
+    }
+    return render(request, 'miniapp/upload_cat_img.html', context)
 
 
 # def create_cat(request):

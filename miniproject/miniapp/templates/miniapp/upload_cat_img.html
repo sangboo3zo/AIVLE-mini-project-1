@@ -6,7 +6,22 @@
   <meta charset="utf-8">
 </head>
 <body>
-    <h2>upload test</h2>
+    <h2>upload test5</h2>
+    {% for item in object %}
+      <div class="col-md-4">
+        <div class="card">
+          <img class = "image-thumbail"
+            src="{{ item.cat_photo.url }}" 
+            alt="">
+          <div class="card-body">
+          <small>
+            {{cat.cat_name}}
+          </small>
+        </div>
+      <a href="{}" class = "btn btn-outline-dark btn-sm m-1"> View</a>
+    </div>
+  </div>
+{% endfor %}
 
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
