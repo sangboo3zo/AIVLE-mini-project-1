@@ -1,10 +1,9 @@
 #from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from sympy import I
 from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
-
+from django.contrib import messages
 def home(request):
     return render(request, 'miniapp/home.html')
 
@@ -131,22 +130,28 @@ def login_complete(request):
         }
         return render(request, 'miniapp/login_complete.html', context)
 
-        
+from django.contrib import messages
 def signup(request):
     if request.method == 'POST':
-        try:
-            user_id = request.POST.get('id')
-            user_pw = request.POST.get('password1')
-            user_name = request.POST.get('username')
-            user_email = request.POST.get('email')
-            m = User(
-                user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
-            m.date_joined = timezone.now()
-            m.save()
-            return render(request, 'miniapp/signup_complete.html' )
-        except:
-            messages = "아이디가 이미 존재합니다"
-            return render(request, 'miniapp/signup.html',{'message':messages} )
+        user_id = request.POST.get('id')
+        user_pw = request.POST.get('password1')
+        user_name = request.POST.get('username')
+        user_email = request.POST.get('email')
+        m = User(
+            user_id=user_id, user_pw=user_pw, user_name=user_name, user_email=user_email)
+        m.date_joined = timezone.now()
+        if not user_id or not user_pw or not user_name or not user_email:
+            messages.info(request,'빈칸으로 제출할 수 없습니다.')
+            return render(request, 'miniapp/signup.html')
+    
+        if User.objects.filter(user_id=user_id).exists()==True:
+            messages.info(request,'중복되는 아이디입니다.')
+            return render(request, 'miniapp/signup.html')
+        
+        
+        m.save()
+
+        return render(request, 'miniapp/signup_complete.html' )
     else:
         return render(request, 'miniapp/signup.html' )
 
