@@ -1,4 +1,4 @@
-# from aiohttp import request
+#from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from sympy import I
@@ -272,8 +272,8 @@ def cat_gallery(request):
     return render(request, 'miniapp/cat_gallery.html', context)
 
 def gallery_show_all_cats(request):
+    
     name = request.session['id']
-
     cat = Cat.objects.filter(status="실종").values("cat_id")
     cat2 = Cat.objects.filter(status="사망").values("cat_id")
     img = CatPhoto.objects.exclude(cat_id__in = cat)&CatPhoto.objects.exclude(cat_id__in = cat2)
