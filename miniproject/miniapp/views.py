@@ -6,6 +6,9 @@ from django.utils import timezone
 from django.contrib import messages
 def home(request):
     return render(request, 'miniapp/home.html')
+def test(request):
+    return render(request, 'miniapp/test.html')
+
 
 def cat_profile(request, pk):
     update =False
@@ -62,6 +65,10 @@ def cat_profile(request, pk):
             cat_info.save()
             return redirect(f'/cat_profile/{pk}/')
         ##
+        if request.POST.get('nickname'):
+            nickname.cat_nickname = request.POST.get('nickname')
+            nickname.save()
+            return redirect(f'/cat_profile/{pk}/')
         
         if request.FILES.get('img-file'):
             img = request.FILES.get('img-file')
@@ -87,8 +94,10 @@ def cat_profile(request, pk):
     
 def detail_gallery(request, pk):
     img = CatPhoto.objects.filter(cat_id=pk)
+    cat= Cat.objects.get(cat_id=pk)
     return render(request, 'miniapp/cat_detail_gallery.html', context={
-        'detail_gallery' : img
+        'detail_gallery' : img,
+        'cat_id' : cat
     })
 
 def cat_register(request, id):
@@ -222,23 +231,17 @@ def my_cat2(request,id):
         cat_img.append(CatPhoto.objects.filter(cat_id=i['cat_id']).first())
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
-
 def cat_gallery(request):
     name = request.session['id']
-
-    u=User.objects.get(user_id=name)
-    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
-    img = CatPhoto.objects.all()
-    cat = Cat.objects.all()
+    no = request.session['no']
+    uhc = UserHasCat.objects.filter(user_no = request.session['no']).values("cat_id")
+    img = CatPhoto.objects.filter(cat_id__in = uhc)
+    
     context = {
         'object': img,
-        'user': int(u.user_no),
-        #'cat': cat.cat_name
+        'name': name
     }
-
-
     return render(request, 'miniapp/cat_gallery.html', context)
-
 
 
 def cat_gallery_city(request,city):
@@ -269,7 +272,8 @@ def cat_gallery_city(request,city):
             img=[]
             for i in cat_list:
                 img.append( CatPhoto.objects.filter(cat_id = i).first())
-            print(img)
+            return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
+            'park': park,'parkname':parkname})
         if request.POST.get('register'):
             print('register')
             catId = request.GET.get('regist')
@@ -296,16 +300,7 @@ def commentdelete(request, board_id):
         comment.delete()
     return redirect(f'/cat_profile/{c}/')    
 
-def detail_gallery(request, pk):
 
-    img = CatPhoto.objects.filter(cat_id=pk)
-
-    return render(request, 'miniapp/cat_detail_gallery.html', context={
-
-        'detail_gallery' : img
-
-    })
-    
 def cat_gallery(request):
     name = request.session['id']
     no = request.session['no']

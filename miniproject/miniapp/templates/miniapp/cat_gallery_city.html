@@ -15,21 +15,27 @@
         {% csrf_token %}
 <div class="container">
 <div class="row" >
-    <div class="col-lg-2" id="btn2">
+    <div class="col-lg-3" id="btn2">
     <h1  style="font-family: 'Cafe24Ssurround';font-size:27px;position: relative;" > 우리 동네에 등록된 고양이를 살펴보세요! </h1>
     <h1 style="font-family: 'Cafe24SsurroundAir';font-size:20px;position: relative;" > 고양이를 선택하면 함께 ~~할 수 있습니다! </h1>
+   
+    {% if parkname %}
+        <h1 style="font-family: 'Cafe24SsurroundAir';font-size:20px;position: relative;">{{parkname}}의 고양이들입니다!</h1>
+    {% endif %}
     </div>
     
   
     <div class="col-lg-2" id="btn2">
         <div class="btn-group" >
-            <select style="text-align:center;font-size: 20px;" class="form-select"  name = park >
+            
+            <select style="text-align:center;font-size: 20px;" onchange="this.form.submit()" style="text-align:center;" class="form-select" aria-label="Default select example" name = 'park'>
+            <option hidden>지역을 선택해 주세요</option>
             <option hidden>{{c.park}}</option>
             {% for c in park %}
             <option value="{{c.park}}" style="font-size: 20px;">{{c.park}}</option>
             {% endfor %}
             </select>
-            <button type="submit"  class="btn btn-primary" name="park_select" style="font-size: 20px;">검색하기</button> 
+           
         </div>
     </div>
     </form>

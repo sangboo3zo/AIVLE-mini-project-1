@@ -25,4 +25,5 @@ urlpatterns = [
     path('cat_profile/<int:pk>/detail_gallery/',miniapp_views.detail_gallery, name='cat_detail'),
     path('comment/<int:board_id>/delete',miniapp_views.commentdelete, name = 'delete'),
     path('cat_profile/<int:pk>/detail_gallery/',miniapp_views.detail_gallery, name='cat_detail'),
+    path('test/',miniapp_views.test)
 ]
