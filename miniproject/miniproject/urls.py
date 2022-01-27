@@ -13,7 +13,7 @@ urlpatterns = [
     path('logout/', miniapp_views.logout, name='logout'),
     path('create_cat/', miniapp_views.create_cat),
     path('create_cat/<str:city>', miniapp_views.create_cat),
-    path('upload_cat_img/',miniapp_views.upload_cat_img),
+    path('upload_cat_img/<int:cat_id>',miniapp_views.upload_cat_img),
     path('', miniapp_views.home, name='home'),
     path('home/', miniapp_views.home),
     path('cat_gallery/', miniapp_views.cat_gallery),
