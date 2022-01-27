@@ -1,6 +1,6 @@
 #from aiohttp import request
-from django.shortcuts import redirect,render, get_object_or_404
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect,render
 from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
 from django.contrib import messages
@@ -158,13 +158,12 @@ def signup(request):
             user_id=user_id, user_pw=user_pw, user_name=user_name, user_email=user_email)
         m.date_joined = timezone.now()
         if not user_id or not user_pw or not user_name or not user_email:
-            messages.info(request,'빈칸으로 제출할 수 없습니다.')
+            messages.info(request,'**빈칸으로 제출할 수 없습니다.')
             return render(request, 'miniapp/signup.html')
     
         if User.objects.filter(user_id=user_id).exists()==True:
-            messages.info(request,'중복되는 아이디입니다.')
+            messages.info(request,'**중복되는 아이디입니다.')
             return render(request, 'miniapp/signup.html')
-        
         
         m.save()
 
@@ -206,13 +205,21 @@ def create_cat(request,city):
         status =request.POST.get('status')
         m = Cat(
             cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
+
         m.save()
-        print(m.cat_id)
         name = request.session['id']
         user = User.objects.get(user_id = name)
         cat = Cat.objects.last()  
         img = request.FILES.get('img-file')
         time = timezone.now()
+        if not img:
+            messages.info(request,'사진이 없으면 고양이를 등록할 수 없어요!')
+            return render(request,'miniapp/create_cat.html')
+        if not cat_name or not gender or not neutral or not parkname or not appearance or not status:
+            messages.info(request,'입력되지 않은 항목이 있습니다.')
+            return render(request,'miniapp/create_cat.html')
+        m.save()
+
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
         UserHasCat.objects.create(cat_id=m.cat_id,user_no=user,cat_nickname = cat_name)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
