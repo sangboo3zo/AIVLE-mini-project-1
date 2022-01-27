@@ -8,7 +8,7 @@ class Cat(models.Model):
     cat_name = models.CharField(max_length=20)
     gender = models.CharField(max_length=20)
     neutral = models.CharField(max_length=20)
-    location = models.ForeignKey('Location', models.DO_NOTHING, db_column='location')
+    park = models.ForeignKey('Park', models.DO_NOTHING, db_column='park')
     appearance = models.CharField(max_length=2000, blank=True, null=True)
     status = models.CharField(max_length=2000, blank=True, null=True)
 
@@ -51,26 +51,14 @@ class Feed(models.Model):
         # managed = False
         db_table = 'Feed'
 
-
-class Location(models.Model):
-    location1 = models.CharField(max_length=50)
-    location2 = models.CharField(max_length=50)
-    location3 = models.CharField(max_length=50)
-    location4 = models.CharField(primary_key=True, max_length=50)
-
-    class Meta:
-        # managed = False
-        db_table = 'Location'
-
-
 class City(models.Model):
-    city_name = models.CharField(max_length=50,primary_key=True)
+    city_name = models.CharField(primary_key=True,max_length=50)
     class Meta:
         # managed = False
         db_table = 'City'
 
 class Park(models.Model):
-    city = models.ForeignKey(City, models.DO_NOTHING)
+    city = models.ForeignKey(City, models.DO_NOTHING,db_column='city')
     park = models.CharField(primary_key=True,max_length=50)
     class Meta:
         # managed = False
@@ -91,7 +79,7 @@ class User(models.Model):
 class UserHasCat(models.Model):
     user_no = models.ForeignKey(User, models.DO_NOTHING, db_column='user_no')
     cat = models.ForeignKey(Cat, models.DO_NOTHING)
-
+    cat_nickname = models.CharField(max_length=20, default="고양이")
     class Meta:
         # managed = False
         db_table = 'User_has_Cat'

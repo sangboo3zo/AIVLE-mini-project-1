@@ -14,19 +14,19 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
       {% if request.session.no %}
         <ul class="navbar-nav">
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link" aria-current="page" href="http://127.0.0.1:8000/" id = 'service_list'>홈</a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="http://127.0.0.1:8000/my_cat/{{ request.session.no }}" id = 'service_list'>내 고양이 보기</a>
+          <li class="nav-item ">
+            <a class="nav-link" href="http://127.0.0.1:8000/my_cat/{{ request.session.no }}" id = 'service_list'>내 고양이</a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="http://127.0.0.1:8000/cat_gallery" id = 'service_list'>고양이 찾기</a>
-          </li>
-          <li class="nanav-item active">
+          <li class="nanav-item ">
             <a class="nav-link" href="http://127.0.0.1:8000/cat_gallery/{{ request.session.city }}" id = 'service_list'>고양이 등록하기</a>
           </li>
-          
+          <li class="nav-item ">
+            <a class="nav-link" href="http://127.0.0.1:8000/cat_gallery/" id = 'service_list'>고양이 찾기</a>
+          </li>
+        
           <li class="nav-item">
             <a class="nav-link" href="http://127.0.0.1:8000/logout" id = 'service_list'>로그아웃</a>
           </li>
@@ -75,15 +75,15 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   font-weight: normal;
   font-style: normal;
 }
-
 #service_name {
-  font-family: 'Cafe24Ssurround';
-  font-size : 30px;
+    font-family: 'Cafe24Ssurround';
+    font-size : 30px;
 }
 
 #service_list{
   font-family: 'GangwonEdu_OTFBoldA';
   font-size : 22px ;
+
 }
 
 

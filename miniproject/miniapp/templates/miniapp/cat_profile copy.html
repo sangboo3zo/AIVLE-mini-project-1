@@ -14,55 +14,35 @@
 </head>
 
 <div class='container' >
-  
-        <div class="row" id="cat_profile">
-            <div class="col-xs-2 col-md-3">
-                <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > 프로필 </p>
-            </div>
-            {% if user_has_cat %}
-                <div class="col-xs-2 col-md-3" id = "update">
-                    <form method="post" class="post-form">
-                        {% csrf_token %}
-                        <button id = "img_button" class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat_id}}';" name="update" value="True" > &emsp; 수정하기 &emsp;</button>
-                    </form>
-                </div>
-            {% endif %}
-        </div>
-    
-
     <div class="row" id="cat_profile">
-        
-        <div class='layout1'>
-            <div class="box">
-                <img id="profile_img" src="{{ profile.cat_photo.url }}" alt="">
-            </div>
+        <div class="col-xs-2 col-md-3">
+            <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > 프로필 </p>
         </div>
-    
-        <div class='layout2'>
-            
-            <p>이름 : {{cat.cat_name}} </p>
-            <p>위치 : {{park}} </p>
-            {% if cat.gender == 'F'%}
-                <p>성별 : 암컷 </p> 
-            {% elif cat.gender == 'M' %}
-                <p>성별 : 수컷 </p> 
-            {% else %}
-                <p>성별 : 모르겠어요 </p>
-            {% endif %}
+        {% if user_has_cat %}
+            <div class="col-xs-2 col-md-3" id = "update">
+                <form method="post" class="post-form">
+                    {% csrf_token %}
+                    <button class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button>
+                </form>
+            </div>
+        {% endif %}
 
-            {% if cat.gender == 'F'%}
-                <p>중성화여부 : 했어요 </p> 
-            {% elif cat.gender == 'M' %}
-                <p>중성화여부 : 안했어요 </p> 
-            {% else %}
-                <p>중성화여부 : 모르겠어요 </p>
-            {% endif %}
-  
-            <p>특징 : {{cat.appearance}} </p>
-            <p>상태 : {{cat.status}} </p>
-          
-            
-        </div>  
+    <div>
+    
+    <div class="row" id="cat_profile">
+        <div id ="box" class="col-xs-4 col-md-2">
+            <img id="profile_img" src="{{ profile.cat_photo.url }}" alt="">
+        </div>
+        <div class="col-xs-4 col-md-2">
+            <br><br>
+            <p></p>
+        </div>
+        <div class="col-xs-4 col-md-2">
+            <br><br>
+            <p>이름 : {{cat_name}} </p>
+            <p>위치 : {{park}} </p>
+            <p>상태 : {{cat_status}} </p>
+        </div>
     </div>  
 
     <form method="post" class="post-form" enctype="multipart/form-data">
@@ -70,7 +50,7 @@
     <div class="row" id="cat_profile">
         <br><hr option="one"><br>
         <div class="col-xs-2 col-md-3">
-            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat.cat_id }}">&ensp;사진 추가하기</a> </p>
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat_id }}">&ensp;사진 추가하기</a> </p>
         </div>
         <div class="col-xs-2 col-md-3">
            
@@ -95,7 +75,8 @@
             </div>
         </div>
     </div>  
-
+    
+    
     <div class="feed_log">
         <br><hr option="one">
         <div class="row" id="cat_profile">
@@ -139,6 +120,9 @@
     </form>
     {% endif %}
 
+
+   
+
     <div class="chat">
         <br><hr option="one"><br>
         <div class="row" id="cat_profile">
@@ -152,7 +136,7 @@
 
 #cat_profile{
     font-family: 'GangwonEdu_OTFBoldA';
-    font-weight: 700;
+    font-weight: 900;
     font-size: 27px;
     position: relative;
     
@@ -178,36 +162,22 @@ td{
 #profile_img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;.
+    
+
 }
+
+
 .image-thumbail{
     width: 200px;
     height: 200px;
     object-fit: cover;
 }
-.box{
-    width: 240px;
-    height: 240px; 
+#box{
+    width: 200px;
+    height: 200px; 
     border-radius: 30%;
     overflow: hidden; 
-}
-.layout1 {
-
-    float: left;
-    width: 30%;
-    height: 100%;
-}
-.layout2 {
-
-    float: right;
-    width: 70%;
-    height: 100%;
-    font-size:22px;
-}
-#img_button{
-    font-family: 'GangwonEdu_OTFLightA';
-    font-size:20px;
-    text-decoration:none;" 
 }
 
 </style>
