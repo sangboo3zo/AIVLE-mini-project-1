@@ -36,16 +36,16 @@
                             <p>성별 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                             name = "gender">
-                            <option value = "none" disabled >{{cat.gender}}</option>
+                            <option value = "none" disabled >성별</option>
                                 <option value="수컷">수컷</option>
                                 <option value="암컷">암컷</option>
                                 <option value="모르겠어요">모르겠어요</option>
                             </select>
                             <p>중성화여부 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                            name = "neutral">
+                            name = "neutral" value={{cat.neutral}}>
                             <option value = "none" disabled>
-                                {{cat.neutral}}
+                                중성화여부
                             </option>
                                 <option value="했어요">했어요</option>
                                 <option value="안했어요">안했어요</option>
@@ -54,7 +54,7 @@
                             <p>특징 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                             name = "appearance">
-                            <option value = "none" disabled>{{cat.appearance}}</option>
+                            <option value = "none" disabled>특징</option>
                             
                                 <option value="흰색">흰색</option>
                                 <option value="검정색">검정색</option>
@@ -68,7 +68,7 @@
                             <p>상태 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                             name = "status">
-                            <option value = "none" disabled>{{cat.status}}</option>
+                            <option value = "none" disabled>상태</option>
                                 <option value="건강">건강</option>
                                 <option value="입원">입원</option>
                                 <option value="임시보호">임시보호</option>
@@ -104,46 +104,35 @@
             <p>상태 : {{cat.status}} </p> 
         </div>  
     </div>  
-
-    <form method="post" class="post-form" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="row" id="cat_profile">
-        <br><hr option="one"><br>
-        <div class="col-xs-2 col-md-3">
-            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진</p>
-            <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#photoupload">사진 추가하기</button> 
-            {% comment %} <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat.cat_id }}">&ensp;사진 추가하기</a> </p> {% endcomment %}
-        </div>
-    <div>
-
-    <!-- Modal -->
-    <div class="modal" id="photoupload" role="dialog">
-        <div class="modal-dialog">
-        
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-                <div class="modal-body">
-                    <p  style="font-family: 'Cafe24Ssurround';font-size:25px;position: relative;" > {{cat.cat_name}}의 사진 업로드하기 </p>
-
-                    <form action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="file" style="width:300px;height:60px;text-align:center;font-size: 15px;" name="img-file">
-                        <button type = "submit" class="btn btn-primary" style="width:140px;height:60px;text-align:center;font-size: 20px;"
-                        >저장하기</a></button>
-                    </form>
-                </div>
-            <div class="modal-footer">
-            {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> {% endcomment %}
-            </div>
-        </div>
-        
-        </div>
+    <br><hr option="one"><br>
+    <div id="cat_profile">
+        <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진</p>
+        <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#photoupload">사진 추가하기</button> 
     </div>
-
+    <form method="post" class="post-form" enctype="multipart/form-data">
+        {% csrf_token %}
+    <!-- Modal -->
+        <div class="modal" id="photoupload" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p  style="font-family: 'Cafe24Ssurround';font-size:25px;position: relative;" > {{cat.cat_name}}의 사진 업로드하기 </p>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" style="width:300px;height:60px;text-align:center;font-size: 15px;" name="img-file">
+                            <button type = "submit" class="btn btn-primary" style="width:140px;height:60px;text-align:center;font-size: 20px;"
+                            >저장하기</a></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
+    
     <div class="row" id="cat_photo">
         <div class="col-md-6">
             <table>
