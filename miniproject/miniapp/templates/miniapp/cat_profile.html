@@ -169,25 +169,29 @@
         <div class="col-xs-2 col-md-3">
             <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat.cat_id }}">&ensp;사진 추가하기</a> </p>
         </div>
-        <div class="col-xs-2 col-md-3">
-           
-
+        <div class="col-xs-2 col-md-3">   
         </div>
     <div>
-    </form>
+    </form>    
     <div class="row" id="cat_photo">
         <div class="col-md-6">
             <table>
                 <tr>
                     {% if cat_photo %}
                         {% for item in cat_photo %}
-                        <td><img class="image-thumbail"  id="cat_photo" src="{{ item.cat_photo.url }}" alt=""></td>
+                        <td><img class="image-thumbail"  id="cat_photo" src="{{ item.cat_photo.url }}", style="width: 600px; height:auto;"  alt=""></td>
                         {% endfor %}
                     {% endif %}
                 <tr>
             </table>   
         </div>
     </div>  
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        <a class="btn btn-light" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" href="http://127.0.0.1:8000/cat_profile/{{cat.cat_id}}/detail_gallery/" > 사진 더보기</a>
+    </form>
+
+
 
     <div class="feed_log">
         <br><hr option="one">
