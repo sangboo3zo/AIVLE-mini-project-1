@@ -8,124 +8,84 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" /> 
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
-
-
-
 </head>
-<div class="container">
-<div class="row" id="cat_profile">
-    <div class="col-xs-2 col-md-3">
-        <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;left: 70;" > 프로필 </p>
-    </div>
-    {% if user_has_cat %}
-        {% comment %} <div class="col-xs-2 col-md-3" id = "update">
-            <form method="post" class="post-form"> {% endcomment %}
-                {% comment %} <button class="btn btn-primary" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button> {% endcomment %}
-               
-                    <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">수정하기</button>
-                  
-                    <!-- Modal -->
-                    <div class="modal" id="myModal" role="dialog">
-                      <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title"></h4>
-                          </div>
-                          <div class="modal-body">
-                            <p></p>
-                            <p>
-                                <div class="btn-group">
-                                    <form method = "POST">
-                                        {% csrf_token %}
-                                        <p>성별 수정하기:</p>
-                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                                        name = "gender">
-                                        <option value = "none" selected disabled hidden>
-                                            {% if cat_gender == "M" %}
-                                            수컷
-                                            {% elif cat_gender == "F" %}
-                                            암컷
-                                            {% elif cat_gender == "U" %}
-                                            모르겠어요
-                                            {% endif %}
-                                        </option>
-                                            <option value="M">수컷</option>
-                                            <option value="F">암컷</option>
-                                            <option value="U">모르겠어요</option>
-                                        </select>
-                                        <p>중성화여부 수정하기:</p>
-                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                                        name = "neutral">
-                                        <option value = "none" selected disabled hidden>
-                                            {% if cat_neutral == "Y" %}
-                                            했어요
-                                            {% elif cat_gender == "N" %}
-                                            안했어요
-                                            {% elif cat_gender == "U" %}
-                                            모르겠어요
-                                            {% endif %}
-                                        </option>
-                                            <option value="Y">했어요</option>
-                                            <option value="N">안했어요</option>
-                                            <option value="U">모르겠어요</option>
-                                        </select>
-                                        <p>특징 수정하기:</p>
-                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                                        name = "appearance">
-                                        <option value = "none" selected disabled hidden>{{cat_appearance}}</option>
-                                            <option value="흰색">흰색</option>
-                                            <option value="검정색">검정색</option>
-                                            <option value="노란색">노란색</option>
-                                            <option value="회색">회색</option>
-                                            <option value="삼색">삼색</option>
-                                            <option value="얼룩">얼룩</option>
-                                            <option value="그외">그외</option>
-                                        </select>
-                                        <p>상태 수정하기:</p>
-                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                                        name = "status">
-                                        <option value = "none" selected disabled hidden>{{cat_status}}</option>
-                                            <option value="건강">건강</option>
-                                            <option value="입원">입원</option>
-                                            <option value="임시보호">임시보호</option>
-                                            <option value="입양">입양</option>
-                                            <option value="실종">실종</option>
-                                            <option value="사망">사망</option>
-                                        </select>
-                                        <p></p>
-                                        <button type = "submit" class="btn btn-primary" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                                         onclick="this.form.submit()">저장하기</a></button>
-                                    </form>
-                                </div>
-                            </p>
-                          </div>
-                          <div class="modal-footer">
-                            {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> {% endcomment %}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-<div class='container' >
-  
-        <div class="row" id="cat_profile">
-            <div class="col-xs-2 col-md-3">
-                <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > 프로필 </p>
-            </div>
-            {% if user_has_cat %}
-                <div class="col-xs-2 col-md-3" id = "update">
-                    <form method="post" class="post-form">
-                        {% csrf_token %}
-                        <button id = "img_button" class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat.cat_id}}';" name="update" value="True" > &emsp; 수정하기 &emsp;</button>
-                    </form>
+<div class="container">
+    <div id="cat_profile">
+        {% if user_has_cat %}
+        <p  style="font-family: 'Cafe24Ssurround';font-size:30px" > 프로필 </p> 
+        <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#myModal">수정하기</button> 
+        {%else%}
+        <p  style="font-family: 'Cafe24Ssurround';font-size:30px" > 프로필</p>
+        {% endif %} 
+    </div>
+
+    <div class="modal" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
                 </div>
-            {% endif %}
+                <div class="modal-body">
+                
+                    <p>
+                    <div class="btn-group">
+                        <form method = "POST">
+                            {% csrf_token %}
+                            <p>성별 수정하기:</p>
+                            <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                            name = "gender">
+                            <option value = "none" disabled >{{cat.gender}}</option>
+                                <option value="수컷">수컷</option>
+                                <option value="암컷">암컷</option>
+                                <option value="모르겠어요">모르겠어요</option>
+                            </select>
+                            <p>중성화여부 수정하기:</p>
+                            <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                            name = "neutral">
+                            <option value = "none" disabled>
+                                {{cat.neutral}}
+                            </option>
+                                <option value="했어요">했어요</option>
+                                <option value="안했어요">안했어요</option>
+                                <option value="모르겠어요">모르겠어요</option>
+                            </select>
+                            <p>특징 수정하기:</p>
+                            <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                            name = "appearance">
+                            <option value = "none" disabled>{{cat.appearance}}</option>
+                            
+                                <option value="흰색">흰색</option>
+                                <option value="검정색">검정색</option>
+                                <option value="노란색">노란색</option>
+                                <option value="회색">회색</option>
+                                <option value="삼색">삼색</option>
+                                <option value="얼룩">얼룩</option>
+                                <option value="그외">그외</option>
+                            
+                            </select>
+                            <p>상태 수정하기:</p>
+                            <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                            name = "status">
+                            <option value = "none" disabled>{{cat.status}}</option>
+                                <option value="건강">건강</option>
+                                <option value="입원">입원</option>
+                                <option value="임시보호">임시보호</option>
+                                <option value="입양">입양</option>
+                                <option value="실종">실종</option>
+                                <option value="사망">사망</option>
+                            </select>
+                            <p></p>
+                            <button type = "submit" class="btn btn-primary" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                            onclick="this.form.submit()">저장하기</a></button>
+                        </form>
+                    </div>
+                    </p>
+                </div>
+            </div>
         </div>
-    {% endif %}
-<div>
+    </div>
 
     <div class="row" id="cat_profile">
         
@@ -136,29 +96,12 @@
         </div>
     
         <div class='layout2'>
-            
-            <p>이름 : {{cat.cat_name}} </p>
-            <p>위치 : {{park}} </p>
-            {% if cat.gender == 'F'%}
-                <p>성별 : 암컷 </p> 
-            {% elif cat.gender == 'M' %}
-                <p>성별 : 수컷 </p> 
-            {% else %}
-                <p>성별 : 모르겠어요 </p>
-            {% endif %}
-
-            {% if cat.gender == 'F'%}
-                <p>중성화여부 : 했어요 </p> 
-            {% elif cat.gender == 'M' %}
-                <p>중성화여부 : 안했어요 </p> 
-            {% else %}
-                <p>중성화여부 : 모르겠어요 </p>
-            {% endif %}
-  
+            <p>이름 : {{nickname.cat_nickname}} </p>
+            <p>위치 : {{park}} </p>  
+            <p>성별 : {{cat.gender }}</p> 
+            <p>중성화여부: {{cat.neutral  }}
             <p>특징 : {{cat.appearance}} </p>
-            <p>상태 : {{cat.status}} </p>
-          
-            
+            <p>상태 : {{cat.status}} </p> 
         </div>  
     </div>  
 
@@ -167,31 +110,53 @@
     <div class="row" id="cat_profile">
         <br><hr option="one"><br>
         <div class="col-xs-2 col-md-3">
-            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat.cat_id }}">&ensp;사진 추가하기</a> </p>
-        </div>
-        <div class="col-xs-2 col-md-3">   
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진</p>
+            <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#photoupload">사진 추가하기</button> 
+            {% comment %} <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat.cat_id }}">&ensp;사진 추가하기</a> </p> {% endcomment %}
         </div>
     <div>
-    </form>    
+
+    <!-- Modal -->
+    <div class="modal" id="photoupload" role="dialog">
+        <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+                <div class="modal-body">
+                    <p  style="font-family: 'Cafe24Ssurround';font-size:25px;position: relative;" > {{cat.cat_name}}의 사진 업로드하기 </p>
+
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" style="width:300px;height:60px;text-align:center;font-size: 15px;" name="img-file">
+                        <button type = "submit" class="btn btn-primary" style="width:140px;height:60px;text-align:center;font-size: 20px;"
+                        >저장하기</a></button>
+                    </form>
+                </div>
+            <div class="modal-footer">
+            {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> {% endcomment %}
+            </div>
+        </div>
+        
+        </div>
+    </div>
+
+    </form>
     <div class="row" id="cat_photo">
         <div class="col-md-6">
             <table>
                 <tr>
                     {% if cat_photo %}
                         {% for item in cat_photo %}
-                        <td><img class="image-thumbail"  id="cat_photo" src="{{ item.cat_photo.url }}", alt=""></td>
+                        <td><img class="image-thumbail"  id="cat_photo" src="{{ item.cat_photo.url }}" alt=""></td>
                         {% endfor %}
                     {% endif %}
                 <tr>
             </table>   
         </div>
     </div>  
-    <form method="post" class="post-form">
-        {% csrf_token %}
-        <a class="btn btn-light" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" href="http://127.0.0.1:8000/cat_profile/{{cat.cat_id}}/detail_gallery/" > 사진 더보기</a>
-    </form>
-
-
 
     <div class="feed_log">
         <br><hr option="one">
@@ -212,7 +177,7 @@
             {% endif %}      
         </table>
         <br>
-    <div>
+    </div>
     {% if user_has_cat %}
 
     <form method="post" class="post-form">
@@ -239,12 +204,15 @@
     <div class="chat">
         <br><hr option="one"><br>
         <div class="row" id="cat_profile">
-            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > {{cat_name}}에 대해 이야기 해요! </p>
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > {{cat.cat_name}}에 대해 이야기 해요! </p>
         </div>
         {% include "./comment.html" %}
     </div>
+
+
 </div>
-</div>
+
+
 <style>
 
 #cat_profile{
@@ -254,7 +222,9 @@
     position: relative;
     
 }
-
+#my_modal{
+    font-family: 'GangwonEdu_OTFBoldA';
+}
 .feed_log{
     font-family: 'GangwonEdu_OTFBoldA';
     position: relative;
@@ -302,6 +272,18 @@ td{
     height: 100%;
     font-size:22px;
 }
+.p_1 {
+
+    float: left;
+    width: 30%;
+    height: 100px;
+}
+.p_2 {
+    
+    float: right;
+    width: 70%;
+    height: 100px;
+}
 #img_button{
     font-family: 'GangwonEdu_OTFLightA';
     font-size:20px;
@@ -310,9 +292,13 @@ td{
 
 #cat_photo{
     position: relative;
-    max-width : 100%;
-    max-height : 100%;
+    max-width : 200px;
+    max-height : 200px;
     object-fit: cover;
+}
+#m_button{
+    width:100px;
+    height:50px;
 }
 </style>
 {% endblock %}
