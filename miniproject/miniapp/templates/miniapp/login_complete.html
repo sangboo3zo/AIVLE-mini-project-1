@@ -25,34 +25,43 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     </head>
     
-    <body>
-    <div class="layer">
-        <form method="post" class="post-form">
-            {% csrf_token %}
-            <br><br><br>
-            <span class="content">로그인이 완료되었습니다.</span><br>
-            {% if object  %}
-                <p>{{ object.user_name }} 님 반갑습니다.</p>
-            {% endif %}
-     
-            <br>
-            <label class="menu" for="location" style="font-size: 22px;">지역을 선택하세요</label><br>
-            <div class="btn-group">
-                <select style="width:300px;height:60px;text-align:center;font-size: 25px;" class="form-select" aria-label="Default select example" name = location>
-                {% for c in city %}
-                <option value="{{c.city_name}}">{{c.city_name}}</option>
-                {% endfor %}
-                </select>
-               
-                
-                    <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >선택하기</button>
+   <!-- <header>-->
+        <div class="container">
+            <div class="layer">
+                    <br><br><br>
+                    <span class="content">로그인이 완료되었습니다.</span><br>
+                    {% if object  %}
+                        <p>{{ object.user_name }} 님 반갑습니다.</p>
+                    {% endif %}
             </div>
-          <br><br> 
-          <div id="map" style="width:400px;height:400px;"></div>
+        </div>
+    <!--</header>-->
+    <body>
+    
+            
+    <div class="container">
+        <form method="post" class="post-form">
+        <div class="row">
+            <div class="col-lg-2" id="btn">
+                <div id="map" style="width:400px;height:250px; float:right;"></div>
+            </div>
+                
+            <div class="col-lg-2" id="btn2">
+                <label class="menu" for="location" style="font-size: 22px;padding-top:54px;padding-left:100px;padding-bottom:5px;">지역을 선택하세요</label><br>
+                <div class="btn-group">
+                    <select style="width:300px;height:60px;text-align:center;font-size: 25px;" class="form-select" aria-label="Default select example" name = location>
+                    {% for c in city %}
+                    <option value="{{c.city_name}}">{{c.city_name}}</option>
+                    {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >선택하기</button>
+                </div>
+            </div>
+        </div>
         </form>
-        {% comment %} <button type="submit" class="btn btn-primary" onclick="location.href =  '/';" >홈으로 이동하기</button>
-        <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >나의 고양이 목록으로 이동하기</button> {% endcomment %}
-    </div>
+        {% csrf_token %}
+    </div>  
+     
     <script>
         var curtBtn = '<img src=".common/img/curt-loca-icon.png" alt="현재위치로이동">';
         var curtLoca = "";
@@ -216,6 +225,30 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         font-size : 140% ;
     }
     
+    #btn{
 
+        top: 300px;
+
+        position:relative;
+
+        font-family: 'Cafe24Ssurround';
+
+
+        width: 50%;
+
+    }
+
+    #btn2{
+
+        top: 300px;
+
+        position:relative;
+
+        font-family: 'Cafe24Ssurround';
+
+
+        width: 50%;
+
+    }
 </style>
 
