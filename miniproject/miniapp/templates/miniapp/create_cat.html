@@ -12,14 +12,24 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <div class="col-4">
             <h4 style="font-family: 'Cafe24Ssurround'; font-size:35px;">고양이 등록하기</h4>
         </div>
+        <br><br><br>
     
 
     </div>
     <div class="create_menu">
       <form method="post" class="post-form" enctype="multipart/form-data">
           {% csrf_token %} 
+          {%if messages%}
+          <ul class="messages">
+            {%for message in messages%}
+              <li{%if messages.tags%} class="{{message.tags}}"{%endif%}>{{message}}</li>
+            {%endfor%}
+          </ul>
+          {%endif%}
+          <input type="file" name="img-file">
+          <br><br>
           <div class="form-group">
-              <label class="menu" for="username">이름</label>
+              <label class="menu" for="username">이름을 지어주세요!</label>
               <input type="text" class="form-control" name="cat_name">
           </div>
     
@@ -89,7 +99,6 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
           </div>
           <br>
 
-          <input type="file" name="img-file">
           <br><br><br>
           <button type="submit" class="btn btn-primary">생성하기</button>
       </form>
