@@ -21,13 +21,11 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s811vqb6nk"></script>
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s811vqb6nk"></script>
+
     </head>
-    <header>
-        <label for="map">-급식소 위치가 파란 마커로 표시됩니다-</label>
-        <div id="map" style="width:20%;height:250px;"></div>
-        </header>
-<body>
- 
+    
+    <body>
     <div class="layer">
         <form method="post" class="post-form">
             {% csrf_token %}
@@ -35,12 +33,9 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             <span class="content">로그인이 완료되었습니다.</span><br>
             {% if object  %}
                 <p>{{ object.user_name }} 님 반갑습니다.</p>
-
             {% endif %}
      
             <br>
-    
-
             <label class="menu" for="location" style="font-size: 22px;">지역을 선택하세요</label><br>
             <div class="btn-group">
                 <select style="width:300px;height:60px;text-align:center;font-size: 25px;" class="form-select" aria-label="Default select example" name = location>
@@ -48,10 +43,12 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <option value="{{c.city_name}}">{{c.city_name}}</option>
                 {% endfor %}
                 </select>
+               
                 
-                <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >선택하기</button>
+                    <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >선택하기</button>
             </div>
           <br><br> 
+          <div id="map" style="width:400px;height:400px;"></div>
         </form>
         {% comment %} <button type="submit" class="btn btn-primary" onclick="location.href =  '/';" >홈으로 이동하기</button>
         <button type="submit" class="btn btn-primary" onclick="location.href =  '/my_cat/{{ request.session.no }}';" >나의 고양이 목록으로 이동하기</button> {% endcomment %}
@@ -71,26 +68,15 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         var FeedLoca8 = new naver.maps.LatLng(37.340179878893736, 127.11210618418956);
         var FeedLoca10 = new naver.maps.LatLng(37.37766774510155, 127.15143155350361);
         var FeedLoca11 = new naver.maps.LatLng(37.358102093389526, 127.12058556808302);
-    /*
-        var coordi =[[37.35732811060706, 127.1094833156213],
-                    [37.37053296901487, 127.11666672651876],
-                    [37.37053296901487, 127.11666672651876],
-                    [37.36935112096527, 127.13948637814985],
-                    [37.36814969845444, 127.13949380584123],
-                    [37.357310327912586, 127.11448989768256],
-                    [37.37721489171491, 127.12382228419067],
-                    [37.340179878893736, 127.11210618418956],
-                    [37.37766774510155, 127.15143155350361],
-                    [37.358102093389526, 127.12058556808302]];
 
-        var contentString = ['금곡공원','능골공원','맹산공원','머내공원','분당주택공원','분당중앙공원','비조공원','오리공원','율동공원','정자공원'];
         var map = new naver.maps.Map('map',{
             center: KTLoca,
             scaleControl:false,
             mapDataControl:false,
             zoom:13
         });
-        */
+        /////////////////////////////////////////////////////////////
+        //위치표시하는 마커 이걸로 나중에 급식소 표시하면 될 것 같아요
         var marker1 = new naver.maps.Marker({
             position : FeedLoca1,
             map : map,
@@ -146,23 +132,18 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             map : map,
             icon:{url:"/common/img/marker-target.png"}
         });
-        
-    //////////////////////////////////////////////////////////////////////////////
-        
-    /*
-        naver.maps.Event.addListener(marker, 'click', function(e){
-            if (infowindow.getMap()){
-                infowindow.close();
-            }else{
-                infowindow.open(map,marker);
-            }
-        });
-    */
+
+        var markerClickHandler = function(){
+            return function(e){ alert("Marker KT building!");}
+        }
+
+        naver.maps.Event.addListener(marker, 'click', markerClickHandler());
+
         naver.maps.Event.once(map, 'init_stylemap', function(){
             var cstmCtrl = new naver.maps.CustomControl(curtBtn,{
                 position: naver.maps.Position.RIGHT_TOP
             });
-    
+
             cstmCtrl.setMap(map);
             naver.maps.Event.addDOMListener(cstmCtrl.getElement(), 'click', function(){
                 if (curtLoca){
@@ -179,7 +160,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             curtLoca = new naver.maps.LatLng(positon.coords.latitude, position.coords.longtitude);
             map.setCenter(curtLoca);
             map.setZoom(13);
-    
+
             new naver.maps.Marker({
                 positon: curtLoca,
                 map:map,
@@ -202,9 +183,9 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             }
         }
         </script>
-</body>
+    </body>
 </html>
-
+ 
 <style type="text/css">
 
     @font-face {
