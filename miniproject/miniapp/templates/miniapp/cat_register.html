@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+<br>
+<head> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" /> 
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+</head>
+
+<div class="container">
+    <div id="for_css">
+    <div class="row" id="cat_profile">
+        <div class='layout3'>
+           
+        </div>
+        <div class='layout1'>
+            <div class="box">
+                <img id="profile_img" src="{{ img.cat_photo.url }}" alt="">
+            </div>
+        </div>
+    
+        <div class='layout2'>
+            <p>위치 : {{cat.park.park}} </p>  
+            <p>성별 : {{cat.gender }}</p> 
+            <p>중성화여부: {{cat.neutral  }}
+            <p>특징 : {{cat.appearance}} </p>
+            <p>상태 : {{cat.status}} </p> 
+        </div>  
+        <div class='layout4'>
+           
+        </div>
+    </div>  
+
+    <div>
+        <p></P>
+        <p id= 'q'>이 고양이가 맞나요?</p>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+    <div class="row" >
+        
+        <div class="col-lg-2" id="btn">
+        <button type = "submit" id= "yes_btn" class="btn btn-primary" name="register" value="{{cat.cat_id}}" onclick="location.href =  '/my_cat/{{request.session.no}}';">예</button>
+        </div>
+        
+        <div class="col-lg-2" id="btn2">
+        <button type = "button" id= "no_btn" class="btn btn-primary" onclick="location.href =  '/cat_gallery/{{request.session.city}}';">아니요</button>
+        </div>
+        
+    </div>
+</form>
+</div>
+</div>
+
+<style>
+#yes_btn{
+    float:right;
+}
+
+#for_css{
+    top:100px;
+    position: relative;
+}
+#cat_profile{
+    font-family: 'GangwonEdu_OTFBoldA';
+    font-weight: 700;
+    font-size: 27px;
+    position: relative;
+    
+}
+#q{
+    font-family: 'Cafe24Ssurround';
+    width: 50%;
+    font-size: 35px;
+    position: relative;
+    width: 100%;
+    text-align:center;
+
+    
+}
+#btn{
+    font-family: 'Cafe24Ssurround';
+    
+    width: 50%;
+}
+#btn2{
+    font-family: 'Cafe24Ssurround';
+   
+    width: 50%;
+}
+
+#profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+.image-thumbail{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+.box{
+    width: 240px;
+    height: 240px; 
+    border-radius: 30%;
+    overflow: hidden; 
+}
+.layout1 {
+
+    width: 25%;
+    height: 100%;
+
+
+}
+.layout2 {
+    width: 25%;
+    height: 100%;
+    font-size:22px;
+}
+.layout3, .layout4{
+    width: 25%;
+    height: 100%;
+}
+#cat_photo{
+    position: relative;
+    max-width : 200px;
+    max-height : 200px;
+    object-fit: cover;
+}
+
+</style>
+{% endblock %}

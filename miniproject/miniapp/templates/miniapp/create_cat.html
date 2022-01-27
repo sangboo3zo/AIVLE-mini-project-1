@@ -12,14 +12,24 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <div class="col-4">
             <h4 style="font-family: 'Cafe24Ssurround'; font-size:35px;">고양이 등록하기</h4>
         </div>
+        <br><br><br>
     
 
     </div>
     <div class="create_menu">
       <form method="post" class="post-form" enctype="multipart/form-data">
           {% csrf_token %} 
+          {%if messages%}
+          <ul class="messages">
+            {%for message in messages%}
+              <li{%if messages.tags%} class="{{message.tags}}"{%endif%}>{{message}}</li>
+            {%endfor%}
+          </ul>
+          {%endif%}
+          <input type="file" name="img-file">
+          <br><br>
           <div class="form-group">
-              <label class="menu" for="username">이름</label>
+              <label class="menu" for="username">이름을 지어주세요!</label>
               <input type="text" class="form-control" name="cat_name">
           </div>
     
@@ -38,8 +48,8 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             
             <label class="menu" for="password1">중성화 여부</label><br>
     
-            <label><input type="radio" id="완료" name="neutral" value="완료"> 완료  </label>
-            <label><input type="radio" id="미완료" name="neutral" value="미완료"> 미완료  </label>
+            <label><input type="radio" id="완료" name="neutral" value="했어요"> 했어요  </label>
+            <label><input type="radio" id="미완료" name="neutral" value="안했어요"> 안했어요  </label>
             <label><input type="radio" id="모르겠어요" name="neutral" value="모르겠어요"> 모르겠어요  </label>
           </div>
           <br>
@@ -89,7 +99,6 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
           </div>
           <br>
 
-          <input type="file" name="img-file">
           <br><br><br>
           <button type="submit" class="btn btn-primary">생성하기</button>
       </form>
