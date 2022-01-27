@@ -125,6 +125,7 @@ def login_complete(request):
             'city':c
         }
         return render(request, 'miniapp/login_complete.html', context)
+        
 def signup(request):
     if request.method == 'POST':
         user_id = request.POST.get('id')
