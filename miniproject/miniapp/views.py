@@ -1,8 +1,8 @@
-# from aiohttp import request
+#from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from sympy import I
-from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park
+from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
 
 def home(request):
@@ -16,7 +16,9 @@ def cat_profile(request, pk):
     img = CatPhoto.objects.filter(cat_id=pk).order_by('-date_time')[:6]
     feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
     comments = CatBoard.objects.filter(cat = pk)
-    user_has_cat = UserHasCat.objects.filter(user_no=request.session['no'])
+    user_has_cat= UserHasCat.objects.filter(user_no=request.session['no'])
+    nickname = UserHasCat.objects.filter(user_no=request.session['no'],cat_id = pk).first()
+    print(nickname)
     u_h_c = False
     for u in user_has_cat:
         if u.cat_id == pk:
@@ -25,7 +27,7 @@ def cat_profile(request, pk):
     current_user = User.objects.get(user_id=current_user_id)
     cat_info = Cat.objects.get(cat_id = int(pk))
     comments = CatBoard.objects.filter(cat = int(pk))
-    print(current_user.user_name)
+
     if request.method == 'POST':
     #     update =False
     #     if request.POST.get('update') == "True":
@@ -52,7 +54,21 @@ def cat_profile(request, pk):
             comment.board_text = request.POST.get('board_text')
             comment.date_time = timezone.now()
             comment.save()
-
+        ##status change##
+        if request.POST.get('status') or request.POST.get('gender') or request.POST.get('neutral') or request.POST.get('appearance'):
+            cat_info.status = request.POST.get('status')
+            cat_info.gender = request.POST.get('gender')
+            cat_info.neutral = request.POST.get('neutral')
+            cat_info.appearance = request.POST.get('appearance')
+            cat_info.save()
+            return redirect(f'/cat_profile/{pk}/')
+        ##
+        
+        if request.FILES.get('img-file'):
+            img = request.FILES.get('img-file')
+            time = timezone.now()
+            CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=request.session["no"],cat_id=pk)
+            return redirect(f'/cat_profile/{pk}/')
     return render(request, 'miniapp/cat_profile.html', context={
         'cat_view' : img[0],
         'profile':profile,
@@ -66,10 +82,16 @@ def cat_profile(request, pk):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
-        'park' : cat_profile.park.park
-    })
+        'park' : cat_profile.park.park,
+        'nickname' : nickname,
+        })
     
-        
+def detail_gallery(request, pk):
+    img = CatPhoto.objects.filter(cat_id=pk)
+    return render(request, 'miniapp/cat_detail_gallery.html', context={
+        'detail_gallery' : img
+    })
+
   
 def login(request):
     if request.method == 'POST':
@@ -108,20 +130,52 @@ def login_complete(request):
             'city':c
         }
         return render(request, 'miniapp/login_complete.html', context)
+
+        
 def signup(request):
     if request.method == 'POST':
-        user_id = request.POST.get('id')
-        user_pw = request.POST.get('password1')
-        user_name = request.POST.get('username')
-        user_email = request.POST.get('email')
-        m = User(
-            user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
-        m.date_joined = timezone.now()
-        m.save()
-        
-        return render(request, 'miniapp/signup_complete.html' )
+        try:
+            user_id = request.POST.get('id')
+            user_pw = request.POST.get('password1')
+            user_name = request.POST.get('username')
+            user_email = request.POST.get('email')
+            m = User(
+                user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
+            m.date_joined = timezone.now()
+            m.save()
+            return render(request, 'miniapp/signup_complete.html' )
+        except:
+            messages = "아이디가 이미 존재합니다"
+            return render(request, 'miniapp/signup.html',{'message':messages} )
     else:
         return render(request, 'miniapp/signup.html' )
+
+
+# def signup(request):
+#     if request.method == 'POST':
+#         try:
+#             #User.objects.get(user_id=request.POST['user_id'])
+#             return render(request,'miniapp/signup.html',{'error':'이미 사용된 ID입니다.'})
+
+#         except:
+#         except User.DoesNotExist:
+#             user_id = request.POST.get('id')
+#             user_pw = request.POST.get('password1')
+#             user_name = request.POST.get('username')
+#             user_email = request.POST.get('email')
+#             if user_id=="" or user_pw=="" or user_name=="" or user_email=="":
+#                 messages.warning(request,"빈 칸으로 제출할 수 없습니다.")
+#                 return redirect("리다이렉트")            
+#             m = User(
+#                 user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
+#             m.date_joined = timezone.now()
+#             m.save()
+#             return render(request,'miniapp/signup_complete.html')
+#     else:
+#         return render(request, 'miniapp/signup.html' )
+
+
+
 
 def logout(request):
     request.session.flush()
@@ -205,41 +259,24 @@ def cat_gallery_city(request,city):
     cat = Cat.objects.exclude(cat_id__in = uhc).values("cat_id")
     cat2 = Cat.objects.exclude(status="실종").values("cat_id")
     cat3 = Cat.objects.exclude(status="사망").values("cat_id")
-
-    img = CatPhoto.objects.filter(cat_id__in = cat)&CatPhoto.objects.filter(cat_id__in = cat2)&CatPhoto.objects.filter(cat_id__in = cat3)
-
+    cat_idx1= [int(i['cat_id']) for i in cat if i not in uhc]
+    cat_idx2= [int(i['cat_id']) for i in cat2 if i not in uhc]
+    cat_idx3= [int(i['cat_id']) for i in cat3 if i not in uhc]
+    cat_list= list(set(cat_idx1) & set(cat_idx2) & set(cat_idx3))
+    img = CatPhoto.objects.filter(cat_id__in = cat_list)
     # 내가 이미 등록되어있으면 x
     if request.method == 'POST':
         parkname = request.POST.get('park')
         park_o = Park.objects.get(park=parkname)
         cat4 = Cat.objects.filter(park=park_o).values("cat_id")
-        img = CatPhoto.objects.filter(cat_id__in = cat)&CatPhoto.objects.filter(cat_id__in = cat2)&CatPhoto.objects.filter(cat_id__in = cat3)&CatPhoto.objects.filter(cat_id__in = cat4)
-
-    context = {
-        'object': img,
-        'park': park
-    }
-    return render(request, 'miniapp/cat_gallery_city.html', context)
-from .models import CatBoard
-
-def comment(request, cat_id):
-    current_user_id = request.session['id']
-    current_user = User.objects.get(user_id=current_user_id)
-    cat_info = Cat.objects.get(cat_id = int(cat_id))
-    comments = CatBoard.objects.filter(cat = int(cat_id))
-    if request.method == 'POST':
-        comment = CatBoard()
-        comment.cat = cat_info
-        comment.user_no = current_user
-        comment.board_text = request.POST.get('board_text')
-        comment.date_time = timezone.now()
-        comment.save()
-    return render(request, 'miniapp/comment.html', {
-        'user_name': current_user.user_name,
-        'cat_info': cat_info.cat_name,
-        'user' : current_user,
-        'comments': comments,
-        })
+        cat_idx4= [int(i['cat_id']) for i in cat4 if i not in uhc]
+        cat_list= list(set(cat_list) & set(cat_idx4))
+        img = CatPhoto.objects.filter(cat_id__in = cat_list)
+        
+        return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
+            'park': park})
+    return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
+            'park': park})
 
 
 from django.contrib import messages
@@ -271,8 +308,8 @@ def cat_gallery(request):
     return render(request, 'miniapp/cat_gallery.html', context)
 
 def gallery_show_all_cats(request):
+    
     name = request.session['id']
-
     cat = Cat.objects.filter(status="실종").values("cat_id")
     cat2 = Cat.objects.filter(status="사망").values("cat_id")
     img = CatPhoto.objects.exclude(cat_id__in = cat)&CatPhoto.objects.exclude(cat_id__in = cat2)
