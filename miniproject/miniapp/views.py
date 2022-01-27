@@ -1,7 +1,6 @@
 #from aiohttp import request
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from sympy import I
 from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
 
