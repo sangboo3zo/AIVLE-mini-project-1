@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
@@ -13,17 +12,27 @@
     
     <header>
         <h1 id= "servicename" style="text-shadow:1.5px 2px 2px #000;">네맘 내맘</h1>
-        <h4 id= "servicedsc" style="text-shadow:1px 1px 1px #000;"> 길고양이 모시기모시기 </h4>
-        
+        <div class="row">
+
+            <div class="col-lg-2"  id= "layout1">
+                <h4 id= "servicedsc2" >길</h4>
+                <h4 id= "servicedsc2" >고</h4>
+                <h4 id= "servicedsc2" >양</h4>
+                <h4 id= "servicedsc2" >이</h4>
+      
+            </div>
+
+            <div class="col-lg-2"  id="layout2">
+                <h4 id= "servicedsc">에서 만난</h4>
+                <h4 id= "servicedsc">마운 존재들의</h4>
+                <h4 id= "servicedsc">육을 도와주는</h4>
+                <h4 id= "servicedsc">색 캣맘 커뮤니티</h4>
+                
+            </div>
+        <div>
+ 
     </header>
-    <body>
-    
-        <article >
-            <p style="font-family: 'Cafe24Ssurround';font-size:30px;"> 현재 등록된 장소 보기 </p>
-        </article>
-        
-        
-        </body>
+
 </html>
 
     
@@ -35,7 +44,7 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    height: 500px;
+    height: 600px;
     padding: 1rem;
     color: white;
     background-image: url('././static/images/cat-234.jpg');
@@ -45,11 +54,6 @@ header {
     justify-content: space-between;
 }
 
-article{
-    position:static ;
-    left: 50%; 
-    margin-left: -200px;
-}
 #servicename{
     font-family: 'Cafe24Ssurround';
     text-align:center;
@@ -60,35 +64,34 @@ article{
     color : white;
 }
 #servicedsc{
-    text-align:center;
-    font-size: 40px;
+    text-align:left;
+    font-size: 30px;
+    /*left:44%;*/
+    /*position:relative;*/
     font-family: 'GangwonEdu_OTFBoldA';
+    text-shadow:1.5px 2px 2px #000;
+    padding: 4.7px;
+}
+#servicedsc2{
+    text-align:right;
+    font-size: 35px;
+    padding: 2px;
+    font-family: 'GangwonEdu_OTFBoldA';
+    text-shadow:1.5px 2px 2px #000;
 }
 
-.layout1, .layout2 {
-    width: 100%;
-    height: 50%;
+#layout1{
+    width: 47%;
+    height: 100%;
+    text-align:right;
+  }
+#layout2 {
+    width: 53%;
+    height: 100%;
+    text-align:left;
   }
 
-.layout1 {
-    color: white;
-    background-image: url('././static/images/cat-234.jpg');
-    background-repeat: no-repeat;
-    background-size : cover;
-    background-color: skyblue;
-    position:fixed;
-    
 
-    }
-
-.layout2 {.
-    position:fixed;
-    top:400px;
-    left: 50%; 
-    margin-left: -200px;
-
-}
     
 </style>
 {% endblock %}
-

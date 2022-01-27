@@ -6,6 +6,9 @@ from django.utils import timezone
 from django.contrib import messages
 def home(request):
     return render(request, 'miniapp/home.html')
+def test(request):
+    return render(request, 'miniapp/test.html')
+
 
 def cat_profile(request, pk):
     update =False
@@ -62,6 +65,10 @@ def cat_profile(request, pk):
             cat_info.save()
             return redirect(f'/cat_profile/{pk}/')
         ##
+        if request.POST.get('nickname'):
+            nickname.cat_nickname = request.POST.get('nickname')
+            nickname.save()
+            return redirect(f'/cat_profile/{pk}/')
         
         if request.FILES.get('img-file'):
             img = request.FILES.get('img-file')
@@ -87,8 +94,10 @@ def cat_profile(request, pk):
     
 def detail_gallery(request, pk):
     img = CatPhoto.objects.filter(cat_id=pk)
+    cat= Cat.objects.get(cat_id=pk)
     return render(request, 'miniapp/cat_detail_gallery.html', context={
-        'detail_gallery' : img
+        'detail_gallery' : img,
+        'cat_id' : cat
     })
 
 def cat_register(request, id):
@@ -110,11 +119,7 @@ def login(request):
         user_pw = request.POST.get('user_pw')
         try: 
             m=User.objects.get(user_id=user_id, user_pw=user_pw)
-            # c= City.objects.all()
-            # context = {
-            #     'object': m,
-            #     'city':c
-            # }
+
             request.session['id']=user_id
             request.session['no']=m.user_no
             
@@ -167,31 +172,6 @@ def signup(request):
         return render(request, 'miniapp/signup.html' )
 
 
-# def signup(request):
-#     if request.method == 'POST':
-#         try:
-#             #User.objects.get(user_id=request.POST['user_id'])
-#             return render(request,'miniapp/signup.html',{'error':'이미 사용된 ID입니다.'})
-
-#         except:
-#         except User.DoesNotExist:
-#             user_id = request.POST.get('id')
-#             user_pw = request.POST.get('password1')
-#             user_name = request.POST.get('username')
-#             user_email = request.POST.get('email')
-#             if user_id=="" or user_pw=="" or user_name=="" or user_email=="":
-#                 messages.warning(request,"빈 칸으로 제출할 수 없습니다.")
-#                 return redirect("리다이렉트")            
-#             m = User(
-#                 user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
-#             m.date_joined = timezone.now()
-#             m.save()
-#             return render(request,'miniapp/signup_complete.html')
-#     else:
-#         return render(request, 'miniapp/signup.html' )
-
-
-
 
 def logout(request):
     request.session.flush()
@@ -225,7 +205,8 @@ def create_cat(request,city):
         status =request.POST.get('status')
         m = Cat(
             cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
-        
+
+        m.save()
         name = request.session['id']
         user = User.objects.get(user_id = name)
         cat = Cat.objects.last()  
@@ -240,7 +221,7 @@ def create_cat(request,city):
         m.save()
 
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
-        UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user,cat_nickname = cat_name)
+        UserHasCat.objects.create(cat_id=m.cat_id,user_no=user,cat_nickname = cat_name)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html',{'park':park})
 
@@ -257,29 +238,21 @@ def my_cat2(request,id):
         cat_img.append(CatPhoto.objects.filter(cat_id=i['cat_id']).first())
     return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
 
-
 def cat_gallery(request):
     name = request.session['id']
-
-    u=User.objects.get(user_id=name)
-    #img = CatPhoto.objects.filter(user_no=int(u.user_no))
-    img = CatPhoto.objects.all()
-    cat = Cat.objects.all()
+    no = request.session['no']
+    uhc = UserHasCat.objects.filter(user_no = request.session['no']).values("cat_id")
+    img = CatPhoto.objects.filter(cat_id__in = uhc)
+    
     context = {
         'object': img,
-        'user': int(u.user_no),
-        #'cat': cat.cat_name
+        'name': name
     }
-
-
     return render(request, 'miniapp/cat_gallery.html', context)
 
 
-
 def cat_gallery_city(request,city):
-    
-    c = City.objects.get(city_name=city)
-    park = Park.objects.filter(city_id=city)
+    park = Park.objects.filter(city_id=City.objects.get(city_name=city))
     uhc = UserHasCat.objects.filter(user_no = request.session['no']).values("cat_id")
     cat = Cat.objects.exclude(cat_id__in = uhc).values("cat_id")
     cat2 = Cat.objects.exclude(status="실종").values("cat_id")
@@ -288,12 +261,13 @@ def cat_gallery_city(request,city):
     cat_idx2= [int(i['cat_id']) for i in cat2 if i not in uhc]
     cat_idx3= [int(i['cat_id']) for i in cat3 if i not in uhc]
     cat_list= list(set(cat_idx1) & set(cat_idx2) & set(cat_idx3))
-    img = CatPhoto.objects.filter(cat_id__in = cat_list)
+    img=[]
+    for i in cat_list:
+        img.append( CatPhoto.objects.filter(cat_id = i).first())
+    
     # 내가 이미 등록되어있으면 x
     if request.method == 'POST':
         print("dd")
-        print(request.POST['submit'])
-
         if request.POST.get('park'):
             print("park")
             parkname = request.POST.get('park')
@@ -301,16 +275,19 @@ def cat_gallery_city(request,city):
             cat4 = Cat.objects.filter(park=park_o).values("cat_id")
             cat_idx4= [int(i['cat_id']) for i in cat4 if i not in uhc]
             cat_list= list(set(cat_list) & set(cat_idx4))
-            img = CatPhoto.objects.filter(cat_id__in = cat_list)
-
+            print(cat_list)
+            img=[]
+            for i in cat_list:
+                img.append( CatPhoto.objects.filter(cat_id = i).first())
+            return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
+            'park': park,'parkname':parkname})
         if request.POST.get('register'):
             print('register')
             catId = request.GET.get('regist')
             catname = Cat.objects.filter(cat_id = catId).values("cat_name")
             UserHasCat.objects.create(cat_id=catId, user_no=request.session["no"], cat_nickname = catname)
             return redirect(f'/my_cat/')
-        return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
-            'park': park})
+        
     return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
             'park': park})
 
@@ -329,6 +306,7 @@ def commentdelete(request, board_id):
     else:
         comment.delete()
     return redirect(f'/cat_profile/{c}/')    
+
 
 def cat_gallery(request):
     name = request.session['id']
