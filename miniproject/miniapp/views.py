@@ -110,11 +110,7 @@ def login(request):
         user_pw = request.POST.get('user_pw')
         try: 
             m=User.objects.get(user_id=user_id, user_pw=user_pw)
-            # c= City.objects.all()
-            # context = {
-            #     'object': m,
-            #     'city':c
-            # }
+
             request.session['id']=user_id
             request.session['no']=m.user_no
             
@@ -166,31 +162,6 @@ def signup(request):
         return render(request, 'miniapp/signup_complete.html' )
     else:
         return render(request, 'miniapp/signup.html' )
-
-
-# def signup(request):
-#     if request.method == 'POST':
-#         try:
-#             #User.objects.get(user_id=request.POST['user_id'])
-#             return render(request,'miniapp/signup.html',{'error':'이미 사용된 ID입니다.'})
-
-#         except:
-#         except User.DoesNotExist:
-#             user_id = request.POST.get('id')
-#             user_pw = request.POST.get('password1')
-#             user_name = request.POST.get('username')
-#             user_email = request.POST.get('email')
-#             if user_id=="" or user_pw=="" or user_name=="" or user_email=="":
-#                 messages.warning(request,"빈 칸으로 제출할 수 없습니다.")
-#                 return redirect("리다이렉트")            
-#             m = User(
-#                 user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
-#             m.date_joined = timezone.now()
-#             m.save()
-#             return render(request,'miniapp/signup_complete.html')
-#     else:
-#         return render(request, 'miniapp/signup.html' )
-
 
 
 
@@ -285,7 +256,6 @@ def cat_gallery_city(request,city):
     # 내가 이미 등록되어있으면 x
     if request.method == 'POST':
         print("dd")
-        print(request.POST['submit'])
 
         if request.POST.get('park'):
             print("park")

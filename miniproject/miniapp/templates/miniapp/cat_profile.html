@@ -11,13 +11,18 @@
 </head>
 
 <div class="container">
-    <div id="cat_profile">
-        {% if user_has_cat %}
-        <p  style="font-family: 'Cafe24Ssurround';font-size:30px" > 프로필 </p> 
-        <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#myModal">수정하기</button> 
-        {%else%}
-        <p  style="font-family: 'Cafe24Ssurround';font-size:30px" > 프로필</p>
-        {% endif %} 
+    
+    <div class="row" >
+        <div class="col-lg-2" id="btn2">
+            <p  style="font-family: 'Cafe24Ssurround';font-size:30px" > 프로필 </p> 
+        </div>
+        
+        <div class="col-lg-2" id="btn2">
+            {% if user_has_cat %} 
+            <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#myModal">수정하기</button> 
+            
+            {% endif %} 
+        </div>
     </div>
 
     <div class="modal" id="myModal" role="dialog">
@@ -36,15 +41,15 @@
                             <p>성별 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                             name = "gender">
-                            <option value = "none" disabled >성별</option>
+                            <option hidden>{{cat.gender}}</option>
                                 <option value="수컷">수컷</option>
                                 <option value="암컷">암컷</option>
                                 <option value="모르겠어요">모르겠어요</option>
                             </select>
                             <p>중성화여부 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
-                            name = "neutral" value={{cat.neutral}}>
-                            <option value = "none" disabled>
+                            name = "neutral">
+                            <option hidden>{{cat.neutral}}</option>
                                 중성화여부
                             </option>
                                 <option value="했어요">했어요</option>
@@ -54,7 +59,7 @@
                             <p>특징 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                             name = "appearance">
-                            <option value = "none" disabled>특징</option>
+                            <option hidden>{{cat.appearance}}</option>
                             
                                 <option value="흰색">흰색</option>
                                 <option value="검정색">검정색</option>
@@ -68,7 +73,7 @@
                             <p>상태 수정하기:</p>
                             <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
                             name = "status">
-                            <option value = "none" disabled>상태</option>
+                            <option hidden>{{cat.status}}</option>
                                 <option value="건강">건강</option>
                                 <option value="입원">입원</option>
                                 <option value="임시보호">임시보호</option>
@@ -105,10 +110,17 @@
         </div>  
     </div>  
     <br><hr option="one"><br>
-    <div id="cat_profile">
-        <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진</p>
-        <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#photoupload">사진 추가하기</button> 
+ 
+    <div class="row" >
+        <div class="col-lg-2" id="btn2">
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진</p>
+        </div>
+        
+        <div class="col-lg-2" id="btn2">
+            <button type="button" style="font-fmaily:Cafe24SsurroundAir;font-size:20px;float:right;" class="btn btn-link" id="m_button" data-toggle="modal" data-target="#photoupload">사진 추가하기</button> 
+        </div>
     </div>
+
     <form method="post" class="post-form" enctype="multipart/form-data">
         {% csrf_token %}
     <!-- Modal -->
@@ -204,6 +216,14 @@
 
 <style>
 
+#btn{
+
+    width: 50%;
+}
+#btn2{
+    font-family: 'GangwonEdu_OTFBoldA';
+    width: 50%;
+}
 #cat_profile{
     font-family: 'GangwonEdu_OTFBoldA';
     font-weight: 700;

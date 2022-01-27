@@ -11,29 +11,34 @@
 </head>
 
 <body>
-
-<div class='container' id="all">
     <form method="post" class="post-form">
-    {% csrf_token %}
-    <div class="row">
-        <p>
-        <div class="col-md-5">
-            <h1  style="font-family: 'Cafe24Ssurround';font-size:27px;position: relative;" > 우리 동네에 등록된 고양이를 살펴보세요! </h1>
-            <h1 style="font-family: 'Cafe24SsurroundAir';font-size:20px;position: relative;" > 고양이를 선택하면 함께 ~~할 수 있습니다! </h1>
-            
-        </div>
-        
-        <div class="col-md-5">
-                <div class="btn-group" style="float: right;">
-                    <select style="text-align:center;" class="form-select" aria-label="Default select example" name = park>
-                    {% for c in park %}
-                    <option value="{{c.park}}">{{c.park}}</option>
-                    {% endfor %}
-                    </select>
-                    <button style="font-family: 'GangwonEdu_OTFBoldA';" type="submit" class="btn btn-link" name="park_select" >선택하기 </button> 
-                </div>
+        {% csrf_token %}
+<div class="container">
+<div class="row" >
+    <div class="col-lg-2" id="btn2">
+    <h1  style="font-family: 'Cafe24Ssurround';font-size:27px;position: relative;" > 우리 동네에 등록된 고양이를 살펴보세요! </h1>
+    <h1 style="font-family: 'Cafe24SsurroundAir';font-size:20px;position: relative;" > 고양이를 선택하면 함께 ~~할 수 있습니다! </h1>
+    </div>
+    
+  
+    <div class="col-lg-2" id="btn2">
+        <div class="btn-group" >
+            <select style="text-align:center;font-size: 20px;" class="form-select"  name = park >
+            <option hidden>{{c.park}}</option>
+            {% for c in park %}
+            <option value="{{c.park}}" style="font-size: 20px;">{{c.park}}</option>
+            {% endfor %}
+            </select>
+            <button type="submit"  class="btn btn-primary" name="park_select" style="font-size: 20px;">검색하기</button> 
         </div>
     </div>
+    </form>
+    
+</div>
+</div>
+</form>
+<div class='container' id="all">
+
     <hr option="one"><br>
     </form>
 
@@ -45,40 +50,9 @@
                         {% for item in object %}
                             <div class="col-md-3" >
                                 <div class = "card">
-                                    <img class="image-thumbail"
-                                        src="{{ item.cat_photo.url }}" 
-                                        alt="">
-                                        
-                                        <!-- Trigger the modal with a button -->
-                                        {% comment %} <button type="button" class="btn btn-outline-white btn-sm m-1" style="font-size:20px;" data-toggle="modal" data-target="#myModal">찾았어요!</button> {% endcomment %}
-                                        <button type="button" class="btn btn-outline-white btn-sm m-1" style="font-size:20px;" onclick="location.href =  '/cat_register/{{item.cat_id}}';">찾았어요!</button>
-                               
-                                        <!-- Modal -->
-                                        {% comment %} <div id="myModal" class="modal" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                
-                                            </div>
-                                            <div class="modal-body">
-                                                
-                                                <div class="a" style="text-align:center;">고양이를 등록하시겠습니까?</div>
-                                                <form method="POST" name="cat_form" >
-                                                    {% csrf_token %}
-                                                    <button type="submit" id="y_btn" class="btn btn-primary" data-dismiss="modal"  name="abc"  value="{{item.cat_id}}" >예</button>
-                                
-                                                    <button type="button" id="n_btn" class="btn btn-default" data-dismiss="modal"  >아니오</button>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div> {% endcomment %}
+                                    <img class="image-thumbail" src="{{ item.cat_photo.url }}"  alt="">
+                                    <button type="button" class="btn btn-outline-white btn-sm m-1" style="font-size:20px;" onclick="location.href =  '/cat_register/{{item.cat_id}}';">찾았어요!</button>
+                
                                 </div class = "card-body">
                             </div>
                         {% endfor %}
@@ -90,6 +64,7 @@
 
     <p></p>
     <button type="submit" id="nono" class="btn btn-primary" onclick="location.href =  '/create_cat/{{ request.session.city }}';">목록에 고양이가 없어요!</button>
+    <p></p>
 </div>
     
 </body>
@@ -111,8 +86,6 @@
     height: 300px;
     object-fit: cover;
     padding: 14px; 
-
-
 }
 #wrapper{
     margin:auto;
@@ -120,10 +93,22 @@
 
 #nono{
     width:100%;
-    font-size:30px;
+    font-size:25px;
 }
 div.a {font-size: 15px;}
+#btn{
+    font-family: 'Cafe24Ssurround';
+    
+    width: 50%;
+}
+#btn2{
+    font-family: 'Cafe24Ssurround';
+    width: 50%;
+}
+.btn-group{
+    font-family: 'GangwonEdu_OTFLightA';
 
+}
 </style>
 
 
