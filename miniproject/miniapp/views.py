@@ -3,7 +3,7 @@ from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
-
+from django.contrib import messages
 def home(request):
     return render(request, 'miniapp/home.html')
 
@@ -65,10 +65,6 @@ def cat_profile(request, pk):
         'profile':profile,
         'cat_photo' : img,
         'cat' : cat_profile,
-        'cat_id' : cat_profile.cat_id,
-        'cat_name': cat_profile.cat_name,
-        'cat_location' : cat_profile.park,
-        'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
         'update':update,
@@ -128,6 +124,7 @@ def login_complete(request):
             'city':c
         }
         return render(request, 'miniapp/login_complete.html', context)
+from django.contrib import messages
 def signup(request):
     if request.method == 'POST':
         user_id = request.POST.get('id')
@@ -135,10 +132,19 @@ def signup(request):
         user_name = request.POST.get('username')
         user_email = request.POST.get('email')
         m = User(
-            user_id=user_id, user_pw=user_pw, user_name=user_name,user_email=user_email)
+            user_id=user_id, user_pw=user_pw, user_name=user_name, user_email=user_email)
         m.date_joined = timezone.now()
-        m.save()
+        if not user_id or not user_pw or not user_name or not user_email:
+            messages.info(request,'빈칸으로 제출할 수 없습니다.')
+            return render(request, 'miniapp/signup.html')
+    
+        if User.objects.filter(user_id=user_id).exists()==True:
+            messages.info(request,'중복되는 아이디입니다.')
+            return render(request, 'miniapp/signup.html')
         
+        
+        m.save()
+
         return render(request, 'miniapp/signup_complete.html' )
     else:
         return render(request, 'miniapp/signup.html' )
@@ -182,7 +188,7 @@ def create_cat(request,city):
         img = request.FILES.get('img-file')
         time = timezone.now()
         CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
-        UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user)
+        UserHasCat.objects.create(cat_id=cat.cat_id,user_no=user,cat_nickname = cat_name)
         return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
     return render(request, 'miniapp/create_cat.html',{'park':park})
 

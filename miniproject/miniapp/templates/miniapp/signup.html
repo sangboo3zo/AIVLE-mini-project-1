@@ -3,6 +3,7 @@
 <link rel="stylesheet"
 href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <div class="container my-3">
+    
     <div class="row my-3">
         <div class="col-4">
             <br>
@@ -28,6 +29,14 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <label for="email">이메일</label>
                 <input type="text" class="form-control" name="email" placeholder="예시: catcat@gmail.com">
             </div>
+
+            {%if messages%}
+             <ul class="messages">
+                {% for message in messages %}
+                    <li{% if messages.tags%} class="{{message.tags}}"{%endif%}>{{message}}</li>
+                {%endfor%}
+            </ul>
+            {%endif%}
             <button type="submit" class="btn btn-primary">생성하기</button>
         </form>
     </div>
@@ -37,7 +46,5 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
       font-family: 'GangwonEdu_OTFBoldA';
       font-size:21px;
     }
-
-  
-  </style>
+</style>
 {% endblock %}
