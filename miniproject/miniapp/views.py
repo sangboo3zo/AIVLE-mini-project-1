@@ -158,14 +158,16 @@ def signup(request):
             user_id=user_id, user_pw=user_pw, user_name=user_name, user_email=user_email)
         m.date_joined = timezone.now()
         if not user_id or not user_pw or not user_name or not user_email:
-            messages.info(request,'빈칸으로 제출할 수 없습니다.')
+            messages.info(request,'**빈칸으로 제출할 수 없습니다.')
             return render(request, 'miniapp/signup.html')
     
         if User.objects.filter(user_id=user_id).exists()==True:
-            messages.info(request,'중복되는 아이디입니다.')
+            messages.info(request,'**중복되는 아이디입니다.')
             return render(request, 'miniapp/signup.html')
         
-        
+        if (not user_id or not user_pw or not user_name or not user_email) and User.objects.filter(user_id=user_id).exists()==True:
+            messages.info(request,'**중복되는 아이디입니다.\n **빈칸으로 제출할 수 없습니다.')
+            return render(request, 'miniapp/signup.html')
         m.save()
 
         return render(request, 'miniapp/signup_complete.html' )
@@ -196,26 +198,38 @@ def upload_cat_img(request,cat_id):
 def create_cat(request,city):
     park = Park.objects.filter(city=request.session['city'])
     if request.method == 'POST':
-        cat_name = request.POST.get('cat_name')
-        gender = request.POST.get('gender')
-        neutral = request.POST.get('neutral')
-        parkname = request.POST.get('park')
-        location = Park.objects.get(park=parkname)
-        print(location)
-        appearance = request.POST.get("appearance")
-        status =request.POST.get('status')
-        m = Cat(
-            cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
-        m.save()
-        print(m.cat_id)
-        name = request.session['id']
-        user = User.objects.get(user_id = name)
-        cat = Cat.objects.last()  
-        img = request.FILES.get('img-file')
-        time = timezone.now()
-        CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
-        UserHasCat.objects.create(cat_id=m.cat_id,user_no=user,cat_nickname = cat_name)
-        return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
+        try:
+            cat_name = request.POST.get('cat_name')
+            gender = request.POST.get('gender')
+            neutral = request.POST.get('neutral')
+            parkname = request.POST.get('park')
+            location = Park.objects.get(park=parkname)
+            print(location)
+            appearance = request.POST.get("appearance")
+            status =request.POST.get('status')
+        
+            m = Cat(
+                cat_name=cat_name, gender=gender, neutral=neutral, park=location, appearance=appearance, status=status)
+            
+            print(m.cat_id)
+            name = request.session['id']
+            user = User.objects.get(user_id = name)
+            cat = Cat.objects.last()  
+            img = request.FILES.get('img-file')
+            time = timezone.now()
+            if not img:
+                messages.info(request,'사진이 없으면 고양이를 등록할 수 없어요!')
+                return render(request,'miniapp/create_cat.html',{'park':park})
+            else:
+                m.save()
+                CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=user.user_no,cat_id=cat.cat_id)
+                UserHasCat.objects.create(cat_id=m.cat_id,user_no=user,cat_nickname = cat_name)
+                return redirect('http://127.0.0.1:8000/my_cat/'+str(user.user_no))
+
+        except:
+            print("e")
+            messages.info(request,'입력되지 않은 항목이 있습니다.')
+            return redirect('http://127.0.0.1:8000/create_cat/'+str(request.session["city"]))
     return render(request, 'miniapp/create_cat.html',{'park':park})
 
 def my_cat2(request,id):
