@@ -2,7 +2,7 @@
 from django.shortcuts import redirect,render, get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from sympy import I
-from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park
+from .models import  User,CatPhoto,Cat, UserHasCat, Feed, City, Park, CatBoard
 from django.utils import timezone
 
 def home(request):
@@ -25,7 +25,7 @@ def cat_profile(request, pk):
     current_user = User.objects.get(user_id=current_user_id)
     cat_info = Cat.objects.get(cat_id = int(pk))
     comments = CatBoard.objects.filter(cat = int(pk))
-    print(current_user.user_name)
+
     if request.method == 'POST':
     #     update =False
     #     if request.POST.get('update') == "True":
@@ -52,16 +52,24 @@ def cat_profile(request, pk):
             comment.board_text = request.POST.get('board_text')
             comment.date_time = timezone.now()
             comment.save()
-
+        ##status change##
+        if request.POST.get('status') or request.POST.get('gender') or request.POST.get('neutral') or request.POST.get('appearance'):
+            cat_info.status = request.POST.get('status')
+            cat_info.gender = request.POST.get('gender')
+            cat_info.neutral = request.POST.get('neutral')
+            cat_info.appearance = request.POST.get('appearance')
+            cat_info.save()
+            return redirect(f'/cat_profile/{pk}/')
+        ##
     return render(request, 'miniapp/cat_profile.html', context={
         'cat_view' : img[0],
         'profile':profile,
         'cat_photo' : img,
         'cat' : cat_profile,
-        # 'cat_id' : cat_profile.cat_id,
-        # 'cat_name': cat_profile.cat_name,
-        # 'cat_location' : cat_profile.park,
-        # 'cat_status': cat_profile.status,
+        'cat_id' : cat_profile.cat_id,
+        'cat_name': cat_profile.cat_name,
+        'cat_location' : cat_profile.park,
+        'cat_status': cat_profile.status,
         'feed_timeline': feed,
         'user_has_cat':u_h_c,
         'update':update,
@@ -70,8 +78,12 @@ def cat_profile(request, pk):
         'cat_info': cat_info.cat_name,
         'user' : current_user,
         'comments': comments,
-        'park' : cat_profile.park.park
-    })
+        'park' : cat_profile.park.park,
+        ##status change##
+        'cat_gender':cat_profile.gender,
+        'cat_neutral':cat_profile.neutral,
+        'cat_appearance':cat_profile.appearance,
+        })
     
 def detail_gallery(request, pk):
     img = CatPhoto.objects.filter(cat_id=pk)
@@ -229,26 +241,6 @@ def cat_gallery_city(request,city):
         'park': park
     }
     return render(request, 'miniapp/cat_gallery_city.html', context)
-from .models import CatBoard
-
-def comment(request, cat_id):
-    current_user_id = request.session['id']
-    current_user = User.objects.get(user_id=current_user_id)
-    cat_info = Cat.objects.get(cat_id = int(cat_id))
-    comments = CatBoard.objects.filter(cat = int(cat_id))
-    if request.method == 'POST':
-        comment = CatBoard()
-        comment.cat = cat_info
-        comment.user_no = current_user
-        comment.board_text = request.POST.get('board_text')
-        comment.date_time = timezone.now()
-        comment.save()
-    return render(request, 'miniapp/comment.html', {
-        'user_name': current_user.user_name,
-        'cat_info': cat_info.cat_name,
-        'user' : current_user,
-        'comments': comments,
-        })
 
 
 from django.contrib import messages

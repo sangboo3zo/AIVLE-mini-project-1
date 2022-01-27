@@ -13,22 +13,104 @@
 
 </head>
 
-<div class='container' >
-  
-        <div class="row" id="cat_profile">
-            <div class="col-xs-2 col-md-3">
-                <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > 프로필 </p>
-            </div>
-            {% if user_has_cat %}
-                <div class="col-xs-2 col-md-3" id = "update">
-                    <form method="post" class="post-form">
-                        {% csrf_token %}
-                        <button id = "img_button" class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat_id}}';" name="update" value="True" > &emsp; 수정하기 &emsp;</button>
-                    </form>
-                </div>
-            {% endif %}
+<div class="row" id="cat_profile">
+    <div class="col-xs-2 col-md-3">
+        <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;left: 70;" > 프로필 </p>
+    </div>
+    {% if user_has_cat %}
+        {% comment %} <div class="col-xs-2 col-md-3" id = "update">
+            <form method="post" class="post-form"> {% endcomment %}
+                {% comment %} <button class="btn btn-primary" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button> {% endcomment %}
+                <div class="container">
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">수정하기</button>
+                  
+                    <!-- Modal -->
+                    <div class="modal" id="myModal" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"></h4>
+                          </div>
+                          <div class="modal-body">
+                            <p></p>
+                            <p>
+                                <div class="btn-group">
+                                    <form method = "POST">
+                                        {% csrf_token %}
+                                        <p>성별 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "gender">
+                                        <option value = "none" selected disabled hidden>
+                                            {% if cat_gender == "M" %}
+                                            수컷
+                                            {% elif cat_gender == "F" %}
+                                            암컷
+                                            {% elif cat_gender == "U" %}
+                                            모르겠어요
+                                            {% endif %}
+                                        </option>
+                                            <option value="M">수컷</option>
+                                            <option value="F">암컷</option>
+                                            <option value="U">모르겠어요</option>
+                                        </select>
+                                        <p>중성화여부 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "neutral">
+                                        <option value = "none" selected disabled hidden>
+                                            {% if cat_neutral == "Y" %}
+                                            했어요
+                                            {% elif cat_gender == "N" %}
+                                            안했어요
+                                            {% elif cat_gender == "U" %}
+                                            모르겠어요
+                                            {% endif %}
+                                        </option>
+                                            <option value="Y">했어요</option>
+                                            <option value="N">안했어요</option>
+                                            <option value="U">모르겠어요</option>
+                                        </select>
+                                        <p>특징 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "appearance">
+                                        <option value = "none" selected disabled hidden>{{cat_appearance}}</option>
+                                            <option value="흰색">흰색</option>
+                                            <option value="검정색">검정색</option>
+                                            <option value="노란색">노란색</option>
+                                            <option value="회색">회색</option>
+                                            <option value="삼색">삼색</option>
+                                            <option value="얼룩">얼룩</option>
+                                            <option value="그외">그외</option>
+                                        </select>
+                                        <p>상태 수정하기:</p>
+                                        <select class = "form-select" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                        name = "status">
+                                        <option value = "none" selected disabled hidden>{{cat_status}}</option>
+                                            <option value="건강">건강</option>
+                                            <option value="입원">입원</option>
+                                            <option value="임시보호">임시보호</option>
+                                            <option value="입양">입양</option>
+                                            <option value="실종">실종</option>
+                                            <option value="사망">사망</option>
+                                        </select>
+                                        <p></p>
+                                        <button type = "submit" class="btn btn-primary" style="width:300px;height:60px;text-align:center;font-size: 25px;"
+                                         onclick="this.form.submit()">저장하기</a></button>
+                                    </form>
+                                </div>
+                            </p>
+                          </div>
+                          <div class="modal-footer">
+                            {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> {% endcomment %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
         </div>
-    
+    {% endif %}
+<div>
 
     <div class="row" id="cat_profile">
         
