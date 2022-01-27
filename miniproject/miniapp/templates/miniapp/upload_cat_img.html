@@ -1,24 +1,43 @@
-{% extends 'base.html' %}
-{% block content %}
-{% load static %}
-<html>
-<head>
-  <meta charset="utf-8">
-</head>
-<body>
-  <div class="container">
-  <br><br><br>
-  <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > {{cat.cat_name}} 사진 업로드 </p>
-
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="img-file">
-        <input type="submit">
-    </form>
-  </div>
+{% comment %} cat_profile.html에 삽입 {% endcomment %}
 
 
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#photoupload">사진 추가하기</button>
+        
+<!-- Modal -->
+<div class="modal" id="photoupload" role="dialog">
+    <div class="modal-dialog">
+    
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p  style="font-family: 'Cafe24Ssurround';font-size:25px;position: relative;" > {{cat.cat_name}}의 사진 업로드하기 </p>
 
-</body>
-</html>
-{% endblock %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" style="width:300px;height:60px;text-align:center;font-size: 15px;" name="img-file">
+                <button type = "submit" class="btn btn-primary" style="width:140px;height:60px;text-align:center;font-size: 20px;"
+                >저장하기</a></button>
+            </form>
+        </div>
+        <div class="modal-footer">
+        {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> {% endcomment %}
+        </div>
+    </div>
+    
+    </div>
+</div>
+
+
+
+
+{% comment %} views.py 안의 cat_profile함수 내 if문 안에 삽입{% endcomment %}
+
+if request.FILES.get('img-file'):
+    img = request.FILES.get('img-file')
+    time = timezone.now()
+    CatPhoto.objects.create(cat_photo=img,date_time=time,user_no_id=request.session["no"],cat_id=pk)
+    return redirect(f'/cat_profile/{pk}/')
