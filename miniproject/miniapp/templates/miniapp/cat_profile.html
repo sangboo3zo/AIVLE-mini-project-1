@@ -147,6 +147,14 @@
             </div>
         </div>  
 
+        <form method="post" class="post-form">
+            {% csrf_token %}
+            <a class="btn btn-light" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" href="http://127.0.0.1:8000/cat_profile/{{cat.cat_id}}/detail_gallery/" > 사진 더보기</a>
+        </form>
+    
+
+
+
         <div class="feed_log">
             <br><hr option="one">
             <div class="row" id="cat_profile">
@@ -267,8 +275,8 @@ td{
 
 #cat_photo{
     position: relative;
-    max-width : 100%;
-    max-height : 100%;
+    max-width : 200%;
+    max-height : 200%;
     object-fit: cover;
 }
 </style>
