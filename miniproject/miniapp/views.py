@@ -12,7 +12,7 @@ def cat_profile(request, pk):
     #cat_profile = get_object_or_404(Cat, pk=pk)
     cat_profile= Cat.objects.get(cat_id=pk)
     profile =  CatPhoto.objects.filter(cat_id=pk).first()
-    img = CatPhoto.objects.filter(cat_id=pk).order_by('-date_time')[:6]
+    img = CatPhoto.objects.filter(cat_id=pk).order_by('-date_time')[:5]
     feed = Feed.objects.filter(cat=pk).order_by('-date_time')[:5]
     comments = CatBoard.objects.filter(cat = pk)
     user_has_cat= UserHasCat.objects.filter(user_no=request.session['no'])
@@ -258,6 +258,7 @@ def cat_gallery(request):
 
 
 def cat_gallery_city(request,city):
+    
     c = City.objects.get(city_name=city)
     park = Park.objects.filter(city_id=city)
     uhc = UserHasCat.objects.filter(user_no = request.session['no']).values("cat_id")
@@ -271,13 +272,22 @@ def cat_gallery_city(request,city):
     img = CatPhoto.objects.filter(cat_id__in = cat_list)
     # 내가 이미 등록되어있으면 x
     if request.method == 'POST':
-        parkname = request.POST.get('park')
-        park_o = Park.objects.get(park=parkname)
-        cat4 = Cat.objects.filter(park=park_o).values("cat_id")
-        cat_idx4= [int(i['cat_id']) for i in cat4 if i not in uhc]
-        cat_list= list(set(cat_list) & set(cat_idx4))
-        img = CatPhoto.objects.filter(cat_id__in = cat_list)
-        
+        print("dd")
+        print(request.POST['submit'])
+        if request.POST.get('park'):
+            print("park")
+            parkname = request.POST.get('park')
+            park_o = Park.objects.get(park=parkname)
+            cat4 = Cat.objects.filter(park=park_o).values("cat_id")
+            cat_idx4= [int(i['cat_id']) for i in cat4 if i not in uhc]
+            cat_list= list(set(cat_list) & set(cat_idx4))
+            img = CatPhoto.objects.filter(cat_id__in = cat_list)
+        if request.POST.get('register'):
+            print('register')
+            catId = request.GET.get('regist')
+            catname = Cat.objects.filter(cat_id = catId).values("cat_name")
+            UserHasCat.objects.create(cat_id=catId, user_no=request.session["no"], cat_nickname = catname)
+            return redirect(f'/my_cat/')
         return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
             'park': park})
     return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
