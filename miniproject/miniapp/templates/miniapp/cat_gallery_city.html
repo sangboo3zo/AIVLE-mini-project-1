@@ -5,53 +5,53 @@
 
 <body>
 
+
 <div class='container' id="all">
+    <form method="post" class="post-form">
+    {% csrf_token %}
     <div class="row">
+        <p>
         <div class="col-md-5">
             <h1  style="font-family: 'Cafe24Ssurround';font-size:27px;position: relative;" > 우리 동네에 등록된 고양이를 살펴보세요! </h1>
             <h1 style="font-family: 'Cafe24SsurroundAir';font-size:20px;position: relative;" > 고양이를 선택하면 함께 ~~할 수 있습니다! </h1>
+            
         </div>
+        
         <div class="col-md-5">
                 <div class="btn-group" style="float: right;">
-                    <select style="text-align:center;" class="form-select" aria-label="Default select example" name = location>
+                    <select style="text-align:center;" class="form-select" aria-label="Default select example" name = park>
                     {% for c in park %}
                     <option value="{{c.park}}">{{c.park}}</option>
                     {% endfor %}
                     </select>
-                    
                     <button style="font-family: 'GangwonEdu_OTFBoldA';" type="submit" class="btn btn-link" >선택하기 </button> 
                 </div>
-            
         </div>
-    
     </div>
-    <div>
-        <br>
-        <div class = "row">
-            <div class="col-md-9">
-                <div class = "row">
-                        
-                    {% if object %}
-                        {% for item in object %}
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <img class="image-thumbail"
-                                        src="{{ item.cat_photo.url }}" 
-                                        alt="">
-                                    <div class="card-body">
-                                        <small>{{item.name}}</small>
-                                    </div>
-                                    <a href="{}" class = "btn btn-outline-dark btn-sm m-1"> View</a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+    <hr option="one"><br>
+    </form>
+
+    <div class="row" id="cat_photo">
+        <div class="col-md-6">
+            <div class = "row"> 
+                {% if object %}
+                    {% for item in object %}
+                        <div class="col-md-5" >
+                            <img class="image-thumbail"
+                                src="{{ item.cat_photo.url }}" 
+                                alt="">
+                            
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
-    </div>
-</div>
+    </div>  
+
+    
     <button type="submit" id="nono" class="btn btn-primary" onclick="location.href =  '/create_cat/{{ request.session.city }}';">목록에 고양이가 없어요!</button>
+</div>
+    
 </body>
 
 
@@ -67,13 +67,17 @@
 
 .image-thumbail {
     width: 300px;
-    height: 250px;
-    object-fit: contain;
+    height: 300px;
+    object-fit: cover;
+    padding: 14px;
+
 
 }
 #wrapper{
     margin:auto;
 }
+
+
 </style>
 
 

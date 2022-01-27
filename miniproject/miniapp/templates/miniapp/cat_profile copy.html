@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+<br>
+<head> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" /> 
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+
+
+
+</head>
+
+<div class='container' >
+    <div class="row" id="cat_profile">
+        <div class="col-xs-2 col-md-3">
+            <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > 프로필 </p>
+        </div>
+        {% if user_has_cat %}
+            <div class="col-xs-2 col-md-3" id = "update">
+                <form method="post" class="post-form">
+                    {% csrf_token %}
+                    <button class="btn btn-light" onclick="location.href =  '/cat_profile/{{cat_id}}';" style="font-family: 'GangwonEdu_OTFLightA';font-size:20px;text-decoration:none;" name="update" value="True" >  수정하기 </button>
+                </form>
+            </div>
+        {% endif %}
+
+    <div>
+    
+    <div class="row" id="cat_profile">
+        <div id ="box" class="col-xs-4 col-md-2">
+            <img id="profile_img" src="{{ profile.cat_photo.url }}" alt="">
+        </div>
+        <div class="col-xs-4 col-md-2">
+            <br><br>
+            <p></p>
+        </div>
+        <div class="col-xs-4 col-md-2">
+            <br><br>
+            <p>이름 : {{cat_name}} </p>
+            <p>위치 : {{park}} </p>
+            <p>상태 : {{cat_status}} </p>
+        </div>
+    </div>  
+
+    <form method="post" class="post-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row" id="cat_profile">
+        <br><hr option="one"><br>
+        <div class="col-xs-2 col-md-3">
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 사진  <a style = "font-family:GangwonEdu_OTFBoldA;font-size:20px;" href="http://127.0.0.1:8000/upload_cat_img/{{ cat_id }}">&ensp;사진 추가하기</a> </p>
+        </div>
+        <div class="col-xs-2 col-md-3">
+           
+
+        </div>
+    <div>
+    </form>
+    <div class="row" id="cat_photo">
+        <div class="col-md-6">
+            <div class = "row"> 
+                {% if cat_photo %}
+                    {% for item in cat_photo %}
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="image-thumbail"
+                                    src="{{ item.cat_photo.url }}" 
+                                    alt="">
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>  
+    
+    
+    <div class="feed_log">
+        <br><hr option="one">
+        <div class="row" id="cat_profile">
+            <div class="col-xs-2 col-md-3"> 
+                <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > 밥 먹은 시간 </p>
+            </div> 
+        </div>
+        <table border="0">
+            {% if feed_timeline %}
+                {% for item in feed_timeline %}
+                <tr align = "center" >
+                    <td>{{ item.user_no.user_name }} </td>
+                    <td>{{ item.date_time|date:'Y.m.d D' }}</td> 
+                    <td>{{ item.date_time|date:'a h시 i분' }}</td>
+                <tr>
+                {% endfor %}
+            {% endif %}      
+        </table>
+        <br>
+    <div>
+    {% if user_has_cat %}
+
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        <div class="row">
+            <div class='col-md-3' id ="dtp">
+                <div class="form-group " style="width:500px;">
+                    <div class="input-group date"  data-target-input="nearest"> 
+                        <input style  = "height:50px;font-size:18px;" type='text' id="datetimepicker1" class="form-control datetimepicker-input" data-target="#datetimepicker1" name="datetimep" />
+                        <div class="input-group-addon" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <i class="fa fa-calendar"></i>  
+                        </div>
+                        <div class="input-group-addon" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <button type="submit" style="background-color:transparent;" class="btn btn-light">추가하기</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>           
+        </div>
+        
+    </form>
+    {% endif %}
+
+
+   
+
+    <div class="chat">
+        <br><hr option="one"><br>
+        <div class="row" id="cat_profile">
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > {{cat_name}}에 대해 이야기 해요! </p>
+        </div>
+        {% include "./comment.html" %}
+    </div>
+</div>
+
+<style>
+
+#cat_profile{
+    font-family: 'GangwonEdu_OTFBoldA';
+    font-weight: 900;
+    font-size: 27px;
+    position: relative;
+    
+}
+.feed_log{
+    font-family: 'GangwonEdu_OTFBoldA';
+    position: relative;
+    font-size: 27px;
+}
+table{
+    width: 800px;
+    font-size: 27px;
+}
+th{
+    font-family:'GangwonEdu_OTFBoldA';
+    padding: 14px;
+}
+td{
+    font-family:'GangwonEdu_OTFBoldA';
+    padding: 4px;
+}
+
+#profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;.
+    
+
+}
+
+
+.image-thumbail{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+#box{
+    width: 200px;
+    height: 200px; 
+    border-radius: 30%;
+    overflow: hidden; 
+}
+
+</style>
+{% endblock %}

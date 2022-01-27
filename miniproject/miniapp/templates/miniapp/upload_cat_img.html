@@ -6,13 +6,16 @@
   <meta charset="utf-8">
 </head>
 <body>
-    <h2>upload test</h2>
+  <div class="container">
+  <br><br><br>
+  <p  style="font-family: 'Cafe24Ssurround';font-size:30px;position: relative;" > {{cat.cat_name}} 사진 업로드 </p>
 
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="img-file">
         <input type="submit">
     </form>
+  </div>
 
 
 
