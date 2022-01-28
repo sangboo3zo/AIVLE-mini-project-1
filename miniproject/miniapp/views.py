@@ -239,11 +239,16 @@ def my_cat2(request,id):
         uhc.delete()
     user=User.objects.get(user_no=id)
     user_has_cat = UserHasCat.objects.filter(user_no=id).values("cat_id")
+    uhc = UserHasCat.objects.filter(user_no=id)
     cat_list = Cat.objects.filter(cat_id__in = user_has_cat)
     cat_img=[]
+    cat_name = []
     for i in user_has_cat:
         cat_img.append(CatPhoto.objects.filter(cat_id=i['cat_id']).first())
-    return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img)})
+    for j in uhc:
+        cat_name.append(j.cat_nickname)
+  
+    return render(request, 'miniapp/my_cat.html',  {'user':user,'cat_list':cat_list,'cat':zip(cat_list, cat_img,cat_name)})
 
 def cat_gallery(request):
     name = request.session['id']

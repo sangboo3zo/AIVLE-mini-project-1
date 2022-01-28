@@ -54,7 +54,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <label class="menu" for="location" style="font-family:GangwonEdu_OTFBoldA;font-size: 22px;padding-top:54px;padding-left:100px;padding-bottom:5px;">지역을 선택하세요</label><br>
                 <div class="btn-group">
                     <select style="font-family:GangwonEdu_OTFBoldA;width:300px;height:60px;text-align:center;font-size: 25px;" class="form-select" aria-label="Default select example" name = location>
-
+                    <option hidden>--지역을 선택해 주세요--</option>
                     {% for c in city %}
                     <option value="{{c.city_name}}">{{c.city_name}}</option>
                     {% endfor %}
