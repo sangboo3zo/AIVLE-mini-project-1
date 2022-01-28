@@ -20,12 +20,14 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             </ul>
             {%endif%}
         </div>
+        <br><br><br>
     
 
     </div>
     <div class="create_menu">
       <form method="post" class="post-form" enctype="multipart/form-data">
           {% csrf_token %} 
+
           <br>
           <input type="file" name="img-file">
           
@@ -100,6 +102,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             <label><input type="radio" id="사망" name="status" value="사망"> 사망  </label>
           </div>
           <br>
+
           <button type="submit" class="btn btn-primary">생성하기</button>
       </form>
     </div>
