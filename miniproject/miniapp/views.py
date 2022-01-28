@@ -20,7 +20,7 @@ def cat_profile(request, pk):
     comments = CatBoard.objects.filter(cat = pk)
     user_has_cat= UserHasCat.objects.filter(user_no=request.session['no'])
     nickname = UserHasCat.objects.filter(user_no=request.session['no'],cat_id = pk).first()
-    print(nickname)
+
     u_h_c = False
     for u in user_has_cat:
         if u.cat_id == pk:
@@ -43,7 +43,7 @@ def cat_profile(request, pk):
             if b[2] == "PM": d[0] = str(int(d[0])+12)
             if len(d[0]) ==1: dtstr = dtstr +" 0"+d[0]+":"+d[1]+":00.000000"
             else: dtstr = dtstr +" "+d[0]+":"+d[1]+":00.000000"
-        
+            print(dtstr)
             feed = Feed(date_time = dtstr,
                         cat_id = cat_profile.cat_id,
                         user_no =User.objects.get(user_no=request.session['no']  ))
@@ -274,22 +274,18 @@ def cat_gallery_city(request,city):
     
     # 내가 이미 등록되어있으면 x
     if request.method == 'POST':
-        print("dd")
         if request.POST.get('park'):
-            print("park")
             parkname = request.POST.get('park')
             park_o = Park.objects.get(park=parkname)
             cat4 = Cat.objects.filter(park=park_o).values("cat_id")
             cat_idx4= [int(i['cat_id']) for i in cat4 if i not in uhc]
             cat_list= list(set(cat_list) & set(cat_idx4))
-            print(cat_list)
             img=[]
             for i in cat_list:
                 img.append( CatPhoto.objects.filter(cat_id = i).first())
             return render(request, 'miniapp/cat_gallery_city.html', {'object': img,
             'park': park,'parkname':parkname})
         if request.POST.get('register'):
-            print('register')
             catId = request.GET.get('regist')
             catname = Cat.objects.filter(cat_id = catId).values("cat_name")
             UserHasCat.objects.create(cat_id=catId, user_no=request.session["no"], cat_nickname = catname)
@@ -314,27 +310,12 @@ def commentdelete(request, board_id):
         comment.delete()
     return redirect(f'/cat_profile/{c}/')    
 
-
-def cat_gallery(request):
-    name = request.session['id']
-    no = request.session['no']
-    
-    img = CatPhoto.objects.filter(user_no = no)
-    cat = Cat.objects.all()
-    context = {
-        'object': img,
-        'cat': cat,
-        'name': name
-    }
-    return render(request, 'miniapp/cat_gallery.html', context)
-
 def gallery_show_all_cats(request):
     
     name = request.session['id']
     cat = Cat.objects.filter(status="실종").values("cat_id")
     cat2 = Cat.objects.filter(status="사망").values("cat_id")
     img = CatPhoto.objects.exclude(cat_id__in = cat)&CatPhoto.objects.exclude(cat_id__in = cat2)
-    print(img)
     context = {
         'object': img,
         'cat': cat,
