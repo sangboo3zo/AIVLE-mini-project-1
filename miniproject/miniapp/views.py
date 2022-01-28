@@ -315,19 +315,6 @@ def commentdelete(request, board_id):
     return redirect(f'/cat_profile/{c}/')    
 
 
-def cat_gallery(request):
-    name = request.session['id']
-    no = request.session['no']
-    
-    img = CatPhoto.objects.filter(user_no = no)
-    cat = Cat.objects.all()
-    context = {
-        'object': img,
-        'cat': cat,
-        'name': name
-    }
-    return render(request, 'miniapp/cat_gallery.html', context)
-
 def gallery_show_all_cats(request):
     
     name = request.session['id']
