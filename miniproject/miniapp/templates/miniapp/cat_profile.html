@@ -124,7 +124,7 @@
                 <div align="center" class="modal-body" style="font-family:Cafe24SsurroundAir">
                     <form method = "POST">
                     {% csrf_token %}
-                    <label> 나만의 이름을 지어 주세요! &#9; 프로필에 수정한 이름이 표시됩니다. </label>
+                    <label> 나만의 애칭을 지어 주세요! &#9; 프로필에 수정한 이름이 표시됩니다. </label>
                     <p></p>
                     <input type="text" class="form-control" style="width:250px;height:60px;text-align:center;font-family:Cafe24SsurroundAir;font-size: 30px;" name="nickname">
                     <p></p>
@@ -235,7 +235,7 @@
     <div class="chat">
         <br><hr option="one"><br>
         <div class="row" id="cat_profile">
-            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > {{cat.cat_name}}에 대해 이야기 해요! </p>
+            <p style="font-family: 'Cafe24Ssurround';font-size:30px;" > {{nickname.cat_nickname}}에 대해 이야기 해요! </p>
         </div>
         {% include "./comment.html" %}
     </div>
@@ -246,6 +246,14 @@
 
 <style>
 
+#ly2{
+    font-family: 'GangwonEdu_OTFBoldA';
+    font-weight: 700;
+    font-size: 27px;
+    position: relative; 
+    left: -25px;
+    bottom :-10px;
+}
 .bootstrap-datetimepicker-widget.dropdown-menu {
     display: block;
     margin: 2px 0;
