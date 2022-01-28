@@ -21,7 +21,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 
 {% if cat_list %}
-    {% for item, url in cat %}
+    {% for item, url ,name in cat %}
     
         <div class="col-sm-12 col-lg-6">
             <div class="card">
@@ -33,7 +33,7 @@ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                         <div class="card-body">
                             <form method="post" class="post-form">
                                 {% csrf_token %} 
-                                <p class="card-text" id = "cat_name" > &emsp;&emsp;&emsp; &ensp;&emsp;{{item.cat_name}} &emsp; &emsp; 
+                                <p class="card-text" id = "cat_name" > &emsp;&emsp;&emsp; &ensp;&emsp;{{name}} &emsp; &emsp; 
                                         <button class= "btn btn-primary" style="font-size:15px;" onclick="location.href =  '/my_cat/{{request.session.no}}';" name = cat_id value={{item.cat_id}}> 삭제 </button> </p>       
                                 <h1 class="card-text"> 성별: {{ item.gender }}</h1> 
                                 <h1 class="card-text"> 특징: {{ item.appearance }} </h1> 
